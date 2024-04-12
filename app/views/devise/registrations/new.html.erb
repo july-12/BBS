@@ -1,0 +1,31 @@
+<div class="w-[400px] mx-auto">
+  <h2 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900  dark:text-white"> Sign up </h2>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), class: 'max-w-sm mx-auto') do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+    <div class="mb-5">
+      <%= f.label :name, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+      <%= f.text_field :name, autofocus: true, autocomplete: "phone", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    </div>
+    <div class="mb-5">
+      <%= f.label :phone, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+      <%= f.text_field :phone, autofocus: true, autocomplete: "phone", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    </div>
+    <div class="mb-5">
+      <%= f.label :password, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+      <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %>
+      <%= f.password_field :password, autocomplete: "new-password", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    </div>
+    <div class="mb-5">
+      <%= f.label :password_confirmation, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    </div>
+    <div class="actions">
+      <%= f.submit "Sign up", class: "btn btn-primary w-44" %>
+    </div>
+  <% end %>
+  <div class="mt-5">
+    <%= render "devise/shared/links" %>
+  </div>
+</div>

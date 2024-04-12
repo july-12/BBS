@@ -1,0 +1,25 @@
+<div class="w-[400px] mx-auto">
+  <h2 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900  dark:text-white"> Login </h2>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "max-w-sm mx-auto") do |f| %>
+    <div class="mb-5">
+      <%= f.label :phone, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+      <%= f.text_field :phone, autofocus: true, autocomplete: "phone", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    </div>
+    <div class="mb-5">
+      <%= f.label :password, class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
+      <%= f.password_field :password, autocomplete: "current-password", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+    </div>
+    <% if devise_mapping.rememberable? %>
+      <div class="flex items-start mb-5">
+        <%= f.check_box :remember_me, class: "w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" %>
+        <%= f.label :remember_me, class: "ms-2 text-sm font-medium text-gray-900 dark:text-gray-300" %>
+      </div>
+    <% end %>
+    <div class="actions">
+      <%= f.submit "Log in", class: "btn btn-primary w-44" %>
+    </div>
+  <% end %>
+  <div class="mt-5">
+    <%= render "devise/shared/links" %>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 <div class="w-full">
   <header class="xl:w-4/5 xl:mx-auto h-14 flex items-center justify-between px-4 border-b border-slate-100">
     <div class="flex gap-6 items-center">
-      <%= image_tag "logo.jpg", width: 48 %>
+      <%= image_tag "logo-temp.png", width: 48 %>
       <ul class="flex gap-8 items-center">
         <li> 社区 </li>
         <li> Wiki </li>
@@ -13,12 +13,16 @@
         <input type="text" class="grow" placeholder="Search" />
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg>
       </label>
-      <div class="avatar placeholder">
-        <div class="bg-neutral text-neutral-content rounded-full w-8">
-          <span>SY</span>
+      <% if user_signed_in? %>
+        <div class="avatar placeholder">
+          <div class="bg-neutral text-neutral-content rounded-full w-8">
+            <span><%= (current_user.name || 'u').first.capitalize %></span>
+          </div>
         </div>
-      </div>
-      <%= link_to "New post", new_post_path, class: 'btn btn-primary btn-sm' %>
+      <% else %>
+        <%= link_to "Login",  user_session_path %>
+      <% end %>
+      <%# link_to "New post", new_post_path, class: 'btn btn-primary btn-sm' %>
       <%# <button class="btn btn-primary btn-sm">New Post</button> %>
     </div>
   </header>
