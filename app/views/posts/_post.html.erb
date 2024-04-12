@@ -1,12 +1,13 @@
-<div id="<%= dom_id post %>">
-  <p>
-    <strong>Title:</strong>
-    <%= post.title %>
-  </p>
-
-  <p>
-    <strong>Context:</strong>
-    <%= post.context %>
-  </p>
-
+<div class="bg-white dark:bg-gray-900 rounded-lg px-6 p-4" >
+  <div id="<%= dom_id post %>">
+    <h2 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900  dark:text-white"> <%= post.title %> </h2>
+    <p class="min-h-[400px] mb-6 text-lg font-normal text-gray-500 dark:text-gray-400"> <%= post.context %> </p>
+  </div>
+  <footer>
+    <ul class="flex gap-2 items-center">
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+    </ul>
+  </footer>
 </div>

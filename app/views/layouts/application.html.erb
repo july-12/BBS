@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="cupcake">
   <head>
     <title>ChBbs2</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
-
-  <body>
-    <%= yield %>
+  <body class="h-screen">
+    <%= render partial: "layouts/header" %>
+    <main class="xl:w-4/5 xl:mx-auto py-6">
+      <%= yield %>
+    </main>
+    <%= render partial: "layouts/footer" %>
   </body>
 </html>
