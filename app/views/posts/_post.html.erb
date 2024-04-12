@@ -1,13 +1,33 @@
-<div class="bg-white dark:bg-gray-900 rounded-lg px-6 p-4" >
-  <div id="<%= dom_id post %>">
-    <h2 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900  dark:text-white"> <%= post.title %> </h2>
-    <p class="min-h-[400px] mb-6 text-lg font-normal text-gray-500 dark:text-gray-400"> <%= post.context %> </p>
-  </div>
-  <footer>
-    <ul class="flex gap-2 items-center">
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
+<div class="flex flex-col gap-4">
+  <section id="<%= dom_id post %>" class="flex flex-col gap-3 bg-white dark:bg-gray-900 rounded-lg p-5">
+    <h2 class="text-4xl font-extrabold leading-none tracking-tight text-gray-900  dark:text-white"> <%= post.title %> </h2>
+    <div class="flex gap-2 text-slate-500 text-sm">
+      <span>created_at </span>
+      <span><%=  time_ago_in_words(post.created_at) %> </span>
+      <span>by </span>
+      <%= link_to post.author.name, post.author %>
+    </div>
+    <main class="min-h-[400px] my-4 text-lg font-normal text-gray-500 dark:text-gray-400"> <%= post.context %> </main>
+    <footer>
+      <ul class="flex gap-2 items-center">
+        <li>like</li>
+        <li>share</li>
+        <li>fovarite</li>
+      </ul>
+    </footer>
+  </section>
+  <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3">
+    <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+      <div> comments(<%= @post.comments.size %>)</div>
+      <%= render @post.comments %>
     </ul>
-  </footer>
+  </section>
+  <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3">
+    <%= form_with model: [@post, @post.comments.build], class: "flex flex-col gap-4" do |f| %>
+      <%= f.text_area :content, cols: 20, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" %>
+      <div class="text-right">
+        <%= f.submit "submit", class: "btn btn-sm w-40 " %>
+      </div>
+    <% end %>
+  </section>
 </div>
