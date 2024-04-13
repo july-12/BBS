@@ -1,0 +1,12 @@
+<li id="<%= dom_id user %>" class="flex gap-2">
+  <div><%= user.name %></div>
+  <div><%= user.phone %></div>
+  <div><%= user.email %></div>
+  <% if user != current_user %>
+    <% if current_user.followings.exists? user.id %>
+      <%= button_to "unfollow",  user_unfollow_path(user.id), class: "btn btn-sm btn-outline btn-error" %>
+    <% else %>
+      <%= button_to "follow",  user_follow_path(user.id), class: "btn btn-sm" %>
+    <% end %>
+  <% end %>
+</li>

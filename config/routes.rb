@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
   root "home#index"
   devise_for :users
-  resources :users, only: [:show]
+  resources :users, only: [:index, :show] do
+    collection do
+      get "followers"
+      get "followings"
+    end
+    post "follow"
+    post "unfollow"
+  end
   resources :posts do
     resources :comments, only: [:create]
   end
