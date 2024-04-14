@@ -3,12 +3,15 @@ class CommentsController < ApplicationController
 
   def create
     @post = Post.find(params[:post_id])
-    comment = @post.comments.create(comment_params)
-    comment.commenter = current_user
-    if comment.save
-      redirect_to post_url(@post), notice: "comment was successfully created."
-    else
-      redirect_to post_url(@post), status: :unprocessable_entity
+    @comment = @post.comments.create(comment_params)
+    @comment.commenter = current_user
+    respond_to do |format|
+      if @comment.save
+        format.turbo_stream
+        format.html { redirect_to post_url(@post), notice: "comment was successfully created." }
+      else
+        format.html { redirect_to post_url(@post), status: :unprocessable_entity }
+      end
     end
   end
 
