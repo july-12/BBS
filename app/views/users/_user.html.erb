@@ -3,11 +3,5 @@
   <div><%= user.phone %></div>
   <div><%= user.email %></div>
   <div><%= user.created_at.to_fs(:short) %></div>
-  <% if user != current_user %>
-    <% if current_user.followings.exists? user.id %>
-      <%= button_to "unfollow",  user_unfollow_path(user.id), class: "btn btn-sm btn-outline btn-error" %>
-    <% else %>
-      <%= button_to "follow",  user_follow_path(user.id), class: "btn btn-sm" %>
-    <% end %>
-  <% end %>
+  <%= render 'follow_status', user_id: user.id %>
 </li>
