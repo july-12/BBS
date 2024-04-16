@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-4">
   <section id="<%= dom_id post %>" class="">
-    <h2 class="text-4xl font-extrabold leading-none tracking-tight text-gray-900  "> <%= post.title %> </h2>
+    <h2 class="text-4xl font-extrabold leading-none tracking-tight text-gray-900  "> <%= link_to post.title, post %> </h2>
     <div class="flex gap-2 text-slate-500 text-sm">
       <span>created_at </span>
       <span><%=  time_ago_in_words(post.created_at) %> </span>
