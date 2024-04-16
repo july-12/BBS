@@ -8,6 +8,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, authentication_keys: [:login]
 
   has_many :posts, inverse_of: :author
+  has_many :questions, inverse_of: :author
   has_many :comments, inverse_of: :commenter
 
   has_many :follower_relations, class_name: "Follow", foreign_key: :following_id, inverse_of: :following

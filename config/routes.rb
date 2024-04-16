@@ -10,10 +10,11 @@ Rails.application.routes.draw do
     post "unfollow"
   end
   resources :posts do
-    resources :comments, only: [:create]
+    # resources :comments, only: [:create]
+    post "comments", as: :comments, to: "comments#create_of_post"
   end
   resources :questions do
-    resources :comments, only: [:create]
+    post "comments", as: :comments, to: "comments#create_of_question"
   end
   get "up" => "rails/health#show", as: :rails_health_check
 end

@@ -1,10 +1,33 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @question %>
-
-<div>
-  <%= link_to "Edit this question", edit_question_path(@question) %> |
-  <%= link_to "Back to questions", questions_path %>
-
-  <%= button_to "Destroy this question", @question, method: :delete %>
+<div class="flex flex-col gap-4">
+  <section id="<%= dom_id @question %>" class="flex flex-col gap-3 bg-white dark:bg-gray-900 rounded-lg p-5">
+    <h2 class="text-4xl font-extrabold leading-none tracking-tight text-gray-900  dark:text-white"> <%= @question.title %> </h2>
+    <div class="flex gap-2 text-slate-500 text-sm">
+      <span>created_at </span>
+      <span><%=  time_ago_in_words(@question.created_at) %> </span>
+      <% if @question.author.present? %>
+        <span>by </span>
+        <%= link_to @question.author.name, @question.author %>
+        <% if @question.author == current_user %>
+          <%= link_to  "edit", edit_question_path(@question) %>
+        <% end %>
+      <% end %>
+    </div>
+    <main class="min-h-[400px] my-4 text-lg font-normal text-gray-500 dark:text-gray-400"> <%= @question.content %> </main>
+    <footer>
+      <ul class="flex gap-2 items-center">
+        <li>like</li>
+        <li>share</li>
+        <li>fovarite</li>
+      </ul>
+    </footer>
+  </section>
+  <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3">
+    <div> comments(<%= @question.comments.size %>)</div>
+    <ul id="comments" class=" divide-y divide-gray-200 dark:divide-gray-700">
+      <%= render @question.comments %>
+    </ul>
+  </section>
+  <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3">
+    <%= render partial: "comments/new", locals: { model: [@question, @question.comments.build]} %>
+  </section>
 </div>
