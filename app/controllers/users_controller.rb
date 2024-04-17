@@ -22,7 +22,7 @@ class UsersController < ApplicationController
     relation = current_user.following_relations.find_by(following_id: params[:user_id])
     relation.destroy!
     respond_to do |format|
-      format.turbo_stream
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("follow_#{params[:user_id]}", partial: "users/follow_status", locals: { user_id: params[:user_id] }) }
       format.html { redirect_to users_url }
     end
   end
