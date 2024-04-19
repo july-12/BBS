@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, only: [:create, :update, :destroy]
+  before_action :authenticate_user!, only: [:create, :update, :destroy, :favorite, :unfavorite]
   before_action :set_post, only: %i[ show edit update destroy ]
 
   # GET /posts or /posts.json
@@ -54,6 +54,32 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
+  def favorite
+    @post_id = params[:id]
+    favorited = current_user.favorites.find_by(post_id: @post_id)
+    unless favorited
+      current_user.favorites.create(post_id: @post_id)
+    end
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to posts_url, notice: "favorite post!" }
+      format.json { head :no_content }
+    end
+  end
+
+  def unfavorite
+    favorited = current_user.favorites.find_by(post_id: params[:id])
+    if favorited
+      favorited.destroy
+    end
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("favorite", partial: "posts/favorite", locals: { post_id: params[:id] }) }
+      format.html { redirect_to posts_url, notice: "unfavorite post!" }
       format.json { head :no_content }
     end
   end

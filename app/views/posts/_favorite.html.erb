@@ -1,0 +1,7 @@
+ <span id="favorite">
+  <% if current_user.favorite_post?(post_id) %>
+    <%= button_to "unfavorite", unfavorite_post_path(post_id) %>
+  <% else %>
+    <%= button_to "favorite", favorite_post_path(post_id) %>
+  <% end %>
+</span>

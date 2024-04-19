@@ -8,6 +8,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, authentication_keys: [:login]
 
   has_many :posts, inverse_of: :author
+  has_many :favorites
   has_many :questions, inverse_of: :author
   has_many :comments, inverse_of: :commenter
 
@@ -31,6 +32,10 @@ class User < ApplicationRecord
         where(phone: conditions[:phone]).first
       end
     end
+  end
+
+  def favorite_post?(post_id)
+    favorites.where(post_id: post_id).exists?
   end
 
   # def email_required?

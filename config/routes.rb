@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   resources :posts do
     # resources :comments, only: [:create]
     post "comments", as: :comments, to: "comments#create_of_post"
+    member do
+      post "favorite"
+      post "unfavorite"
+    end
   end
   resources :questions do
     post "comments", as: :comments, to: "comments#create_of_question"

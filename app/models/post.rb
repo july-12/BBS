@@ -4,4 +4,7 @@ class Post < ApplicationRecord
 
   validates :title, presence: true
   validates :author_id, presence: true
+
+  has_many :favorites
+  # has_many :like
 end
