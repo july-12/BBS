@@ -1,4 +1,30 @@
-
-<% @posts.each do |post| %>
-    <%= render  "posts/post", post: post %>
-<% end %>
+<main class="flex gap-10 w-full" >
+  <section style="height: fit-content" class="shadow-sm rounded-lg flex-1 flex flex-col bg-white dark:bg-gray-900">
+    <% @posts.each do |post| %>
+      <%= render  "posts/post", post: post %>
+    <% end %>
+  </section>
+  <div class="w-1/4 max-w-[400px] flex flex-col gap-8">
+    <div class="card bg-white shadow-sm">
+      <div class="card-body">
+        <div class="card-action">
+          <button class="w-full text-grey-400 btn btn-primary btn-sm">
+            <%= link_to  "发布话题", user_signed_in? ? new_post_path : user_session_path %>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="card bg-white shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title text-lg">小贴士</h2>
+        <p>一切都需要从先上传一个头像开始！</p>
+      </div>
+    </div>
+    <div class="card bg-white shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title text-lg">社区规则</h2>
+        <p>和谐、有爱</p>
+      </div>
+    </div>
+  </div>
+</main>
