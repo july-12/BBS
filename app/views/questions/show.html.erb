@@ -1,3 +1,4 @@
+<%= turbo_stream_from @question %>
 <div class="flex flex-col gap-4">
   <section id="<%= dom_id @question %>" class="flex flex-col gap-3 bg-white dark:bg-gray-900 rounded-lg p-5">
     <h2 class="text-4xl font-extrabold leading-none tracking-tight text-gray-900  dark:text-white"> <%= @question.title %> </h2>

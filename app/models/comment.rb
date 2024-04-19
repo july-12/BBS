@@ -5,4 +5,6 @@ class Comment < ApplicationRecord
 
   validates :author_id, presence: true
   validates :content, presence: true, length: { minimum: 2 }
+
+  after_create_commit -> { broadcast_append_to commentable }
 end

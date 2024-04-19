@@ -19,15 +19,16 @@ class CommentsController < ApplicationController
     @question = Question.find(params[:question_id])
     @comment = @question.comments.create(comment_params)
     @comment.commenter = current_user
-    respond_to do |format|
-      if @comment.save
-        # format.turbo_stream { turbo_stream.append "comments", @comment }
-        format.turbo_stream
-        format.html { redirect_to question_url(@question), notice: "comment was successfully created." }
-      else
-        format.html { redirect_to question_url(@question), status: :unprocessable_entity }
-      end
-    end
+    @comment.save
+    head :no_content
+    # respond_to do |format|
+    #   if @comment.save
+    #     format.turbo_stream
+    #     format.html { redirect_to question_url(@question), notice: "comment was successfully created." }
+    #   else
+    #     format.html { redirect_to question_url(@question), status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   def update
