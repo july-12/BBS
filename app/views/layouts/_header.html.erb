@@ -19,13 +19,19 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg>
       </label>
       <% if user_signed_in? %>
-        <div class="dropdown dropdown-end">
+        <div class="dropdown dropdown-end inline-flex">
           <div tabindex="0" role="button" class="avatar placeholder">
             <div class="bg-neutral text-neutral-content rounded-full w-8">
-              <span><%= (current_user.name || 'u').first.capitalize %></span>
+              <% if current_user.avatar.present? %>
+                <div class="avatar">
+                  <%= image_tag current_user.avatar, alt: "Avatar" %>
+                </div>
+              <% else %>
+                <span><%= (current_user.name || 'u').first.capitalize %></span>
+              <% end %>
             </div>
           </div>
-          <ul tabindex="0" class="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+          <ul tabindex="0" class="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-[42px]">
             <li><%= link_to 'Profile', profile_path %></li>
             <li><%= link_to 'Logout', destroy_user_session_path, data: { turbo_method: :delete }  %></li>
           </ul>
