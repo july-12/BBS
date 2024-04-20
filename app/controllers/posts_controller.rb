@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!, only: [:create, :update, :destroy, :favorite, :unfavorite]
-  before_action :set_post, only: %i[ show edit update destroy ]
+  before_action :set_post, only: %i[ show edit update destroy like unlike favorite unfavorite subscribe unsubscribe ]
 
   # GET /posts or /posts.json
   def index
@@ -78,8 +78,59 @@ class PostsController < ApplicationController
       favorited.destroy
     end
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.replace("favorite", partial: "posts/favorite", locals: { post_id: params[:id] }) }
+      format.turbo_stream { render :favorite }
       format.html { redirect_to posts_url, notice: "unfavorite post!" }
+      format.json { head :no_content }
+    end
+  end
+
+  def like
+    liked = current_user.likes.find_by(post_id: @post.id)
+    unless liked
+      current_user.likes.create(post_id: @post.id)
+    end
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to posts_url, notice: "like post!" }
+      format.json { head :no_content }
+    end
+  end
+
+  def unlike
+    liked = current_user.likes.find_by(post_id: params[:id])
+    if liked
+      liked.destroy
+    end
+    respond_to do |format|
+      format.turbo_stream { render :like }
+      format.html { redirect_to posts_url, notice: "unlike post!" }
+      format.json { head :no_content }
+    end
+  end
+
+  def subscribe
+    @post_id = params[:id]
+    subscribed = current_user.subscribes.find_by(post_id: @post_id)
+    unless subscribed
+      current_user.subscribes.create(post_id: @post_id)
+    end
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to posts_url, notice: "subscribe post!" }
+      format.json { head :no_content }
+    end
+  end
+
+  def unsubscribe
+    subscribed = current_user.subscribes.find_by(post_id: params[:id])
+    if subscribed
+      subscribed.destroy
+    end
+    respond_to do |format|
+      format.turbo_stream { render :subscribe }
+      format.html { redirect_to posts_url, notice: "unsubscribe post!" }
       format.json { head :no_content }
     end
   end

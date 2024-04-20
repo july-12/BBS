@@ -1,7 +1,9 @@
- <span id="favorite">
-  <% if current_user.favorite_post?(post_id) %>
-    <%= button_to "unfavorite", unfavorite_post_path(post_id) %>
-  <% else %>
-    <%= button_to "favorite", favorite_post_path(post_id) %>
+  <% if current_user&.favorite_post?(post_id) %>
+  <%= button_to unfavorite_post_path(post_id), form_class: "inline-flex" do %>
+    <%= render "components/icon", symbol: "icon-favorites-fill" %>
   <% end %>
-</span>
+<% else %>
+  <%= button_to favorite_post_path(post_id), form_class: "inline-flex" do %>
+    <%= render "components/icon", symbol: "icon-favorite" %>
+  <% end %>
+<% end %>

@@ -1,4 +1,2 @@
-class Favorite < ApplicationRecord
-  belongs_to :post
-  belongs_to :user
+class Favorite < PostAction
 end

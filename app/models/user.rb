@@ -8,7 +8,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, authentication_keys: [:login]
 
   has_many :posts, inverse_of: :author
-  has_many :favorites
+  has_many :favorites, class_name: "Favorite"
+  has_many :likes, class_name: "Like"
+  has_many :subscribes, class_name: "Subscribe"
   has_many :questions, inverse_of: :author
   has_many :comments, inverse_of: :commenter
 
@@ -36,6 +38,14 @@ class User < ApplicationRecord
 
   def favorite_post?(post_id)
     favorites.where(post_id: post_id).exists?
+  end
+
+  def like_post?(post_id)
+    likes.where(post_id: post_id).exists?
+  end
+
+  def subscribe_post?(post_id)
+    subscribes.where(post_id: post_id).exists?
   end
 
   # def email_required?

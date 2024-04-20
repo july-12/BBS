@@ -1,0 +1,4 @@
+<%= render 'favorite', post_id: post.id %>
+<% unless post.favorites.empty? %>
+  <span><%= post.favorites.count %></span>
+<% end %>

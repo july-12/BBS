@@ -1,0 +1,4 @@
+<%= render 'like', post: post %>
+<% unless post.likes.empty? %>
+  <span><%= post.likes.count %></span>
+<% end %>

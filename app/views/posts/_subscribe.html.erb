@@ -1,0 +1,9 @@
+  <% if current_user&.subscribe_post?(post_id) %>
+  <%= button_to unsubscribe_post_path(post_id), form_class: "inline-flex" do %>
+    <%= render "components/icon", symbol: "icon-Subscribe-Fill" %>
+  <% end %>
+<% else %>
+  <%= button_to subscribe_post_path(post_id), form_class: "inline-flex" do %>
+    <%= render "components/icon", symbol: "icon-Subscribe-Outline" %>
+  <% end %>
+<% end %>

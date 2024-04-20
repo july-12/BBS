@@ -6,17 +6,20 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "//at.alicdn.com/t/c/font_4516243_in612wh8hya.js" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
   <body class="h-screen flex flex-col">
     <%= render partial: "layouts/header" %>
-    <main class="flex-1 xl:w-4/5 xl:mx-auto sm:px-16 px-4 py-6 mt-14  bg-base-200">
-      <% if notice.present? %>
-        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-          <span class="font-medium"><%= notice %></span>
-        </div>
-      <% end %>
-      <%= yield %>
+    <main class="flex-1 bg-base-200" >
+      <main class="xl:w-4/5 xl:mx-auto sm:px-16 px-4 py-6 mt-14">
+        <% if notice.present? %>
+          <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            <span class="font-medium"><%= notice %></span>
+          </div>
+        <% end %>
+        <%= yield %>
+      </main>
     </main>
     <%= render partial: "layouts/footer" %>
   </body>

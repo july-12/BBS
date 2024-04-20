@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.icon {
+   width: 1.35em; height: 1.35em;
+   vertical-align: -0.15em;
+   fill: currentColor;
+   overflow: hidden;
+}

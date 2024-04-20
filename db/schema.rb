@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_19_110512) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_20_023642) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,15 +27,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_19_110512) do
     t.index ["post_id"], name: "index_comments_on_post_id"
   end
 
-  create_table "favorites", force: :cascade do |t|
-    t.bigint "post_id", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_favorites_on_post_id"
-    t.index ["user_id"], name: "index_favorites_on_user_id"
-  end
-
   create_table "follows", force: :cascade do |t|
     t.bigint "follower_id", null: false
     t.bigint "following_id", null: false
@@ -43,6 +34,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_19_110512) do
     t.datetime "updated_at", null: false
     t.index ["follower_id"], name: "index_follows_on_follower_id"
     t.index ["following_id"], name: "index_follows_on_following_id"
+  end
+
+  create_table "post_actions", force: :cascade do |t|
+    t.bigint "post_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "type"
+    t.index ["post_id"], name: "index_post_actions_on_post_id"
+    t.index ["user_id"], name: "index_post_actions_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -83,10 +84,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_19_110512) do
 
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users", column: "author_id"
-  add_foreign_key "favorites", "posts"
-  add_foreign_key "favorites", "users"
   add_foreign_key "follows", "users", column: "follower_id"
   add_foreign_key "follows", "users", column: "following_id"
+  add_foreign_key "post_actions", "posts"
+  add_foreign_key "post_actions", "users"
   add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "questions", "users", column: "author_id"
 end

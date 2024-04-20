@@ -1,0 +1,2 @@
+<%= turbo_stream.update("subscribe", partial: "posts/subscribe", locals: { post_id: @post.id }) %>
+<%= turbo_stream.update("subscribe-count", partial: "posts/subscribe_count", locals: { post: @post }) %>

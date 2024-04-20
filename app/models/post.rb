@@ -5,6 +5,7 @@ class Post < ApplicationRecord
   validates :title, presence: true
   validates :author_id, presence: true
 
-  has_many :favorites
-  # has_many :like
+  has_many :favorites, class_name: "Favorite"
+  has_many :likes, class_name: "Like"
+  has_many :subscribes, class_name: "Subscribe"
 end

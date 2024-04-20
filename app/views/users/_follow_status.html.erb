@@ -1,9 +1,9 @@
   <% if current_user && user_id != current_user.id %>
   <%= turbo_frame_tag "follow_#{user_id}" do %>
     <% if current_user.followings.exists? user_id %>
-      <%= button_to "unfollow",  user_unfollow_path(user_id), class: "btn btn-sm btn-outline btn-error" %>
+      <%= button_to "unfollow",  user_unfollow_path(user_id), class: "btn btn-sm btn-outline btn-error w-full" %>
     <% else %>
-      <%= button_to "follow",  user_follow_path(user_id), class: "btn btn-sm" %>
+      <%= button_to "follow",  user_follow_path(user_id), class: "btn btn-sm btn-primary w-full" %>
     <% end %>
   <% end %>
 <% end %>
