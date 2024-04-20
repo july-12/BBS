@@ -19,6 +19,8 @@ class User < ApplicationRecord
   has_many :followers, through: :follower_relations
   has_many :followings, through: :following_relations
 
+  has_one_attached :avatar
+
   def login
     @login || self.phone || self.name
   end
@@ -48,11 +50,11 @@ class User < ApplicationRecord
     subscribes.where(post_id: post_id).exists?
   end
 
-  # def email_required?
-  #   false
-  # end
+  def email_required?
+    false
+  end
 
-  # def email_changed?
-  #   false
-  # end
+  def email_changed?
+    false
+  end
 end

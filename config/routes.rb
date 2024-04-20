@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   root "home#index"
   devise_for :users
-  resources :users, only: [:index, :show] do
+  get "profile", to: "users#profile"
+  resources :users, except: [:create] do
     collection do
       get "followers"
       get "followings"
