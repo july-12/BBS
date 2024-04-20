@@ -8,3 +8,8 @@
    fill: currentColor;
    overflow: hidden;
 }
+turbo-frame {
+    display: block;
+    border: 1px solid teal;
+
+}

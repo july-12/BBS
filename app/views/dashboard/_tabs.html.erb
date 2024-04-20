@@ -1,0 +1,14 @@
+<ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
+  <% [
+    { key: "", text: "发帖", url: dashboard_path },
+    { key: "comment", text: "评论", url: dashboard_comment_path },
+    { key: "favorite", text: "收藏", url: dashboard_favorite_path }
+  ].each do |item| %>
+    <li class="me-1">
+      <%= link_to item[:text], item[:url], class: get_class_name(item[:key] == key), "aria-current": "page" %>
+    </li>
+  <% end %>
+</ul>
+<div>
+  <%= yield %>
+</div>

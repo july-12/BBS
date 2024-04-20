@@ -1,3 +1,5 @@
-<div id="profile">
-  <%= render 'form', model: current_user %>
-</div>
+<%= render "layout", key: 'profile' do %>
+  <div id="profile">
+    <%= render 'form', model: current_user %>
+  </div>
+<% end %>

@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
   root "home#index"
   devise_for :users
+
   get "profile", to: "users#profile"
+
+  get "dashboard", as: :dashboard, to: "dashboard#index"
+  get "dashboard/comment"
+  get "dashboard/favorite"
+
   resources :users, except: [:create] do
     collection do
       get "followers"

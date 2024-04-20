@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:profile, :follow, :unfollow]
+  before_action :authenticate_user!, only: [:profile, :dashboard, :follow, :unfollow]
   before_action :set_follow_target, only: [:follow, :unfollow]
 
   def index
@@ -11,6 +11,10 @@ class UsersController < ApplicationController
   end
 
   def profile
+  end
+
+  def dashboard
+    puts request.query_parameters[:first]
   end
 
   def update
