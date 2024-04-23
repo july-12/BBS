@@ -9,6 +9,7 @@ class User < ApplicationRecord
 
   has_many :posts, inverse_of: :author
   has_many :favorites, class_name: "Favorite"
+  has_many :favorite_posts, through: :favorites, source: :post
   has_many :likes, class_name: "Like"
   has_many :subscribes, class_name: "Subscribe"
   has_many :questions, inverse_of: :author
@@ -39,15 +40,15 @@ class User < ApplicationRecord
   end
 
   def favorite_post?(post_id)
-    favorites.where(post_id: post_id).exists?
+    favorites.exists?(post_id: post_id)
   end
 
   def like_post?(post_id)
-    likes.where(post_id: post_id).exists?
+    likes.exists?(post_id: post_id)
   end
 
   def subscribe_post?(post_id)
-    subscribes.where(post_id: post_id).exists?
+    subscribes.exists?(post_id: post_id)
   end
 
   def email_required?

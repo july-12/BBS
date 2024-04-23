@@ -1,7 +1,9 @@
 <%= render "users/layout", key: 'dashboard' do %>
   <%= turbo_frame_tag "dashboard" do %>
     <%= render  "tabs", key: 'comment' do %>
-      comment
+      <% @comments.each do |comment| %>
+        <%= render "comment", comment: comment %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

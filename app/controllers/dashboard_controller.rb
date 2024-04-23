@@ -6,8 +6,10 @@ class DashboardController < ApplicationController
   end
 
   def comment
+    @comments = current_user.comments.order(updated_at: :desc)
   end
 
   def favorite
+    @posts = current_user.favorite_posts.order("post_actions.created_at DESC")
   end
 end

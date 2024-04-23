@@ -1,0 +1,10 @@
+<div id="<%= dom_id comment %>" class="flex flex-col gap-1 border-b border-slate-200 py-2">
+  <div class="text-sm flex gap-2 items-center">
+    <span class="text-lg font-semibold ">
+      <%= comment.commentable&.title %>
+    </span>
+    <span> at </span>
+    <span> <%= comment.updated_at.strftime("%d %b") %> </span>
+  </div>
+  <div class="text-gray-400"> <%= comment.content %> </div>
+</div>
