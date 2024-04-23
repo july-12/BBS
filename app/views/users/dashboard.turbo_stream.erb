@@ -1,7 +1,5 @@
-<%= turbo_stream.replace "dashboard" do %>
-  <%= turbo_frame_tag "dashboard" do %>
-    <%= render "tabs", key: @key || 'dashboard', user: @user do %>
-      <%= render @posts %>
-    <% end %>
+<%= turbo_stream.update "dashboard" do %>
+  <%= render "tabs", key: @key || 'dashboard', user: @user do %>
+    <%= render @posts %>
   <% end %>
 <% end %>

@@ -1,11 +1,9 @@
-<%= turbo_stream.replace "dashboard" do %>
-  <%= turbo_frame_tag "dashboard" do %>
-    <%= render "tabs", key: 'comment', user: @user do %>
-      <% @comments.each do |comment| %>
-        <div class="p-4">
-          <%= render "comment", comment: comment %>
-        </div>
-      <% end %>
+<%= turbo_stream.update "dashboard" do %>
+  <%= render "tabs", key: 'comment', user: @user do %>
+    <% @comments.each do |comment| %>
+      <div class="p-4">
+        <%= render "comment", comment: comment %>
+      </div>
     <% end %>
   <% end %>
 <% end %>

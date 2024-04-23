@@ -8,11 +8,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
-  end
-
-  def show
-    @posts = current_user.posts.order(updated_at: :desc)
+    @posts = @user.posts.order(updated_at: :desc)
   end
 
   def setting
@@ -28,16 +24,16 @@ class UsersController < ApplicationController
 
   def favorites
     @posts = current_user.favorite_posts.order("post_actions.created_at DESC")
-    @key = "favorites"
+    @key = "favorite"
     render :dashboard
   end
 
   def followers
-    @users = User.find(params[:user_id]).followers
+    @users = @user.followers
   end
 
   def followings
-    @users = User.find(params[:user_id]).followings
+    @users = @user.followings
     @key = "followings"
     render :followers
   end
@@ -67,7 +63,8 @@ class UsersController < ApplicationController
     relation = current_user.following_relations.find_by(following_id: params[:user_id])
     relation.destroy!
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.replace("follow_#{params[:user_id]}", partial: "users/follow_status", locals: { user_id: params[:user_id] }) }
+      # format.turbo_stream { render turbo_stream: turbo_stream.replace("follow_#{params[:user_id]}", partial: "users/follow_status", locals: { user_id: params[:user_id] }) }
+      format.turbo_stream { render :follow }
       format.html { redirect_to users_url }
     end
   end

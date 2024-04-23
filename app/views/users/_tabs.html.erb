@@ -1,10 +1,10 @@
 <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:border-gray-700 dark:text-gray-400">
   <% [
-    { key: "", text: "发帖", url: user_dashboard_path(user) },
+    { key: "dashboard", text: "发帖", url: user_dashboard_path(user) },
     { key: "comment", text: "评论", url: user_comments_path(user) },
     { key: "favorite", text: "收藏", url: user_favorites_path(user) },
-    { key: "followers", text: "已关注", url: user_followers_path(user) },
-    { key: "followings", text: "关注我", url: user_followings_path(user) }
+    { key: "followers", text: "关注我", url: user_followers_path(user) },
+    { key: "followings", text: "已关注", url: user_followings_path(user) }
   ].each do |item| %>
     <li class="me-1">
       <%= link_to item[:text], item[:url], data: { turbo_stream: true }, class: profile_tab_class_name(item[:key] == key), "aria-current": "page" %>

@@ -1,2 +1,7 @@
 <%# turbo_stream.replace "user_#{@user.id}", @user %>
 <%= turbo_stream.replace "follow_#{@user.id}", partial: "users/follow_status", locals: { user_id: @user.id} %>
+<%= turbo_stream.replace "followings-#{current_user.id}" do %>
+  <span id=<%= "followings-#{current_user.id}" %> >
+    <%= render "follow_count", count: current_user.followings.count, id: "followings-#{current_user.id}" %>
+  </span>
+<% end %>
