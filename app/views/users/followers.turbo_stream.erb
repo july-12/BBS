@@ -1,0 +1,14 @@
+<%= turbo_stream.replace "dashboard" do %>
+  <%= turbo_frame_tag "dashboard" do %>
+    <%= render "tabs", key: @key || 'followers', user: @user do %>
+      <div class="flex gap-2 flex-wrap p-4">
+        <% @users.each do |user| %>
+          <div class="inline-flex gap-1 flex-col">
+            <%= render "components/avatar", user: user %>
+            <span class="text-md font-bold"><%= user.name %></span>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

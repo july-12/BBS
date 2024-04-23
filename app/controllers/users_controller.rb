@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:profile, :dashboard, :follow, :unfollow]
+  before_action :authenticate_user!, only: [:setting, :follow, :unfollow]
   before_action :set_follow_target, only: [:follow, :unfollow]
+  before_action :set_user, only: [:show, :dashboard, :favorites, :comments, :followers, :followings]
 
   def index
     @users = User.all.order(created_at: "ASC")
@@ -10,11 +11,35 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  def profile
+  def show
+    @posts = current_user.posts.order(updated_at: :desc)
+  end
+
+  def setting
   end
 
   def dashboard
-    puts request.query_parameters[:first]
+    @posts = current_user.posts.order(updated_at: :desc)
+  end
+
+  def comments
+    @comments = current_user.comments.order(updated_at: :desc)
+  end
+
+  def favorites
+    @posts = current_user.favorite_posts.order("post_actions.created_at DESC")
+    @key = "favorites"
+    render :dashboard
+  end
+
+  def followers
+    @users = User.find(params[:user_id]).followers
+  end
+
+  def followings
+    @users = User.find(params[:user_id]).followings
+    @key = "followings"
+    render :followers
   end
 
   def update
@@ -50,6 +75,10 @@ class UsersController < ApplicationController
   private
 
   def set_follow_target
+    @user = User.find(params[:user_id])
+  end
+
+  def set_user
     @user = User.find(params[:user_id])
   end
 

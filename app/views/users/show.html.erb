@@ -1,2 +1,40 @@
-<h1><%= @user.name %>  </h1>
-<p><%= @user.phone %>  </p>
+<div class="flex gap-4" >
+  <div class="w-1/4 h-fit min-w-[300px] bg-white rounded-lg shadow-sm p-4">
+    <div class="flex gap-3" >
+      <%= render "components/avatar", { user: current_user, size: 16 } %>
+      <div class="flex-1 flex flex-col gap-1">
+        <span class="text-lg font-semibold"><%= current_user.name %></span>
+        <span class="text-gray-400"> <%= current_user.created_at.strftime("%Y-%m-%d") %></span>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="mt-4">
+      <span class="text-gray-400 flex gap-2 items-center">
+        <%= render "components/icon", symbol: "icon-email" %>
+        <%= current_user.email %>
+      </span>
+    </div>
+    <div class="divider"></div>
+    <div class="font-bold flex items-center justify-evenly">
+      <%= link_to user_followers_path(current_user), data: { turbo_stream: true } do %>
+        <span class="inline-flex flex-col gap-1 items-center">
+          <%= render "components/icon", symbol: "icon-follower1" %>
+          <span><%= current_user.followers.count %></span>
+        </span>
+      <% end %>
+      <%= link_to user_followings_path(current_user), data: { turbo_stream: true } do %>
+        <span class="inline-flex flex-col gap-1 items-center">
+          <%= render "components/icon", symbol: "icon-follower" %>
+          <span><%= current_user.followings.count %></span>
+        </span>
+      <% end %>
+    </div>
+  </div>
+  <div class="flex-1 overflow-hidden">
+    <%= turbo_frame_tag "dashboard" do %>
+      <%= render "tabs", key: '', user: current_user do %>
+        <%= render @posts %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

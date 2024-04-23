@@ -1,7 +1,0 @@
-<%= render "users/layout", key: 'dashboard' do %>
-  <%= turbo_frame_tag "dashboard" do %>
-    <%= render  "tabs", key: 'favorite' do %>
-      <%= render @posts %>
-    <% end %>
-  <% end %>
-<% end %>
