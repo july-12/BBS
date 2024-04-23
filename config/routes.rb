@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   get "setting", to: "users#setting"
+  get "reset_password", to: "users#reset_password"
 
   resources :users, except: [:create] do
     get "profile", action: "show"

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:setting, :follow, :unfollow]
+  before_action :authenticate_user!, only: [:setting, :reset_password, :follow, :unfollow]
   before_action :set_follow_target, only: [:follow, :unfollow]
   before_action :set_user, only: [:show, :dashboard, :favorites, :comments, :followers, :followings]
 
@@ -12,6 +12,9 @@ class UsersController < ApplicationController
   end
 
   def setting
+  end
+
+  def reset_password
   end
 
   def dashboard
