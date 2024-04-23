@@ -21,15 +21,7 @@
       <% if user_signed_in? %>
         <div class="dropdown dropdown-end inline-flex">
           <div tabindex="0" role="button" class="avatar placeholder">
-            <div class="bg-neutral text-neutral-content rounded-full w-8">
-              <% if current_user.avatar.present? %>
-                <div class="avatar">
-                  <%= image_tag current_user.avatar, alt: "Avatar" %>
-                </div>
-              <% else %>
-                <span><%= (current_user.name || 'u').first.capitalize %></span>
-              <% end %>
-            </div>
+            <%= render 'components/avatar', user: current_user %>
           </div>
           <ul tabindex="0" class="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-[42px]">
             <li><%= link_to 'Profile', profile_path %></li>

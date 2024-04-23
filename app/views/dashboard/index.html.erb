@@ -1,5 +1,7 @@
-  <%= link_to  "favorite", dashboard_favorite_path %>
-<%= link_to  "comment", dashboard_comment_path %>
-<div>
-  other content in dashboard
-</div>
+<%= render "users/layout", key: 'dashboard' do %>
+  <%= turbo_frame_tag "dashboard" do %>
+    <%= render  "tabs", key: '' do %>
+      <%= render @posts %>
+    <% end %>
+  <% end %>
+<% end %>
