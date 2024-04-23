@@ -31,11 +31,13 @@ class User < ApplicationRecord
     if (login = conditions.delete(:login))
       where(conditions).where(["lower(name) = :value OR lower(phone) = :value", { :value => login.downcase }]).first
     else
-      if conditions[:phone].nil?
-        where(conditions).first
-      else
-        where(phone: conditions[:phone]).first
-      end
+      # https://github.com/heartcombo/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address#allow-users-to-recover-their-password-or-confirm-their-account-using-their-username
+      where(conditions).first
+      # if conditions[:email].nil?
+      #   where(conditions).first
+      # else
+      #   where(phone: conditions[:phone]).first
+      # end
     end
   end
 
