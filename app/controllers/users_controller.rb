@@ -61,8 +61,9 @@ class UsersController < ApplicationController
     password_params = update_password_params
     if @user.valid_password?(password_params[:old_password])
       @user.update(password: password_params[:new_password])
+      sign_in(@user, bypass: true)
     else
-      @user.errors << { full_message: "valid password" }
+      @user.errors.add(:password, message: "old password invalid")
     end
   end
 
