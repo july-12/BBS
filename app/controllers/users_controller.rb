@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:setting, :reset_password, :follow, :unfollow]
+  before_action :authenticate_user!, only: [:setting, :edit_password, :update_password, :setting, :follow, :unfollow]
   before_action :set_follow_target, only: [:follow, :unfollow]
-  before_action :set_user, only: [:show, :dashboard, :favorites, :comments, :followers, :followings]
+  before_action :set_user, only: [:show, :dashboard, :favorites, :comments, :followers, :followings, :update_password]
 
   def index
     @users = User.all.order(created_at: "ASC")
@@ -14,7 +14,10 @@ class UsersController < ApplicationController
   def setting
   end
 
-  def reset_password
+  def edit_password
+  end
+
+  def advance
   end
 
   def dashboard
@@ -54,6 +57,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def update_password
+    password_params = update_password_params
+    if @user.valid_password?(password_params[:old_password])
+      @user.update(password: password_params[:new_password])
+    else
+      @user.errors << { full_message: "valid password" }
+    end
+  end
+
   def follow
     relation = current_user.following_relations.create!(following_id: params[:user_id])
     respond_to do |format|
@@ -84,5 +96,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :phone, :email, :avatar)
+  end
+
+  def update_password_params
+    params.require(:user).permit(:old_password, :new_password, :new_password_confirmation)
   end
 end

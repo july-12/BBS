@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   get "setting", to: "users#setting"
-  get "reset_password", to: "users#reset_password"
+  get "edit_password", to: "users#edit_password"
+  get "advance", to: "users#advance"
 
   resources :users, except: [:create] do
     get "profile", action: "show"
@@ -13,6 +14,7 @@ Rails.application.routes.draw do
     get "followers"
     get "followings"
 
+    patch "update_password"
     post "follow"
     post "unfollow"
   end

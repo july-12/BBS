@@ -1,0 +1,10 @@
+<% if errors.any? %>
+  <div style="color: red">
+    <h2><%= pluralize(errors.count, "error") %> prohibited this model from being saved:</h2>
+    <ul>
+      <% errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

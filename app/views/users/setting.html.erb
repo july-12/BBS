@@ -1,5 +1,5 @@
-<%= render "layout", key: 'profile' do %>
-  <%= turbo_frame_tag "setting" do %>
+<%= turbo_frame_tag "setting" do %>
+  <%= render "layout", key: 'basic' do %>
     <%= render 'form', model: current_user %>
   <% end %>
 <% end %>
