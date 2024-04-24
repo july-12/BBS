@@ -4,8 +4,8 @@
 
 import { application } from "./application"
 
-import DashboardController from "./dashboard_controller"
-application.register("dashboard", DashboardController)
+import EditPasswordController from "./edit_password_controller"
+application.register("edit-password", EditPasswordController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)

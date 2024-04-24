@@ -60,10 +60,21 @@ class UsersController < ApplicationController
   def update_password
     password_params = update_password_params
     if @user.valid_password?(password_params[:old_password])
-      @user.update(password: password_params[:new_password])
-      sign_in(@user, bypass: true)
+      if password_params[:old_password] != password_params[:new_password]
+        if password_params[:new_password] == password_params[:new_password_confirmation]
+          @user.update(password: password_params[:new_password])
+          sign_in(@user, bypass: true)
+        else
+          @user.errors.add(:password, message: "password is not same with confirmation")
+          render template: "users/update_password", status: :unprocessable_entity
+        end
+      else
+        @user.errors.add(:password, message: "new password is same with previous")
+        render template: "users/update_password", status: :unprocessable_entity
+      end
     else
       @user.errors.add(:password, message: "old password invalid")
+      render template: "users/update_password", status: :unprocessable_entity
     end
   end
 
