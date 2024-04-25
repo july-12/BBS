@@ -12,3 +12,6 @@ application.register("hello", HelloController)
 
 import ResetFormController from "./reset_form_controller"
 application.register("reset-form", ResetFormController)
+
+import RichEditorController from "./rich_editor_controller"
+application.register("rich-editor", RichEditorController)
