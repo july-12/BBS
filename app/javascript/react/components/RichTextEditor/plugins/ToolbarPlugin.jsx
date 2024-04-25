@@ -9,7 +9,10 @@ import {
   SELECTION_CHANGE_COMMAND,
   FORMAT_TEXT_COMMAND,
   FORMAT_ELEMENT_COMMAND,
+  INDENT_CONTENT_COMMAND,
+  OUTDENT_CONTENT_COMMAND,
   $getSelection,
+  $isElementNode,
   $isRangeSelection,
   $createParagraphNode,
   $getNodeByKey,
@@ -22,7 +25,7 @@ import {
   $patchStyleText,
   $isAtNodeEnd,
 } from "@lexical/selection";
-import { $getNearestNodeOfType, mergeRegister } from "@lexical/utils";
+import { $getNearestNodeOfType, $findMatchingParent, mergeRegister } from "@lexical/utils";
 import {
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
@@ -420,6 +423,111 @@ function BlockOptionsDropdownList({
   );
 }
 
+const ELEMENT_FORMAT_OPTIONS  = {
+  center: {
+    icon: 'center-align',
+    iconRTL: 'center-align',
+    name: 'Center Align',
+  },
+  end: {
+    icon: 'right-align',
+    iconRTL: 'left-align',
+    name: 'End Align',
+  },
+  justify: {
+    icon: 'justify-align',
+    iconRTL: 'justify-align',
+    name: 'Justify Align',
+  },
+  left: {
+    icon: 'left-align',
+    iconRTL: 'left-align',
+    name: 'Left Align',
+  },
+  right: {
+    icon: 'right-align',
+    iconRTL: 'right-align',
+    name: 'Right Align',
+  },
+  start: {
+    icon: 'left-align',
+    iconRTL: 'right-align',
+    name: 'Start Align',
+  },
+};
+
+function ElementFormatDropdown({ editor, value, isRTL, disabled = false }) {
+  const formatOption = ELEMENT_FORMAT_OPTIONS[value || "left"];
+
+  return (
+    <DropDown
+      disabled={disabled}
+      buttonLabel={formatOption.name}
+      buttonIconClassName={`icon ${
+        isRTL ? formatOption.iconRTL : formatOption.icon
+      }`}
+      buttonClassName="toolbar-item spaced alignment"
+      buttonAriaLabel="Formatting options for text alignment"
+    >
+      <DropDownItem
+        onClick={() => {
+          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left");
+        }}
+        className="item"
+      >
+        <i className="icon left-align" />
+        <span className="text">Left Align</span>
+      </DropDownItem>
+      <DropDownItem
+        onClick={() => {
+          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center");
+        }}
+        className="item"
+      >
+        <i className="icon center-align" />
+        <span className="text">Center Align</span>
+      </DropDownItem>
+      <DropDownItem
+        onClick={() => {
+          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right");
+        }}
+        className="item"
+      >
+        <i className="icon right-align" />
+        <span className="text">Right Align</span>
+      </DropDownItem>
+      <DropDownItem
+        onClick={() => {
+          editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "justify");
+        }}
+        className="item"
+      >
+        <i className="icon justify-align" />
+        <span className="text">Justify Align</span>
+      </DropDownItem>
+      <Divider />
+      <DropDownItem
+        onClick={() => {
+          editor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined);
+        }}
+        className="item"
+      >
+        <i className={"icon " + (isRTL ? "indent" : "outdent")} />
+        <span className="text">Outdent</span>
+      </DropDownItem>
+      <DropDownItem
+        onClick={() => {
+          editor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined);
+        }}
+        className="item"
+      >
+        <i className={"icon " + (isRTL ? "outdent" : "indent")} />
+        <span className="text">Indent</span>
+      </DropDownItem>
+    </DropDown>
+  );
+}
+
 function dropDownActiveClass(active) {
   if (active) {
     return "active dropdown-item-active";
@@ -478,6 +586,7 @@ function getCodeLanguageOptions() {
 
   return options;
 }
+
 export default function ToolbarPlugin() {
   const isEditable = true;
   const [editor] = useLexicalComposerContext();
@@ -489,8 +598,9 @@ export default function ToolbarPlugin() {
   const [showBlockOptionsDropDown, setShowBlockOptionsDropDown] =
     useState(false);
   const [codeLanguage, setCodeLanguage] = useState("");
-  const [fontColor, setFontColor] = useState('#000');
-  const [bgColor, setBgColor] = useState('#fff');
+  const [fontColor, setFontColor] = useState("#000");
+  const [bgColor, setBgColor] = useState("#fff");
+  const [elementFormat, setElementFormat] = useState('left');
   const [isRTL, setIsRTL] = useState(false);
   const [isLink, setIsLink] = useState(false);
   const [isBold, setIsBold] = useState(false);
@@ -543,14 +653,31 @@ export default function ToolbarPlugin() {
       }
 
       setFontColor(
-        $getSelectionStyleValueForProperty(selection, 'color', '#000'),
+        $getSelectionStyleValueForProperty(selection, "color", "#000")
       );
       setBgColor(
         $getSelectionStyleValueForProperty(
           selection,
-          'background-color',
-          '#fff',
-        ),
+          "background-color",
+          "#fff"
+        )
+      );
+
+      let matchingParent;
+      if ($isLinkNode(parent)) {
+        // If node is a link, we need to fetch the parent paragraph node to set format
+        matchingParent = $findMatchingParent(
+          node,
+          (parentNode) => $isElementNode(parentNode) && !parentNode.isInline(),
+        );
+      }
+      // If matchingParent is a valid node, pass it's format type
+      setElementFormat(
+        $isElementNode(matchingParent)
+          ? matchingParent.getFormatType()
+          : $isElementNode(node)
+          ? node.getFormatType()
+          : parent?.getFormatType() || 'left',
       );
     }
   }, [editor]);
@@ -613,24 +740,24 @@ export default function ToolbarPlugin() {
             $patchStyleText(selection, styles);
           }
         },
-        skipHistoryStack ? {tag: 'historic'} : {},
+        skipHistoryStack ? { tag: "historic" } : {}
       );
     },
-    [editor],
+    [editor]
   );
 
   const onFontColorSelect = useCallback(
     (value, skipHistoryStack) => {
-      applyStyleText({color: value}, skipHistoryStack);
+      applyStyleText({ color: value }, skipHistoryStack);
     },
-    [applyStyleText],
+    [applyStyleText]
   );
 
   const onBgColorSelect = useCallback(
     (value, skipHistoryStack) => {
-      applyStyleText({'background-color': value}, skipHistoryStack);
+      applyStyleText({ "background-color": value }, skipHistoryStack);
     },
-    [applyStyleText],
+    [applyStyleText]
   );
 
   const insertLink = useCallback(() => {
@@ -673,7 +800,7 @@ export default function ToolbarPlugin() {
             }
             aria-label="Formatting Options"
           >
-            <span className={"icon block-type " + blockType} />
+            <span className={"format block-type " + blockType} />
             <span className="text">{blockTypeToBlockName[blockType]}</span>
             <i className="chevron-down" />
           </button>
@@ -804,7 +931,13 @@ export default function ToolbarPlugin() {
             title="bg color"
           />
           <Divider />
-          <button
+          <ElementFormatDropdown
+            disabled={!isEditable}
+            value={elementFormat}
+            editor={editor}
+            isRTL={isRTL}
+          />
+          {/* <button
             onClick={() => {
               editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left");
             }}
@@ -839,7 +972,7 @@ export default function ToolbarPlugin() {
             aria-label="Justify Align"
           >
             <i className="format justify-align" />
-          </button>{" "}
+          </button>{" "} */}
         </>
       )}
     </div>

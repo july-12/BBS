@@ -741,6 +741,13 @@
    background-image: url(images/icons/justify.svg);
  }
 
+ i.indent {
+   background-image: url(images/icons/indent.svg);
+ }
+ i.outdent {
+   background-image: url(images/icons/outdent.svg);
+ }
+
  i.font-color {
    background-image: url(images/icons/font-color.svg);
  }
