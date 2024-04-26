@@ -1,11 +1,11 @@
 @import "./input.css";
 @import "./colorPicker.css";
 
-.ltr {
+.editor-ltr {
   text-align: left;
 }
 
-.rtl {
+.editor-rtl {
   text-align: right;
 }
 
@@ -180,7 +180,6 @@
 
 .editor-paragraph {
   margin: 0;
-  margin-bottom: 8px;
   position: relative;
 }
 
@@ -221,17 +220,18 @@
 .editor-list-ol {
   padding: 0;
   margin: 0;
-  margin-left: 16px;
+  list-style-type: decimal;
 }
 
 .editor-list-ul {
   padding: 0;
   margin: 0;
-  margin-left: 16px;
+  list-style-position: outside;
+  list-style-type: disc;
 }
 
 .editor-listitem {
-  margin: 8px 32px 8px 32px;
+  margin: 0 32px
 }
 
 .editor-nested-listitem {
