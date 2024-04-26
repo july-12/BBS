@@ -317,7 +317,7 @@ pre::-webkit-scrollbar-thumb {
 .toolbar {
   display: flex;
   overflow: auto;
-  margin-bottom: 1px;
+  border-bottom: 1px solid #f2f2f2;
   background: #fff;
   padding: 4px;
   border-top-left-radius: 10px;

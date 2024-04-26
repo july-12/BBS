@@ -6,7 +6,7 @@
         <span><%= time_ago_in_words(@post.created_at) %> </span>
         <% if @post.author&.present? %>
           <span>by </span>
-          <%= link_to @post.author.name, @post.author %>
+          <%= link_to @post.author.name, url_profile(@post.author) %>
           <% if @post.author == current_user %>
             <%= link_to  "edit", edit_post_path(@post) %>
           <% end %>
@@ -26,9 +26,7 @@
     <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3 shadow-sm">
       <div class="mb-4 text-lg font-semibold"> comments(<%= @post.comments.size %>)</div>
       <ul id="comments" class=" divide-y divide-gray-200 dark:divide-gray-700">
-        <li>
-          <%= render @post.comments %>
-        </li>
+        <%= render @post.comments %>
       </ul>
     </section>
     <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3 shadow-sm">

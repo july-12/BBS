@@ -1,10 +1,15 @@
+  
+<div data-controller="rich-editor">
   <%= form_with model: model, class: "flex flex-col gap-4", data: {
     controller: 'reset-form',
     action: 'turbo:submit-end->reset-form#clear'
     # action: 'submit->reset-form#clear'
   } do |f| %>
-  <%= f.text_area :content, cols: 20, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" %>
-  <div class="text-right">
-    <%= f.submit "submit", class: "btn btn-sm w-40 " %>
-  </div>
-<% end %>
+    <%# f.text_area :content, cols: 20, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" %>
+    <%= f.hidden_field :content, data: { "rich-editor-target": "content" } %>
+    <div data-rich-editor-target="editor"></div>
+    <div class="text-right">
+      <%= f.submit "submit", class: "btn btn-sm w-40 " %>
+    </div>
+  <% end %>
+</div>
