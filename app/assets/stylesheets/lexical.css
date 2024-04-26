@@ -22,6 +22,8 @@
  .editor-inner {
    background: #fff;
    position: relative;
+   border-bottom-left-radius: 10px;
+   border-bottom-right-radius: 10px;
  }
  
  .editor-input {
@@ -307,6 +309,7 @@
  
  .toolbar {
    display: flex;
+   overflow: auto;
    margin-bottom: 1px;
    background: #fff;
    padding: 4px;

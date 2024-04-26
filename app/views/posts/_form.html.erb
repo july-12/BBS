@@ -1,22 +1,12 @@
-<%= form_with(model: post, data: { controller: 'rich-editor', action: "turbo:submit-end->rich-editor#submit"}) do |form| %>
-  <% if post.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
-      <ul>
-        <% post.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= form_with(model: post, data: { controller: 'rich-editor' }) do |form| %>
+  <%= render "components/errors", errors: post.errors %>
   <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
     <div class="sm:col-span-2">
       <%= form.label :title, style: "display: block", class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
       <%= form.text_field :title, class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500' %>
     </div>
-    <%= form.hidden_field :context %>
+    <%= form.hidden_field :context, data: { "rich-editor-target": "content" } %>
     <div class="sm:col-span-2" data-rich-editor-target="editor">
-      react
     </div>
     <div>
       <%# form.submit %>

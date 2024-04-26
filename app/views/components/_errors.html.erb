@@ -1,0 +1,10 @@
+<% if errors.any? %>
+  <div class="text-red-800">
+    <span class="font-medium">Ensure that these <%= pluralize(errors.count, "error") %> are met:</span>
+    <ul class="mt-1.5 list-disc list-inside">
+      <% errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

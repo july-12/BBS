@@ -12,7 +12,7 @@
           <% end %>
         <% end %>
       </div>
-      <main class="min-h-[200px] text-lg font-normal text-gray-500 dark:text-gray-400"> <%= @post.context %> </main>
+      <main class="min-h-[200px] text-lg font-normal text-gray-500 dark:text-gray-400"> <%= render "components/rich_text_preview", content: @post.context %> </main>
       <% if @post.author != current_user %>
         <footer>
           <ul class="flex gap-2 items-center">

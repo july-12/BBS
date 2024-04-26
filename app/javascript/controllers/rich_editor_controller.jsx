@@ -6,11 +6,13 @@ import RichTextEditor from "../react/components/RichTextEditor";
 
 // Connects to data-controller="rich-editor"
 export default class extends Controller {
-  static targets = ["editor"]
+  static targets = ["editor", "content"]
   connect() {
-    console.log('connect rich editor2')
     const root = createRoot(this.editorTarget)
-    root.render(<RichTextEditor />)
+    root.render(<RichTextEditor onChange={this.textChange.bind(this)}/>)
+  }
+  textChange(value) {
+    this.contentTarget.value = value
   }
   submit(e) {
     console.log('geso re')

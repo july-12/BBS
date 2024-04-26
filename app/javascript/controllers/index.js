@@ -12,3 +12,6 @@ application.register("reset-form", ResetFormController)
 
 import RichEditorController from "./rich_editor_controller"
 application.register("rich-editor", RichEditorController)
+
+import RichTextPreviewController from "./rich_text_preview_controller"
+application.register("rich-text-preview", RichTextPreviewController)

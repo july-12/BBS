@@ -28,48 +28,65 @@ function Placeholder() {
 }
 
 const loadContent = async () => {
-    // 'empty' editor
-    const value = '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"fdsafdsa","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}';
-  
-    return value;
-  }
+  // 'empty' editor
+  const value =
+    '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"fdsafdsa","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}';
 
-const intialEditorState = await loadContent()
-console.log(intialEditorState)
-const editorConfig = {
-  // The editor theme
-  theme: ExampleTheme,
-  editorState: intialEditorState,
-  // Handling of errors during update
-  onError(error) {
-    throw error;
-  },
-  // Any custom nodes go here
-  namespace: "MyEditor",
-  nodes: [
-    HeadingNode,
-    ListNode,
-    ListItemNode,
-    QuoteNode,
-    CodeNode,
-    CodeHighlightNode,
-    TableNode,
-    TableCellNode,
-    TableRowNode,
-    AutoLinkNode,
-    LinkNode,
-  ],
+  return value;
 };
 
-export default function RichTextEditor() {
-const editorStateRef = useRef()
+const intialEditorState = await loadContent();
+
+export default function RichTextEditor(props) {
+  const editorStateRef = useRef();
+  const editorConfig = useRef({
+    // The editor theme
+    theme: ExampleTheme,
+    editorState: props.defaultContent,
+    // Handling of errors during update
+    onError(error) {
+      throw error;
+    },
+    // Any custom nodes go here
+    namespace: "MyEditor",
+    editable: props.readOnly,
+    nodes: [
+      HeadingNode,
+      ListNode,
+      ListItemNode,
+      QuoteNode,
+      CodeNode,
+      CodeHighlightNode,
+      TableNode,
+      TableCellNode,
+      TableRowNode,
+      AutoLinkNode,
+      LinkNode,
+    ],
+  });
   const handleClick = (e) => {
-    console.log(JSON.stringify(editorStateRef.current))
+    // console.log(JSON.stringify(editorStateRef.current));
     e.preventDefault();
   };
+
+  if (props.readOnly) {
+    return (
+      <LexicalComposer initialConfig={editorConfig.current}>
+        <div className="editor-container">
+          <div className="editor-inner editor-inner-preview">
+            <RichTextPlugin
+              contentEditable={<ContentEditable className="editor-input" />}
+              placeholder={null}
+            />
+          </div>
+        </div>
+      </LexicalComposer>
+    );
+  }
+
   return (
     <div onClick={handleClick}>
-      <LexicalComposer initialConfig={editorConfig}>
+      <LexicalComposer initialConfig={editorConfig.current}>
         <div className="editor-container">
           <ToolbarPlugin />
           <div className="editor-inner">
@@ -78,9 +95,13 @@ const editorStateRef = useRef()
               placeholder={<Placeholder />}
               ErrorBoundary={LexicalErrorBoundary}
             />
-            <OnChangePlugin onChange={editorState => editorStateRef.current = editorState} />
+            <OnChangePlugin
+              onChange={(editorState) => {
+                editorStateRef.current = editorState;
+                props.onChange && props.onChange(JSON.stringify(editorState));
+              }}
+            />
             <HistoryPlugin />
-            <TreeViewPlugin />
             <AutoFocusPlugin />
             <CodeHighlightPlugin />
             <ListPlugin />
