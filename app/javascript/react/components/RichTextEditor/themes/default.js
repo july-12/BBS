@@ -1,6 +1,6 @@
 const defaultTheme = {
-    ltr: "ltr",
-    rtl: "rtl",
+    ltr: "editor-ltr",
+    rtl: "editor-rtl",
     placeholder: "editor-placeholder",
     paragraph: "editor-paragraph",
     quote: "editor-quote",

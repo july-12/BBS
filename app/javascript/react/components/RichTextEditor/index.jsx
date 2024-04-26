@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import ExampleTheme from "./themes/default";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
+import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
@@ -26,14 +27,25 @@ function Placeholder() {
   return <div className="editor-placeholder">Enter some rich text...</div>;
 }
 
+const loadContent = async () => {
+    // 'empty' editor
+    const value = '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"fdsafdsa","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}';
+  
+    return value;
+  }
+
+const intialEditorState = await loadContent()
+console.log(intialEditorState)
 const editorConfig = {
   // The editor theme
   theme: ExampleTheme,
+  editorState: intialEditorState,
   // Handling of errors during update
   onError(error) {
     throw error;
   },
   // Any custom nodes go here
+  namespace: "MyEditor",
   nodes: [
     HeadingNode,
     ListNode,
@@ -50,8 +62,9 @@ const editorConfig = {
 };
 
 export default function RichTextEditor() {
+const editorStateRef = useRef()
   const handleClick = (e) => {
-    console.log(e);
+    console.log(JSON.stringify(editorStateRef.current))
     e.preventDefault();
   };
   return (
@@ -65,6 +78,7 @@ export default function RichTextEditor() {
               placeholder={<Placeholder />}
               ErrorBoundary={LexicalErrorBoundary}
             />
+            <OnChangePlugin onChange={editorState => editorStateRef.current = editorState} />
             <HistoryPlugin />
             <TreeViewPlugin />
             <AutoFocusPlugin />

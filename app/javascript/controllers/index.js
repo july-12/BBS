@@ -7,9 +7,6 @@ import { application } from "./application"
 import EditPasswordController from "./edit_password_controller"
 application.register("edit-password", EditPasswordController)
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
-
 import ResetFormController from "./reset_form_controller"
 application.register("reset-form", ResetFormController)
 

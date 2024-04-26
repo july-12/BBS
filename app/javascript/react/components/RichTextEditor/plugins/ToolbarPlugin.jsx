@@ -45,8 +45,8 @@ import {
   getDefaultCodeLanguage,
   // getCodeLanguages,
 } from "@lexical/code";
-import DropDown, { DropDownItem } from "../ui/DropDown";
-import DropdownColorPicker from "../ui/DropdownColorPicker";
+import DropDown, { DropDownItem } from "../../DropDown";
+import DropdownColorPicker from "../../DropdownColorPicker";
 
 const LowPriority = 1;
 
@@ -383,7 +383,7 @@ function BlockOptionsDropdownList({
   };
 
   return (
-    <div className="dropdown" ref={dropDownRef}>
+    <div className="editor-dropdown" ref={dropDownRef}>
       <button className="item" onClick={formatParagraph}>
         <span className="icon paragraph" />
         <span className="text">Normal</span>
