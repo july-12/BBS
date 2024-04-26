@@ -9,13 +9,12 @@ export default class extends Controller {
   static targets = ["editor", "content"]
   connect() {
     const root = createRoot(this.editorTarget)
-    root.render(<RichTextEditor onChange={this.textChange.bind(this)}/>)
+    root.render(<RichTextEditor defaultContent={this.contentTarget.value || undefined} onChange={this.textChange.bind(this)}/>)
   }
   textChange(value) {
     this.contentTarget.value = value
   }
   submit(e) {
-    console.log('geso re')
     e.preventDefault()
   }
 }

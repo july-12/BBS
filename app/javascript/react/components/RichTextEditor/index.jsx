@@ -5,9 +5,9 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
+// import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
-import TreeViewPlugin from "./plugins/TreeViewPlugin";
+// import TreeViewPlugin from "./plugins/TreeViewPlugin";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
@@ -24,18 +24,8 @@ import CodeHighlightPlugin from "./plugins/CodeHighlightPlugin";
 import AutoLinkPlugin from "./plugins/AutoLinkPlugin";
 
 function Placeholder() {
-  return <div className="editor-placeholder">Enter some rich text...</div>;
+  return <div className="editor-placeholder">请输入内容...</div>;
 }
-
-const loadContent = async () => {
-  // 'empty' editor
-  const value =
-    '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"fdsafdsa","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}';
-
-  return value;
-};
-
-const intialEditorState = await loadContent();
 
 export default function RichTextEditor(props) {
   const editorStateRef = useRef();
@@ -49,7 +39,7 @@ export default function RichTextEditor(props) {
     },
     // Any custom nodes go here
     namespace: "MyEditor",
-    editable: props.readOnly,
+    editable: !props.readOnly,
     nodes: [
       HeadingNode,
       ListNode,
@@ -87,7 +77,7 @@ export default function RichTextEditor(props) {
   return (
     <div onClick={handleClick}>
       <LexicalComposer initialConfig={editorConfig.current}>
-        <div className="editor-container">
+        <div className="editor-container  editor-container-editbox">
           <ToolbarPlugin />
           <div className="editor-inner">
             <RichTextPlugin
@@ -102,7 +92,7 @@ export default function RichTextEditor(props) {
               }}
             />
             <HistoryPlugin />
-            <AutoFocusPlugin />
+            {/* <AutoFocusPlugin /> */}
             <CodeHighlightPlugin />
             <ListPlugin />
             <LinkPlugin />

@@ -1,5 +1,6 @@
 @import "./tailwind.css";
 @import "./lexical.css";
+@import "./post.css";
 
 .icon {
    width: 1.35em; height: 1.35em;
