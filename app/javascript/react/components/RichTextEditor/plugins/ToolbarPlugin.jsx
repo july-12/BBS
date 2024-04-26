@@ -23,16 +23,24 @@ import {
   $isParentElementRTL,
   $wrapNodes,
   $patchStyleText,
+  $setBlocksType,
   $isAtNodeEnd,
 } from "@lexical/selection";
-import { $getNearestNodeOfType, $findMatchingParent, mergeRegister } from "@lexical/utils";
+import {
+  $getNearestNodeOfType,
+  $findMatchingParent,
+  mergeRegister,
+} from "@lexical/utils";
 import {
   INSERT_ORDERED_LIST_COMMAND,
+  INSERT_CHECK_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
   REMOVE_LIST_COMMAND,
   $isListNode,
   ListNode,
 } from "@lexical/list";
+import * as List from '@lexical/list'
+console.log(List)
 import { createPortal } from "react-dom";
 import {
   $createHeadingNode,
@@ -47,6 +55,7 @@ import {
 } from "@lexical/code";
 import DropDown, { DropDownItem } from "../../DropDown";
 import DropdownColorPicker from "../../DropdownColorPicker";
+import { sanitizeUrl } from "../utils/url";
 
 const LowPriority = 1;
 
@@ -61,16 +70,18 @@ const supportedBlockTypes = new Set([
 ]);
 
 const blockTypeToBlockName = {
-  code: "Code Block",
-  h1: "Large Heading",
-  h2: "Small Heading",
-  h3: "Heading",
-  h4: "Heading",
-  h5: "Heading",
-  ol: "Numbered List",
-  paragraph: "Normal",
-  quote: "Quote",
-  ul: "Bulleted List",
+  ul: 'Bulleted List',
+  check: 'Check List',
+  code: 'Code Block',
+  h1: 'Heading 1',
+  h2: 'Heading 2',
+  h3: 'Heading 3',
+  h4: 'Heading 4',
+  h5: 'Heading 5',
+  h6: 'Heading 6',
+  ol: 'Numbered List',
+  paragraph: 'Normal',
+  quote: 'Quote',
 };
 
 function Divider() {
@@ -184,48 +195,93 @@ function FloatingLinkEditor({ editor }) {
     }
   }, [isEditMode]);
 
+  const handleLinkSubmission = () => {
+    if (lastSelection !== null) {
+      if (linkUrl !== "") {
+        editor.dispatchCommand(TOGGLE_LINK_COMMAND, linkUrl);
+      }
+      setEditMode(false);
+    }
+  };
+  const monitorInputInteraction = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleLinkSubmission();
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      setEditMode(false);
+    }
+  };
+
   return (
     <div ref={editorRef} className="link-editor">
       {isEditMode ? (
-        <input
-          ref={inputRef}
-          className="link-input"
-          value={linkUrl}
-          onChange={(event) => {
-            setLinkUrl(event.target.value);
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              event.preventDefault();
-              if (lastSelection !== null) {
-                if (linkUrl !== "") {
-                  editor.dispatchCommand(TOGGLE_LINK_COMMAND, linkUrl);
-                }
-                setEditMode(false);
-              }
-            } else if (event.key === "Escape") {
-              event.preventDefault();
-              setEditMode(false);
-            }
-          }}
-        />
-      ) : (
         <>
-          <div className="link-input">
-            <a href={linkUrl} target="_blank" rel="noopener noreferrer">
-              {linkUrl}
-            </a>
+          <input
+            ref={inputRef}
+            className="link-input"
+            value={linkUrl}
+            onChange={(event) => {
+              setLinkUrl(event.target.value);
+            }}
+            onKeyDown={(event) => {
+              monitorInputInteraction(event);
+            }}
+          />
+          <div>
             <div
-              className="link-edit"
+              className="link-cancel"
               role="button"
               tabIndex={0}
               onMouseDown={(event) => event.preventDefault()}
               onClick={() => {
-                setEditMode(true);
+                setEditMode(false);
               }}
+            />
+
+            <div
+              className="link-confirm"
+              role="button"
+              tabIndex={0}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={handleLinkSubmission}
             />
           </div>
         </>
+      ) : (
+        <div className="link-view">
+          <a
+            href={sanitizeUrl(linkUrl)}
+            target="_blank"
+            rel="noopener noreferrer"
+            onMouseDown={(e) => {
+              console.log("a click");
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            {linkUrl}
+          </a>
+          <div
+            className="link-edit"
+            role="button"
+            tabIndex={0}
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => {
+              setLinkUrl(linkUrl);
+              setEditMode(true);
+            }}
+          />
+          <div
+            className="link-trash"
+            role="button"
+            tabIndex={0}
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => {
+              editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+            }}
+          />
+        </div>
       )}
     </div>
   );
@@ -260,199 +316,36 @@ function getSelectedNode(selection) {
   }
 }
 
-function BlockOptionsDropdownList({
-  editor,
-  blockType,
-  toolbarRef,
-  setShowBlockOptionsDropDown,
-}) {
-  const dropDownRef = useRef(null);
-
-  useEffect(() => {
-    const toolbar = toolbarRef.current;
-    const dropDown = dropDownRef.current;
-
-    if (toolbar !== null && dropDown !== null) {
-      const { top, left } = toolbar.getBoundingClientRect();
-      dropDown.style.top = `${top + 40}px`;
-      dropDown.style.left = `${left}px`;
-    }
-  }, [dropDownRef, toolbarRef]);
-
-  useEffect(() => {
-    const dropDown = dropDownRef.current;
-    const toolbar = toolbarRef.current;
-
-    if (dropDown !== null && toolbar !== null) {
-      const handle = (event) => {
-        const target = event.target;
-
-        if (!dropDown.contains(target) && !toolbar.contains(target)) {
-          setShowBlockOptionsDropDown(false);
-        }
-      };
-      document.addEventListener("click", handle);
-
-      return () => {
-        document.removeEventListener("click", handle);
-      };
-    }
-  }, [dropDownRef, setShowBlockOptionsDropDown, toolbarRef]);
-
-  const formatParagraph = () => {
-    if (blockType !== "paragraph") {
-      editor.update(() => {
-        const selection = $getSelection();
-
-        if ($isRangeSelection(selection)) {
-          $wrapNodes(selection, () => $createParagraphNode());
-        }
-      });
-    }
-    setShowBlockOptionsDropDown(false);
-  };
-
-  const formatLargeHeading = () => {
-    if (blockType !== "h1") {
-      editor.update(() => {
-        const selection = $getSelection();
-
-        if ($isRangeSelection(selection)) {
-          $wrapNodes(selection, () => $createHeadingNode("h1"));
-        }
-      });
-    }
-    setShowBlockOptionsDropDown(false);
-  };
-
-  const formatSmallHeading = () => {
-    if (blockType !== "h2") {
-      editor.update(() => {
-        const selection = $getSelection();
-
-        if ($isRangeSelection(selection)) {
-          $wrapNodes(selection, () => $createHeadingNode("h2"));
-        }
-      });
-    }
-    setShowBlockOptionsDropDown(false);
-  };
-
-  const formatBulletList = () => {
-    if (blockType !== "ul") {
-      editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND);
-    } else {
-      editor.dispatchCommand(REMOVE_LIST_COMMAND);
-    }
-    setShowBlockOptionsDropDown(false);
-  };
-
-  const formatNumberedList = () => {
-    if (blockType !== "ol") {
-      editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND);
-    } else {
-      editor.dispatchCommand(REMOVE_LIST_COMMAND);
-    }
-    setShowBlockOptionsDropDown(false);
-  };
-
-  const formatQuote = () => {
-    if (blockType !== "quote") {
-      editor.update(() => {
-        const selection = $getSelection();
-
-        if ($isRangeSelection(selection)) {
-          $wrapNodes(selection, () => $createQuoteNode());
-        }
-      });
-    }
-    setShowBlockOptionsDropDown(false);
-  };
-
-  const formatCode = () => {
-    if (blockType !== "code") {
-      editor.update(() => {
-        const selection = $getSelection();
-
-        if ($isRangeSelection(selection)) {
-          $wrapNodes(selection, () => $createCodeNode());
-        }
-      });
-    }
-    setShowBlockOptionsDropDown(false);
-  };
-
-  return (
-    <div className="editor-dropdown" ref={dropDownRef}>
-      <button className="item" onClick={formatParagraph}>
-        <span className="icon paragraph" />
-        <span className="text">Normal</span>
-        {blockType === "paragraph" && <span className="active" />}
-      </button>
-      <button className="item" onClick={formatLargeHeading}>
-        <span className="icon large-heading" />
-        <span className="text">Large Heading</span>
-        {blockType === "h1" && <span className="active" />}
-      </button>
-      <button className="item" onClick={formatSmallHeading}>
-        <span className="icon small-heading" />
-        <span className="text">Small Heading</span>
-        {blockType === "h2" && <span className="active" />}
-      </button>
-      <button className="item" onClick={formatBulletList}>
-        <span className="icon bullet-list" />
-        <span className="text">Bullet List</span>
-        {blockType === "ul" && <span className="active" />}
-      </button>
-      <button className="item" onClick={formatNumberedList}>
-        <span className="icon numbered-list" />
-        <span className="text">Numbered List</span>
-        {blockType === "ol" && <span className="active" />}
-      </button>
-      <button className="item" onClick={formatQuote}>
-        <span className="icon quote" />
-        <span className="text">Quote</span>
-        {blockType === "quote" && <span className="active" />}
-      </button>
-      <button className="item" onClick={formatCode}>
-        <span className="icon code" />
-        <span className="text">Code Block</span>
-        {blockType === "code" && <span className="active" />}
-      </button>
-    </div>
-  );
-}
-
-const ELEMENT_FORMAT_OPTIONS  = {
+const ELEMENT_FORMAT_OPTIONS = {
   center: {
-    icon: 'center-align',
-    iconRTL: 'center-align',
-    name: 'Center Align',
+    icon: "center-align",
+    iconRTL: "center-align",
+    name: "Center Align",
   },
   end: {
-    icon: 'right-align',
-    iconRTL: 'left-align',
-    name: 'End Align',
+    icon: "right-align",
+    iconRTL: "left-align",
+    name: "End Align",
   },
   justify: {
-    icon: 'justify-align',
-    iconRTL: 'justify-align',
-    name: 'Justify Align',
+    icon: "justify-align",
+    iconRTL: "justify-align",
+    name: "Justify Align",
   },
   left: {
-    icon: 'left-align',
-    iconRTL: 'left-align',
-    name: 'Left Align',
+    icon: "left-align",
+    iconRTL: "left-align",
+    name: "Left Align",
   },
   right: {
-    icon: 'right-align',
-    iconRTL: 'right-align',
-    name: 'Right Align',
+    icon: "right-align",
+    iconRTL: "right-align",
+    name: "Right Align",
   },
   start: {
-    icon: 'left-align',
-    iconRTL: 'right-align',
-    name: 'Start Align',
+    icon: "left-align",
+    iconRTL: "right-align",
+    name: "Start Align",
   },
 };
 
@@ -587,6 +480,155 @@ function getCodeLanguageOptions() {
   return options;
 }
 
+function BlockFormatDropDown({
+  editor,
+  blockType,
+  disabled = false,
+}) {
+  const formatParagraph = () => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        $setBlocksType(selection, () => $createParagraphNode());
+      }
+    });
+  };
+
+  const formatHeading = (headingSize) => {
+    if (blockType !== headingSize) {
+      editor.update(() => {
+        const selection = $getSelection();
+        $setBlocksType(selection, () => $createHeadingNode(headingSize));
+      });
+    }
+  };
+
+  const formatBulletList = () => {
+    if (blockType !== 'bullet') {
+      editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
+    } else {
+      formatParagraph();
+    }
+  };
+
+  const formatCheckList = () => {
+    if (blockType !== 'check') {
+      editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
+    } else {
+      formatParagraph();
+    }
+  };
+
+  const formatNumberedList = () => {
+    if (blockType !== 'number') {
+      editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
+    } else {
+      formatParagraph();
+    }
+  };
+
+  const formatQuote = () => {
+    if (blockType !== 'quote') {
+      editor.update(() => {
+        const selection = $getSelection();
+        $setBlocksType(selection, () => $createQuoteNode());
+      });
+    }
+  };
+
+  const formatCode = () => {
+    if (blockType !== 'code') {
+      editor.update(() => {
+        let selection = $getSelection();
+
+        if (selection !== null) {
+          if (selection.isCollapsed()) {
+            $setBlocksType(selection, () => $createCodeNode());
+          } else {
+            const textContent = selection.getTextContent();
+            const codeNode = $createCodeNode();
+            selection.insertNodes([codeNode]);
+            selection = $getSelection();
+            if ($isRangeSelection(selection)) {
+              selection.insertRawText(textContent);
+            }
+          }
+        }
+      });
+    }
+  };
+
+  return (
+    <DropDown
+      disabled={disabled}
+      buttonClassName="toolbar-item block-controls"
+      buttonIconClassName={'icon block-type ' + blockType}
+      buttonLabel={blockTypeToBlockName[blockType]}
+      buttonAriaLabel="Formatting options for text style">
+      <DropDownItem
+        className={'item ' + dropDownActiveClass(blockType === 'paragraph')}
+        onClick={formatParagraph}>
+        <i className="icon paragraph" />
+        <span className="text">Normal</span>
+      </DropDownItem>
+      <DropDownItem
+        className={'item ' + dropDownActiveClass(blockType === 'h1')}
+        onClick={() => formatHeading('h1')}>
+        <i className="icon h1" />
+        <span className="text">Heading 1</span>
+      </DropDownItem>
+      <DropDownItem
+        className={'item ' + dropDownActiveClass(blockType === 'h2')}
+        onClick={() => formatHeading('h2')}>
+        <i className="icon h2" />
+        <span className="text">Heading 2</span>
+      </DropDownItem>
+      <DropDownItem
+        className={'item ' + dropDownActiveClass(blockType === 'h3')}
+        onClick={() => formatHeading('h3')}>
+        <i className="icon h3" />
+        <span className="text">Heading 3</span>
+      </DropDownItem>
+      <DropDownItem
+        className={'item ' + dropDownActiveClass(blockType === 'bullet')}
+        onClick={formatBulletList}>
+        <i className="icon bullet-list" />
+        <span className="text">Bullet List</span>
+      </DropDownItem>
+      <DropDownItem
+        className={'item ' + dropDownActiveClass(blockType === 'number')}
+        onClick={formatNumberedList}>
+        <i className="icon numbered-list" />
+        <span className="text">Numbered List</span>
+      </DropDownItem>
+      {/* <DropDownItem
+        className={'item ' + dropDownActiveClass(blockType === 'check')}
+        onClick={formatCheckList}>
+        <i className="icon check-list" />
+        <span className="text">Check List</span>
+      </DropDownItem> */}
+      <DropDownItem
+        className={'item ' + dropDownActiveClass(blockType === 'h3')}
+        onClick={() => formatHeading('h3')}>
+        <i className="icon h3" />
+        <span className="text">Heading 3</span>
+      </DropDownItem>
+      <DropDownItem
+        className={'item ' + dropDownActiveClass(blockType === 'quote')}
+        onClick={formatQuote}>
+        <i className="icon quote" />
+        <span className="text">Quote</span>
+      </DropDownItem>
+      <DropDownItem
+        className={'item ' + dropDownActiveClass(blockType === 'code')}
+        onClick={formatCode}>
+        <i className="icon code" />
+        <span className="text">Code Block</span>
+      </DropDownItem>
+    </DropDown>
+  );
+}
+
 export default function ToolbarPlugin() {
   const isEditable = true;
   const [editor] = useLexicalComposerContext();
@@ -595,14 +637,13 @@ export default function ToolbarPlugin() {
   const [canRedo, setCanRedo] = useState(false);
   const [blockType, setBlockType] = useState("paragraph");
   const [selectedElementKey, setSelectedElementKey] = useState(null);
-  const [showBlockOptionsDropDown, setShowBlockOptionsDropDown] =
-    useState(false);
   const [codeLanguage, setCodeLanguage] = useState("");
   const [fontColor, setFontColor] = useState("#000");
   const [bgColor, setBgColor] = useState("#fff");
-  const [elementFormat, setElementFormat] = useState('left');
+  const [elementFormat, setElementFormat] = useState("left");
   const [isRTL, setIsRTL] = useState(false);
   const [isLink, setIsLink] = useState(false);
+  const [isLinkEditMode, setIsLinkEditMode] = useState(false);
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
@@ -668,7 +709,7 @@ export default function ToolbarPlugin() {
         // If node is a link, we need to fetch the parent paragraph node to set format
         matchingParent = $findMatchingParent(
           node,
-          (parentNode) => $isElementNode(parentNode) && !parentNode.isInline(),
+          (parentNode) => $isElementNode(parentNode) && !parentNode.isInline()
         );
       }
       // If matchingParent is a valid node, pass it's format type
@@ -677,7 +718,7 @@ export default function ToolbarPlugin() {
           ? matchingParent.getFormatType()
           : $isElementNode(node)
           ? node.getFormatType()
-          : parent?.getFormatType() || 'left',
+          : parent?.getFormatType() || "left"
       );
     }
   }, [editor]);
@@ -762,11 +803,15 @@ export default function ToolbarPlugin() {
 
   const insertLink = useCallback(() => {
     if (!isLink) {
+      setIsLinkEditMode(true);
       editor.dispatchCommand(TOGGLE_LINK_COMMAND, "https://");
     } else {
+      setIsLinkEditMode(false);
       editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
     }
   }, [editor, isLink]);
+
+  console.log(blockType)
 
   return (
     <div className="toolbar" ref={toolbarRef}>
@@ -791,29 +836,13 @@ export default function ToolbarPlugin() {
         <i className="format redo" />
       </button>
       <Divider />
-      {supportedBlockTypes.has(blockType) && (
+      {blockType in blockTypeToBlockName && (
         <>
-          <button
-            className="toolbar-item block-controls"
-            onClick={() =>
-              setShowBlockOptionsDropDown(!showBlockOptionsDropDown)
-            }
-            aria-label="Formatting Options"
-          >
-            <span className={"format block-type " + blockType} />
-            <span className="text">{blockTypeToBlockName[blockType]}</span>
-            <i className="chevron-down" />
-          </button>
-          {showBlockOptionsDropDown &&
-            createPortal(
-              <BlockOptionsDropdownList
-                editor={editor}
-                blockType={blockType}
-                toolbarRef={toolbarRef}
-                setShowBlockOptionsDropDown={setShowBlockOptionsDropDown}
-              />,
-              document.body
-            )}
+          <BlockFormatDropDown
+            disabled={!isEditable}
+            blockType={blockType}
+            editor={editor}
+          />
           <Divider />
         </>
       )}
@@ -911,7 +940,19 @@ export default function ToolbarPlugin() {
             <i className="format link" />
           </button>
           {isLink &&
-            createPortal(<FloatingLinkEditor editor={editor} />, document.body)}
+            // createPortal(<FloatingLinkEditor editor={editor} />, document.body)}
+            createPortal(
+              <FloatingLinkEditor
+                editor={editor}
+                isLink={isLink}
+                anchorElem={document.body}
+                setIsLink={setIsLink}
+                isLinkEditMode={isLinkEditMode}
+                setIsLinkEditMode={setIsLinkEditMode}
+              />,
+              document.body
+            )}
+
           <DropdownColorPicker
             disabled={!isEditable}
             buttonClassName="toolbar-item color-picker"

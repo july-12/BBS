@@ -1,9 +1,11 @@
-<div class="avatar">
-  <div class="bg-neutral text-neutral-content rounded-full w-<%= local_assigns[:size] || 8 %> h-<%= local_assigns[:size] || 8 %>">
-    <% if user.present? && user.avatar.present? %>
-      <%= image_tag user.avatar, alt: "Avatar" %>
-    <% else %>
-      <span class="w-full h-full flex items-center justify-center"><%= (user&.name || 'u').first.capitalize %></span>
-    <% end %>
+<div class="w-<%= local_assigns[:size] || 8 %> h-<%= local_assigns[:size] || 8 %>">
+  <div class="avatar w-full h-full">
+    <div class="bg-neutral text-neutral-content rounded-full ">
+      <% if user.present? && user.avatar.present? %>
+        <%= image_tag user.avatar, alt: "Avatar" %>
+      <% else %>
+        <span class="w-full h-full flex items-center justify-center"><%= (user&.name || 'u').first.capitalize %></span>
+      <% end %>
+    </div>
   </div>
 </div>

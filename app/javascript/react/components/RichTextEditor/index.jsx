@@ -9,6 +9,7 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 // import TreeViewPlugin from "./plugins/TreeViewPlugin";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
+import LexicalClickableLinkPlugin from '@lexical/react/LexicalClickableLinkPlugin';
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
 import { ListItemNode, ListNode } from "@lexical/list";
@@ -16,6 +17,7 @@ import { CodeHighlightNode, CodeNode } from "@lexical/code";
 import { AutoLinkNode, LinkNode } from "@lexical/link";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
+import { CheckListPlugin } from "@lexical/react/LexicalCheckListPlugin";
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import { TRANSFORMERS } from "@lexical/markdown";
 
@@ -56,7 +58,10 @@ export default function RichTextEditor(props) {
   });
   const handleClick = (e) => {
     // console.log(JSON.stringify(editorStateRef.current));
-    e.preventDefault();
+    if(e.target.tagName === 'A') {
+    } else {
+      e.preventDefault();
+    }
   };
 
   if (props.readOnly) {
@@ -95,8 +100,10 @@ export default function RichTextEditor(props) {
             {/* <AutoFocusPlugin /> */}
             <CodeHighlightPlugin />
             <ListPlugin />
+            <CheckListPlugin />
             <LinkPlugin />
             <AutoLinkPlugin />
+            <LexicalClickableLinkPlugin disabled={!props.readOnly} />
             <ListMaxIndentLevelPlugin maxDepth={7} />
             <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
           </div>

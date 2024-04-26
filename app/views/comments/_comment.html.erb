@@ -1,5 +1,7 @@
 <li class="flex space-x-4 rtl:space-x-reverse py-4 ">
-  <%= render 'components/avatar', user: comment.commenter %>
+  <div class="w-12 h-12">
+    <%= render 'components/avatar', user: comment.commenter, size: 12 %>
+  </div>
   <div class="flex-1 min-w-0">
     <div class="flex items-center justify-between mb-4">
       <div class="comment-info flex gap-2 items-center ">
