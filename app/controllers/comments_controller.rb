@@ -20,7 +20,6 @@ class CommentsController < ApplicationController
     @comment = @question.comments.create(comment_params)
     @comment.commenter = current_user
     @comment.save
-    head :no_content
     # respond_to do |format|
     #   if @comment.save
     #     format.turbo_stream
@@ -37,6 +36,6 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:content)
+    params.require(:comment).permit(:content, :reply_id, :sub_reply_id)
   end
 end

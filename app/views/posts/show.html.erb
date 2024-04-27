@@ -23,15 +23,17 @@
         </footer>
       <% end %>
     </section>
-    <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3 shadow-sm">
-      <div class="mb-4 text-lg font-semibold"> comments(<%= @post.comments.size %>)</div>
-      <ul id="comments" class=" divide-y divide-gray-200 dark:divide-gray-700">
-        <%= render @post.comments %>
-      </ul>
-    </section>
-    <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3 shadow-sm">
-      <%= render partial: "comments/new", locals: { model: [@post, @post.comments.build]} %>
-    </section>
+    <div class="flex flex-col gap-4" data-controller="comment-new">
+      <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3 shadow-sm">
+        <div class="mb-4 text-lg font-semibold"> comments( <span id="comments-count" ><%= @post.comments.size %></span>)</div>
+        <ul id="comments" class=" divide-y divide-gray-200 dark:divide-gray-700">
+          <%= render @post.comments %>
+        </ul>
+      </section>
+      <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3 shadow-sm" data-comment-new-target="form">
+        <%= render partial: "comments/new", locals: { model: [@post, @post.comments.build]} %>
+      </section>
+    </div>
   </div>
   <div class="md:w-60 lg:w-72 shrink-0">
     <div class="fixed md:w-60 lg:w-72 flex flex-col gap-4">

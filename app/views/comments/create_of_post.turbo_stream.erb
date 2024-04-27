@@ -1,1 +1,2 @@
 <%= turbo_stream.append "comments", @comment %>
+<%= turbo_stream.update "comments-count", @post.comments.count %>

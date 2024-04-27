@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_20_094937) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_27_122231) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,9 +50,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_20_094937) do
     t.datetime "updated_at", null: false
     t.string "commentable_type"
     t.bigint "commentable_id"
+    t.bigint "reply_id"
+    t.bigint "sub_reply_id"
     t.index ["author_id"], name: "index_comments_on_author_id"
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
     t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["reply_id"], name: "index_comments_on_reply_id"
+    t.index ["sub_reply_id"], name: "index_comments_on_sub_reply_id"
   end
 
   create_table "follows", force: :cascade do |t|
@@ -112,6 +116,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_20_094937) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "comments", "comments", column: "reply_id"
+  add_foreign_key "comments", "comments", column: "sub_reply_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "follows", "users", column: "follower_id"
