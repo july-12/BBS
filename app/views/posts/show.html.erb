@@ -27,7 +27,7 @@
       <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3 shadow-sm">
         <div class="mb-4 text-lg font-semibold"> comments( <span id="comments-count" ><%= @post.comments.size %></span>)</div>
         <ul id="comments" class=" divide-y divide-gray-200 dark:divide-gray-700">
-          <%= render @post.comments %>
+          <%= render @post.comments.no_reply_comments %>
         </ul>
       </section>
       <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3 shadow-sm" data-comment-new-target="form">

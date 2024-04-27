@@ -1,2 +1,6 @@
-<%= turbo_stream.append "comments", @comment %>
+<% if @comment.reply_id.nil? %>
+  <%= turbo_stream.append "comments", @comment %>
+<% else %>
+  <%= turbo_stream.append "comments-#{@comment.reply_id}", @comment  %>
+<% end %>
 <%= turbo_stream.update "comments-count", @post.comments.count %>
