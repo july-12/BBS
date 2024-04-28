@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get "edit_password", to: "users#edit_password"
   get "advance", to: "users#advance"
 
+  post "upload", to: "photo#create"
   resources :users, except: [:create] do
     get "profile", action: "show"
     get "dashboard"

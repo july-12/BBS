@@ -32,7 +32,7 @@ function Placeholder() {
 }
 
 export default function RichTextEditor(props) {
-  const editorStateRef = useRef();
+  // const editorStateRef = useRef();
   const editorConfig = useRef({
     // The editor theme
     theme: ExampleTheme,
@@ -94,10 +94,11 @@ export default function RichTextEditor(props) {
               ErrorBoundary={LexicalErrorBoundary}
             />
             <OnChangePlugin
-              onChange={(editorState) => {
-                console.log(editorState)
-                editorStateRef.current = editorState;
-                props.onChange && props.onChange(JSON.stringify(editorState));
+              onChange={(editorState, editor) => {
+                // console.log(editorState)
+                // console.log(editor)
+                // editorStateRef.current = editorState;
+                props.onChange && props.onChange(editorState, editor);
               }}
             />
             <HistoryPlugin />

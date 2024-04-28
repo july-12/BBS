@@ -816,8 +816,6 @@ export default function ToolbarPlugin() {
     }
   }, [editor, isLink]);
 
-  console.log(editor)
-
   return (
     <div className="toolbar" ref={toolbarRef}>
       <button

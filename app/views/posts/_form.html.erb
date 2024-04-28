@@ -12,7 +12,8 @@
     </div>
     <div>
       <%# form.submit %>
-      <%= form.button :submit, class: 'btn btn-primary' %>
+      <%= form.button :submit, class: 'hidden', data: { "rich-editor-target": "submitBtn"} %>
+      <button class="btn btn-primary" data-action="click->rich-editor#submit">update</button>
     </div>
   </div>
 <% end %>
