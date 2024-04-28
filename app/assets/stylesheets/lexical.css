@@ -1,5 +1,6 @@
 @import "./input.css";
 @import "./colorPicker.css";
+@import "./ImageNode.css";
 
 .editor-ltr {
   text-align: left;
@@ -796,6 +797,9 @@ i.code {
 
 i.link {
   background-image: url(images/icons/link.svg);
+}
+i.image {
+  background-image: url(images/icons/file-image.svg);
 }
 
 i.left-align {

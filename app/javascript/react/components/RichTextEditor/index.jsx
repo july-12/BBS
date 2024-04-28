@@ -24,6 +24,8 @@ import { TRANSFORMERS } from "@lexical/markdown";
 import ListMaxIndentLevelPlugin from "./plugins/ListMaxIndentLevelPlugin";
 import CodeHighlightPlugin from "./plugins/CodeHighlightPlugin";
 import AutoLinkPlugin from "./plugins/AutoLinkPlugin";
+import ImagesPlugin from "./plugins/ImagePlugin";
+import { ImageNode }  from './plugins/ImagePlugin/nodes/ImageNode'
 
 function Placeholder() {
   return <div className="editor-placeholder">请输入内容...</div>;
@@ -53,6 +55,7 @@ export default function RichTextEditor(props) {
       TableCellNode,
       TableRowNode,
       AutoLinkNode,
+      ImageNode,
       LinkNode,
     ],
   });
@@ -92,16 +95,19 @@ export default function RichTextEditor(props) {
             />
             <OnChangePlugin
               onChange={(editorState) => {
+                console.log(editorState)
                 editorStateRef.current = editorState;
                 props.onChange && props.onChange(JSON.stringify(editorState));
               }}
             />
             <HistoryPlugin />
             {/* <AutoFocusPlugin /> */}
+            {/* <TreeViewPlugin /> */}
             <CodeHighlightPlugin />
             <ListPlugin />
             <CheckListPlugin />
             <LinkPlugin />
+            <ImagesPlugin />
             <AutoLinkPlugin />
             <LexicalClickableLinkPlugin disabled={!props.readOnly} />
             <ListMaxIndentLevelPlugin maxDepth={7} />

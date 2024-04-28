@@ -12,6 +12,7 @@ export default class extends Controller {
     root.render(<RichTextEditor defaultContent={this.contentTarget.value || undefined} onChange={this.textChange.bind(this)}/>)
   }
   textChange(value) {
+    // console.log('value', value)
     this.contentTarget.value = value
   }
   submit(e) {
