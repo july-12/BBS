@@ -11,6 +11,14 @@ class UsersController < ApplicationController
     @posts = @user.posts.order(updated_at: :desc)
   end
 
+  def slug
+    @user = User.friendly.find(params[:slug])
+    @posts = @user.posts.order(updated_at: :desc)
+    render :show
+  rescue ActiveRecord::RecordNotFound
+    render plain: "Not Found"
+  end
+
   def setting
   end
 

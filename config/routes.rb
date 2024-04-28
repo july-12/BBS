@@ -34,5 +34,7 @@ Rails.application.routes.draw do
   resources :questions do
     post "comments", as: :comments, to: "comments#create_of_question"
   end
+
+  get ":slug", to: "users#slug"
   get "up" => "rails/health#show", as: :rails_health_check
 end

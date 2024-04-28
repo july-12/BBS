@@ -72,3 +72,5 @@ end
 gem "devise", "~> 4.9"
 
 gem "carrierwave", "~> 3.0"
+
+gem "friendly_id", "~> 5.5"

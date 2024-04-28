@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  extend FriendlyId
   attr_writer :login
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -21,6 +22,8 @@ class User < ApplicationRecord
   has_many :followings, through: :following_relations
 
   has_one_attached :avatar
+
+  friendly_id :name, use: :slugged
 
   def login
     @login || self.phone || self.name
