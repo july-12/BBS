@@ -60,29 +60,10 @@ export default function RichTextEditor(props) {
     ],
   });
   const handleClick = (e) => {
-    // console.log(JSON.stringify(editorStateRef.current));
-    if (e.target.tagName === "A") {
-    } else {
+    if (e.target.tagName !== "A") {
       e.preventDefault();
     }
   };
-
-  console.log(props);
-  // if (props.readOnly) {
-  //   return (
-  //     <LexicalComposer initialConfig={editorConfig.current}>
-  //       <div className="editor-container">
-  //         <div className="editor-inner editor-inner-preview">
-  //           <RichTextPlugin
-  //             contentEditable={<ContentEditable className="editor-input" />}
-  //             placeholder={null}
-  //           />
-  //           <ImagesPlugin captionsEnabled={false} />
-  //         </div>
-  //       </div>
-  //     </LexicalComposer>
-  //   );
-  // }
 
   return (
     <div onClick={handleClick}>
