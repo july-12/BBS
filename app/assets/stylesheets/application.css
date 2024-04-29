@@ -2,7 +2,7 @@
 @import "./lexical.css";
 @import "./post.css";
 
-.icon {
+.rails-icon {
    width: 1.35em; height: 1.35em;
    vertical-align: -0.15em;
    fill: currentColor;
