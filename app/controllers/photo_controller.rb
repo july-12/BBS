@@ -1,5 +1,5 @@
 class PhotoController < ApplicationController
-  # before_action :authenticate_user!, only: [:create, :update, :destroy, :favorite, :unfavorite]
+  before_action :authenticate_user!, only: [:create]
 
   def create
     phone = Photo.new(phone_param)

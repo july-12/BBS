@@ -24,7 +24,6 @@ import {
   DROP_COMMAND,
 } from 'lexical';
 import {useEffect} from 'react';
-// import {CAN_USE_DOM} from 'shared/canUseDOM';
 
 export const CAN_USE_DOM =
   typeof window !== 'undefined' &&
@@ -195,7 +194,8 @@ function canDropImage(event) {
     target instanceof HTMLElement &&
     !target.closest('code, span.editor-image') &&
     target.parentElement &&
-    target.parentElement.closest('div.ContentEditable__root')
+    target.parentElement.closest('div.editor-input')
+    // target.parentElement.closest('div.ContentEditable__root')
   );
 }
 

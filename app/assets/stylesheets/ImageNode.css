@@ -132,8 +132,8 @@
 
 .editor-container .editor-image .image-resizer {
   display: block;
-  width: 7px;
-  height: 7px;
+  width: 10px;
+  height: 10px;
   position: absolute;
   background-color: rgb(60, 132, 244);
   border: 1px solid #fff;
@@ -158,19 +158,19 @@
 }
 
 .editor-container .editor-image .image-resizer.image-resizer-se {
-  bottom: -2px;
+  bottom: -6px;
   right: -6px;
   cursor: nwse-resize;
 }
 
 .editor-container .editor-image .image-resizer.image-resizer-s {
-  bottom: -2px;
+  bottom: -6px;
   left: 48%;
   cursor: s-resize;
 }
 
 .editor-container .editor-image .image-resizer.image-resizer-sw {
-  bottom: -2px;
+  bottom: -6px;
   left: -6px;
   cursor: sw-resize;
 }
