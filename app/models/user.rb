@@ -10,7 +10,8 @@ class User < ApplicationRecord
 
   has_many :posts, inverse_of: :author
   has_many :favorites, class_name: "Favorite"
-  has_many :favorite_posts, through: :favorites, source: :post
+  has_many :favorite_posts, through: :favorites, source: :operatable, source_type: "Post"
+  has_many :favorite_comments, through: :favorites, source: :operatable, source_type: "Comment"
   has_many :likes, class_name: "Like"
   has_many :subscribes, class_name: "Subscribe"
   has_many :questions, inverse_of: :author
@@ -45,10 +46,15 @@ class User < ApplicationRecord
   end
 
   def favorite_post?(post_id)
-    favorites.exists?(post_id: post_id)
+    #  favorites.exists?(operatable_type: "Post", operatable_id: post_id)
+    favorite_post_ids.include?(post_id)
   end
 
   def like_post?(post_id)
+    likes.exists?(post_id: post_id)
+  end
+
+  def like_comment?(comments_id)
     likes.exists?(post_id: post_id)
   end
 

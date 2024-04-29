@@ -15,6 +15,9 @@
       <button class="text-sm text-gray-400" data-comment-new-target="item" data-reply-id="<%= comment.id %>" data-action="click->comment-new#reply">
         <%= render "components/icon", symbol: "rails-icon-reply1" %>
       </button>
+      <button class="text-sm text-gray-400" data-comment-new-target="item" data-reply-id="<%= comment.id %>" data-action="click->comment-new#reply">
+        <%= render "components/icon", symbol: "rails-icon-reply1" %>
+      </button>
     </div>
     <div>
       <%= render "components/rich_text_preview", content: comment.content %>

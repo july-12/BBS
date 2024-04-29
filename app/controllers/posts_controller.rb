@@ -59,10 +59,11 @@ class PostsController < ApplicationController
   end
 
   def favorite
-    @post_id = params[:id]
-    favorited = current_user.favorites.find_by(post_id: @post_id)
+    # @post = Post.find(params[:id])
+    favorited = current_user.favorite_post_ids.include?(params[:id].to_i)
+    # favorited = @post.favorites.exists?(user_id: current_user.id)
     unless favorited
-      current_user.favorites.create(post_id: @post_id)
+      current_user.favorites.create(user_id: current_user.id, operatable_id: params[:id], operatable_type: "Post")
     end
 
     respond_to do |format|
@@ -73,9 +74,9 @@ class PostsController < ApplicationController
   end
 
   def unfavorite
-    favorited = current_user.favorites.find_by(post_id: params[:id])
-    if favorited
-      favorited.destroy
+    favorite = current_user.favorites.find_by(operatable_type: "Post", operatable_id: params[:id])
+    if favorite
+      favorite.destroy
     end
     respond_to do |format|
       format.turbo_stream { render :favorite }
