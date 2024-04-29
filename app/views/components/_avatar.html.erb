@@ -1,6 +1,6 @@
 <div class="w-<%= local_assigns[:size] || 8 %> h-<%= local_assigns[:size] || 8 %>">
   <div class="avatar w-full h-full">
-    <div class="bg-neutral text-neutral-content rounded-full ">
+    <div class="w-full h-full bg-neutral text-neutral-content rounded-full ">
       <% if user.present? && user.avatar.present? %>
         <%= image_tag user.avatar, alt: "Avatar" %>
       <% else %>
