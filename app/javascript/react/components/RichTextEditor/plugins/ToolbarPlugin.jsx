@@ -978,10 +978,12 @@ export default function ToolbarPlugin() {
           <button
             onClick={() => {
               const loadImage = (files) => {
+                const file = files[0]
                 const reader = new FileReader();
                 reader.onload = function () {
                   if (typeof reader.result === "string") {
                       editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
+                        file: file,
                         src: reader.result,
                       });
                     // const image = new Image();
@@ -996,7 +998,7 @@ export default function ToolbarPlugin() {
                   return "";
                 };
                 if (files !== null) {
-                  reader.readAsDataURL(files[0]);
+                  reader.readAsDataURL(file);
                 }
               };
               const input = document.createElement("input");

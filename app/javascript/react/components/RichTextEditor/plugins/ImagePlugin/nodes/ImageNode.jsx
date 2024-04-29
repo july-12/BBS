@@ -6,24 +6,25 @@
  *
  */
 
-import {$applyNodeReplacement, createEditor, DecoratorNode} from 'lexical';
-import * as React from 'react';
-import {Suspense} from 'react';
+import { $applyNodeReplacement, createEditor, DecoratorNode } from "lexical";
+import * as React from "react";
+import { Suspense } from "react";
 
-const ImageComponent = React.lazy(() => import('./ImageComponent'));
+const ImageComponent = React.lazy(() => import("./ImageComponent"));
 
 function convertImageElement(domNode) {
   const img = domNode;
-  if (img.src.startsWith('file:///')) {
+  if (img.src.startsWith("file:///")) {
     return null;
   }
-  const {alt: altText, src, width, height} = img;
-  const node = $createImageNode({altText, height, src, width});
-  return {node};
+  const { alt: altText, src, width, height } = img;
+  const node = $createImageNode({ altText, height, src, width });
+  return { node };
 }
 
 export class ImageNode extends DecoratorNode {
   __src;
+  __file;
   __altText;
   __width;
   __height;
@@ -34,12 +35,14 @@ export class ImageNode extends DecoratorNode {
   __captionsEnabled;
 
   static getType() {
-    return 'image';
+    return "image";
   }
 
   static clone(node) {
+    console.log("clone");
     return new ImageNode(
       node.__src,
+      node.__file,
       node.__altText,
       node.__maxWidth,
       node.__width,
@@ -47,19 +50,29 @@ export class ImageNode extends DecoratorNode {
       node.__showCaption,
       node.__caption,
       node.__captionsEnabled,
-      node.__key,
+      node.__key
     );
   }
 
   static importJSON(serializedNode) {
-    const {altText, height, width, maxWidth, caption, src, showCaption} =
-      serializedNode;
+    console.log("serializedNode", serializedNode);
+    const {
+      altText,
+      height,
+      width,
+      maxWidth,
+      caption,
+      src,
+      file,
+      showCaption,
+    } = serializedNode;
     const node = $createImageNode({
       altText,
       height,
       maxWidth,
       showCaption,
       src,
+      file,
       width,
     });
     const nestedEditor = node.__caption;
@@ -71,12 +84,12 @@ export class ImageNode extends DecoratorNode {
   }
 
   exportDOM() {
-    const element = document.createElement('img');
-    element.setAttribute('src', this.__src);
-    element.setAttribute('alt', this.__altText);
-    element.setAttribute('width', this.__width.toString());
-    element.setAttribute('height', this.__height.toString());
-    return {element};
+    const element = document.createElement("img");
+    element.setAttribute("src", this.__src);
+    element.setAttribute("alt", this.__altText);
+    element.setAttribute("width", this.__width.toString());
+    element.setAttribute("height", this.__height.toString());
+    return { element };
   }
 
   static importDOM() {
@@ -90,6 +103,7 @@ export class ImageNode extends DecoratorNode {
 
   constructor(
     src,
+    file,
     altText,
     maxWidth,
     width,
@@ -97,14 +111,15 @@ export class ImageNode extends DecoratorNode {
     showCaption,
     caption,
     captionsEnabled,
-    key,
+    key
   ) {
     super(key);
     this.__src = src;
+    this.__file = file;
     this.__altText = altText;
     this.__maxWidth = maxWidth;
-    this.__width = width || 'inherit';
-    this.__height = height || 'inherit';
+    this.__width = width || "inherit";
+    this.__height = height || "inherit";
     this.__showCaption = showCaption || false;
     this.__caption = caption || createEditor();
     this.__captionsEnabled = captionsEnabled || captionsEnabled === undefined;
@@ -113,21 +128,19 @@ export class ImageNode extends DecoratorNode {
   exportJSON() {
     return {
       altText: this.getAltText(),
-      caption: this.__caption.toJSON(),
-      height: this.__height === 'inherit' ? 0 : this.__height,
+      caption: this.__caption ? this.__caption.toJSON() : undefined,
+      height: this.__height === "inherit" ? 0 : this.__height,
       maxWidth: this.__maxWidth,
       showCaption: this.__showCaption,
       src: this.getSrc(),
-      type: 'image',
+      // file: this.getFile(),
+      type: "image",
       version: 1,
-      width: this.__width === 'inherit' ? 0 : this.__width,
+      width: this.__width === "inherit" ? 0 : this.__width,
     };
   }
 
-  setWidthAndHeight(
-    width,
-    height,
-  ) {
+  setWidthAndHeight(width, height) {
     const writable = this.getWritable();
     writable.__width = width;
     writable.__height = height;
@@ -138,10 +151,15 @@ export class ImageNode extends DecoratorNode {
     writable.__showCaption = showCaption;
   }
 
+  setSrc(src) {
+    const writable = this.getWritable();
+    writable.__src = src;
+  }
+
   // View
 
   createDOM(config) {
-    const span = document.createElement('span');
+    const span = document.createElement("span");
     const theme = config.theme;
     const className = theme.image;
     if (className !== undefined) {
@@ -156,6 +174,10 @@ export class ImageNode extends DecoratorNode {
 
   getSrc() {
     return this.__src;
+  }
+
+  getFile() {
+    return this.__file;
   }
 
   getAltText() {
@@ -188,6 +210,7 @@ export function $createImageNode({
   maxWidth = 500,
   captionsEnabled,
   src,
+  file,
   width,
   showCaption,
   caption,
@@ -196,6 +219,7 @@ export function $createImageNode({
   return $applyNodeReplacement(
     new ImageNode(
       src,
+      file,
       altText,
       maxWidth,
       width,
@@ -203,13 +227,11 @@ export function $createImageNode({
       showCaption,
       caption,
       captionsEnabled,
-      key,
-    ),
+      key
+    )
   );
 }
 
-export function $isImageNode(
-  node,
-) {
+export function $isImageNode(node) {
   return node instanceof ImageNode;
 }

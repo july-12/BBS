@@ -7,6 +7,7 @@ import RichTextEditor from "../react/components/RichTextEditor";
 export default class extends Controller {
   static targets = ["editor", "content", "submitBtn"];
   static editorState = null;
+  static editor = null;
   connect() {
     const root = createRoot(this.editorTarget);
     root.render(
@@ -17,32 +18,55 @@ export default class extends Controller {
     );
   }
   onChange(editorState, editor) {
-    console.log(editorState);
     this.editorState = editorState;
+    this.editor = editor;
     this.contentTarget.value = JSON.stringify(editorState);
   }
-  uploadImage(rawData) {
+  async uploadImage(imageNode) {
     const formData = new FormData();
-    formData.append(`phone[image]`, rawData);
-    return fetch("/upload", { method: "POST", body: formData }).then((res) =>
-      console.log(res.json())
-    );
+    const csrfToken = document.querySelector("[name='csrf-token']").content;
+    formData.append(`phone[image]`, imageNode.__file);
+    try {
+      const response = await fetch("/upload", {
+        method: "POST",
+        mode: "cors", // no-cors, *cors, same-origin
+        // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          // "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
+        },
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error("request was not ok!");
+      }
+      const data = await response.json();
+      return data.url;
+    } catch (error) {
+      console.error("Error", error);
+    }
   }
-  async submit() {
+  async submit(e) {
+    e.preventDefault();
     let imageNodes = [];
     if (this.editorState) {
       this.editorState._nodeMap.forEach(
-        (node) => node.__type === "image" && imageNodes.push(node)
+        (node) =>
+          node.__type === "image" && !!node.__file && imageNodes.push(node)
       );
       if (imageNodes.length > 0) {
-        const imageUrls = await Promise.all[
-          imageNodes.map((imageNode) => this.uploadImage(imageNode.__src))
-        ];
+        const imageUrls = await Promise.all(
+          imageNodes.map((imageNode) => this.uploadImage(imageNode))
+        );
+        this.editor.update(
+          () => {
+            imageUrls.forEach((url, index) => imageNodes[index].setSrc(url));
+          },
+          { discrete: true }
+        );
       }
     }
-    console.log("...", imageUrls);
-    console.log(imageUrls);
-
-    // this.submitBtnTarget.click();
+    this.submitBtnTarget.click();
   }
 }

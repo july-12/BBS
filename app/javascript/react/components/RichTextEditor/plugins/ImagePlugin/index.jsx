@@ -58,7 +58,7 @@ export default function ImagesPlugin({
       editor.registerCommand(
         INSERT_IMAGE_COMMAND,
         (payload) => {
-          const imageNode = $createImageNode(payload);
+          const imageNode = $createImageNode({...payload, captionsEnabled });
           $insertNodes([imageNode]);
           if ($isRootOrShadowRoot(imageNode.getParentOrThrow())) {
             $wrapNodeInElement(imageNode, $createParagraphNode).selectEnd();

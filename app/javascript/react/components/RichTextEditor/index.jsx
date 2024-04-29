@@ -9,7 +9,7 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 // import TreeViewPlugin from "./plugins/TreeViewPlugin";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
-import LexicalClickableLinkPlugin from '@lexical/react/LexicalClickableLinkPlugin';
+import LexicalClickableLinkPlugin from "@lexical/react/LexicalClickableLinkPlugin";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
 import { ListItemNode, ListNode } from "@lexical/list";
@@ -25,7 +25,7 @@ import ListMaxIndentLevelPlugin from "./plugins/ListMaxIndentLevelPlugin";
 import CodeHighlightPlugin from "./plugins/CodeHighlightPlugin";
 import AutoLinkPlugin from "./plugins/AutoLinkPlugin";
 import ImagesPlugin from "./plugins/ImagePlugin";
-import { ImageNode }  from './plugins/ImagePlugin/nodes/ImageNode'
+import { ImageNode } from "./plugins/ImagePlugin/nodes/ImageNode";
 
 function Placeholder() {
   return <div className="editor-placeholder">请输入内容...</div>;
@@ -61,33 +61,41 @@ export default function RichTextEditor(props) {
   });
   const handleClick = (e) => {
     // console.log(JSON.stringify(editorStateRef.current));
-    if(e.target.tagName === 'A') {
+    if (e.target.tagName === "A") {
     } else {
       e.preventDefault();
     }
   };
 
-  if (props.readOnly) {
-    return (
-      <LexicalComposer initialConfig={editorConfig.current}>
-        <div className="editor-container">
-          <div className="editor-inner editor-inner-preview">
-            <RichTextPlugin
-              contentEditable={<ContentEditable className="editor-input" />}
-              placeholder={null}
-            />
-          </div>
-        </div>
-      </LexicalComposer>
-    );
-  }
+  console.log(props);
+  // if (props.readOnly) {
+  //   return (
+  //     <LexicalComposer initialConfig={editorConfig.current}>
+  //       <div className="editor-container">
+  //         <div className="editor-inner editor-inner-preview">
+  //           <RichTextPlugin
+  //             contentEditable={<ContentEditable className="editor-input" />}
+  //             placeholder={null}
+  //           />
+  //           <ImagesPlugin captionsEnabled={false} />
+  //         </div>
+  //       </div>
+  //     </LexicalComposer>
+  //   );
+  // }
 
   return (
     <div onClick={handleClick}>
       <LexicalComposer initialConfig={editorConfig.current}>
-        <div className="editor-container  editor-container-editbox">
-          <ToolbarPlugin />
-          <div className="editor-inner">
+        <div className="editor-container">
+          {!props.readOnly && <ToolbarPlugin />}
+          <div
+            className={`editor-inner  ${
+              props.readOnly
+                ? "editor-inner-preview"
+                : "editor-container-editbox"
+            }`}
+          >
             <RichTextPlugin
               contentEditable={<ContentEditable className="editor-input" />}
               placeholder={<Placeholder />}
@@ -108,7 +116,7 @@ export default function RichTextEditor(props) {
             <ListPlugin />
             <CheckListPlugin />
             <LinkPlugin />
-            <ImagesPlugin />
+            <ImagesPlugin captionsEnabled={false} />
             <AutoLinkPlugin />
             <LexicalClickableLinkPlugin disabled={!props.readOnly} />
             <ListMaxIndentLevelPlugin maxDepth={7} />
