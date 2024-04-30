@@ -9,3 +9,7 @@
    overflow: hidden;
 }
 
+.dot {
+   font-size: 30px;
+   transform: translate(0, -3px) scale(1.3);
+}
