@@ -15,7 +15,7 @@ class User < ApplicationRecord
 
   has_many :likes, class_name: "Like"
   has_many :like_posts, through: :likes, source: :operatable, source_type: "Post"
-  has_many :like_comments, through: :like, source: :operatable, source_type: "Comment"
+  has_many :like_comments, through: :likes, source: :operatable, source_type: "Comment"
 
   has_many :subscribes, class_name: "Subscribe"
   has_many :subscribe_posts, through: :subscribes, source: :operatable, source_type: "Post"
@@ -61,7 +61,7 @@ class User < ApplicationRecord
   end
 
   def like_comment?(comments_id)
-    like_comments_ids.include?(post_id)
+    like_comment_ids.include?(comments_id)
   end
 
   def subscribe_post?(post_id)

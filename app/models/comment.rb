@@ -4,6 +4,7 @@ class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
 
   has_many :replies, class_name: "Comment", foreign_key: :reply_id
+  has_many :likes, class_name: "Like", as: :operatable, dependent: :destroy
 
   validates :author_id, presence: true
   validates :content, presence: true, length: { minimum: 2 }

@@ -1,9 +1,9 @@
 <% if current_user&.like_post?(post.id) %>
   <%= button_to unlike_post_path(post.id), method: :delete, form_class: "inline-flex" do %>
-    <%= render "components/icon", symbol: "icon-favorite2" %>
+    <%= render "components/icon", symbol: "icon-favorite2-copy" %>
   <% end %>
 <% else %>
   <%= button_to like_post_path(post.id), form_class: "inline-flex" do %>
-    <%= render "components/icon", symbol: "icon-favoriteoutline" %>
+    <%= render "components/icon", symbol: "icon-favorite2" %>
   <% end %>
 <% end %>

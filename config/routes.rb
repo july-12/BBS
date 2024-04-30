@@ -35,6 +35,13 @@ Rails.application.routes.draw do
     post "comments", as: :comments, to: "comments#create_of_question"
   end
 
+  resources :comments, only: [] do
+    member do
+      post "like"
+      delete "unlike"
+    end
+  end
+
   get ":slug", to: "users#slug"
   get "up" => "rails/health#show", as: :rails_health_check
 end

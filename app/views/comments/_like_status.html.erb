@@ -1,0 +1,17 @@
+<div id="<%= dom_id comment %>_like">
+  <% if current_user&.like_comment?(comment.id) %>
+    <%= button_to unlike_comment_path(comment), method: :delete, class: "flex gap-1 items-center" do %>
+      <%= render "components/icon", symbol: "rails-icon-favorite2-copy" %>
+      <% unless comment.likes.empty? %>
+        <span class="text-slate-500 text-sm"><%= comment.likes.count %></span>
+      <% end %>
+    <% end %>
+  <% else %>
+    <%= button_to like_comment_path(comment), class: "flex gap-1 items-center" do %>
+      <%= render "components/icon", symbol: "rails-icon-favorite2" %>
+      <% unless comment.likes.empty? %>
+        <span class="text-slate-500 text-sm"><%= comment.likes.count %></span>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

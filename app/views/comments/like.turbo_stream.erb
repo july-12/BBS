@@ -1,0 +1,3 @@
+<%= turbo_stream.update "comment_#{@comment.id}_like" do %>
+  <%= render "comments/like_status", comment: @comment %>
+<% end %>
