@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, forwardRef } from "react";
 import ExampleTheme from "./themes/default";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { EditorRefPlugin } from "@lexical/react/LexicalEditorRefPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
@@ -31,7 +32,7 @@ function Placeholder() {
   return <div className="editor-placeholder">请输入内容...</div>;
 }
 
-export default function RichTextEditor(props) {
+const RichTextEditor = forwardRef((props, ref) => {
   // const editorStateRef = useRef();
   const editorConfig = useRef({
     // The editor theme
@@ -68,6 +69,7 @@ export default function RichTextEditor(props) {
   return (
     <div onClick={handleClick}>
       <LexicalComposer initialConfig={editorConfig.current}>
+        {ref && <EditorRefPlugin editorRef={ref} />}
         <div className="editor-container">
           {!props.readOnly && <ToolbarPlugin />}
           <div
@@ -84,9 +86,6 @@ export default function RichTextEditor(props) {
             />
             <OnChangePlugin
               onChange={(editorState, editor) => {
-                // console.log(editorState)
-                // console.log(editor)
-                // editorStateRef.current = editorState;
                 props.onChange && props.onChange(editorState, editor);
               }}
             />
@@ -107,4 +106,6 @@ export default function RichTextEditor(props) {
       </LexicalComposer>
     </div>
   );
-}
+});
+
+export default RichTextEditor;

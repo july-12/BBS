@@ -2,24 +2,52 @@ import React from "react";
 import { Controller } from "@hotwired/stimulus";
 import { createRoot } from "react-dom/client";
 import RichTextEditor from "../react/components/RichTextEditor";
+import { editorEventKey } from "./utils/event";
 
 // Connects to data-controller="rich-editor"
 export default class extends Controller {
   static targets = ["editor", "content", "submitBtn"];
   static editorState = null;
-  static editor = null;
+  initialize() {
+    this.editorRef = { current: null };
+  }
   connect() {
     const root = createRoot(this.editorTarget);
     root.render(
       <RichTextEditor
+        ref={this.editorRef}
         defaultContent={this.contentTarget.value || undefined}
         onChange={this.onChange.bind(this)}
       />
     );
+    this.element.addEventListener(
+      editorEventKey,
+      this.listenEditor.bind(this),
+      false
+    );
   }
-  onChange(editorState, editor) {
+  listenEditor(e) {
+    const editor = this.editorRef.current;
+    setTimeout(() => {
+      editor.focus(
+        () => {
+          const activeElement = document.activeElement;
+          const rootElement = editor.getRootElement();
+          if (
+            rootElement !== null &&
+            (activeElement === null || !rootElement.contains(activeElement))
+          ) {
+            // Note: preventScroll won't work in Webkit.
+            // rootElement.focus({ preventScroll: true });
+            rootElement.focus();
+          }
+        },
+        { defaultSelection: "rootEnd" }
+      );
+    }, 1000);
+  }
+  onChange(editorState) {
     this.editorState = editorState;
-    this.editor = editor;
     this.contentTarget.value = JSON.stringify(editorState);
   }
   async uploadImage(imageNode) {
@@ -59,7 +87,7 @@ export default class extends Controller {
         const imageUrls = await Promise.all(
           imageNodes.map((imageNode) => this.uploadImage(imageNode))
         );
-        this.editor.update(
+        this.editorRef.current.update(
           () => {
             imageUrls.forEach((url, index) => imageNodes[index].setSrc(url));
           },

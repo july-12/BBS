@@ -12,12 +12,17 @@
           <%= time_ago_in_words(comment.updated_at) %>
         </span>
       </div>
-      <%= render "comments/like_status", comment: comment %>
+      <div class="flex gap-2 items-center">
+        <%= render "comments/like_status", comment: comment %>
+        <button class="text-sm " data-reply-id="<%= local_assigns[:root_comment_id] || comment.id %>" data-sub-comment-id="<%= comment.id if local_assigns[:root_comment_id] %>" data-action="click->comment-new#reply">
+          <%= render "components/icon", symbol: "rails-icon-reply1", class: "pointer-events-none" %>
+        </button>
+      </div>
     </div>
     <div>
       <%= render "components/rich_text_preview", content: comment.content %>
       <ul id="comments-<%= comment.id %>" class=" divide-y divide-gray-200 dark:divide-gray-700">
-        <%= render comment.replies %>
+        <%= render comment.replies, root_comment_id: comment.id %>
       </ul>
     </div>
   </div>

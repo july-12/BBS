@@ -1,16 +1,14 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
+import { editorEvent } from "./utils/event";
 
 // Connects to data-controller="comment-new"
 export default class extends Controller {
-  static targets = ["item", "form", "reply", "sub_reply"]
-  connect() {
-    console.log('comment new connect')
-  }
-
+  static targets = ["richEditor", "reply", "subReply"];
   reply(e) {
-    console.log('relay', e)
-    const replyId = e.target.dataset.replyId
-    this.replyTarget.value = replyId
-    this.formTarget.scrollIntoView({ behavior: "smooth" })
+    const { replyId, subCommentId } = e.target.dataset;
+    this.replyTarget.value = replyId;
+    this.subReplyTarget.value = subCommentId;
+    this.richEditorTarget.scrollIntoView({ behavior: "smooth" });
+    this.richEditorTarget.dispatchEvent(editorEvent);
   }
 }

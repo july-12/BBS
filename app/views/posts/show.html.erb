@@ -39,7 +39,7 @@
           <%= render @post.comments.no_reply_comments %>
         </ul>
       </section>
-      <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3 shadow-sm" data-comment-new-target="form">
+      <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3 shadow-sm">
         <%= render partial: "comments/new", locals: { model: [@post, @post.comments.build]} %>
       </section>
     </div>
