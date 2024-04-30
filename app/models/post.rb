@@ -7,8 +7,8 @@ class Post < ApplicationRecord
   validates :author_id, presence: true
 
   has_many :favorites, class_name: "Favorite", as: :operatable, dependent: :destroy
-  has_many :likes, class_name: "Like"
-  has_many :subscribes, class_name: "Subscribe"
+  has_many :likes, class_name: "Like", as: :operatable, dependent: :destroy
+  has_many :subscribes, class_name: "Subscribe", as: :operatable, dependent: :destroy
 
   visitable :ahoy_visit
 

@@ -55,25 +55,20 @@ class PostsController < ApplicationController
   end
 
   def favorite
-    # @post = Post.find(params[:id])
-    favorited = current_user.favorite_post_ids.include?(params[:id].to_i)
-    # favorited = @post.favorites.exists?(user_id: current_user.id)
-    unless favorited
-      current_user.favorites.create(user_id: current_user.id, operatable_id: params[:id], operatable_type: "Post")
-    end
-
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to posts_url, notice: "favorite post!" }
-      format.json { head :no_content }
+    if current_user.favorites.create(operatable_id: params[:id], operatable_type: "Post")
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to posts_url, notice: "favorite post!" }
+        format.json { head :no_content }
+      end
+    else
+      render json: current_user.errors, status: :unprocessable_entity
     end
   end
 
   def unfavorite
-    favorite = current_user.favorites.find_by(operatable_type: "Post", operatable_id: params[:id])
-    if favorite
-      favorite.destroy
-    end
+    favorite = current_user.favorites.find_by(operatable_id: params[:id], operatable_type: "Post")
+    favorite.destroy if favorite
     respond_to do |format|
       format.turbo_stream { render :favorite }
       format.html { redirect_to posts_url, notice: "unfavorite post!" }
@@ -82,23 +77,20 @@ class PostsController < ApplicationController
   end
 
   def like
-    liked = current_user.likes.find_by(post_id: @post.id)
-    unless liked
-      current_user.likes.create(post_id: @post.id)
-    end
-
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to posts_url, notice: "like post!" }
-      format.json { head :no_content }
+    if current_user.likes.create(operatable_id: params[:id], operatable_type: "Post")
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to posts_url, notice: "like post!" }
+        format.json { head :no_content }
+      end
+    else
+      render json: current_user.errors, status: :unprocessable_entity
     end
   end
 
   def unlike
-    liked = current_user.likes.find_by(post_id: params[:id])
-    if liked
-      liked.destroy
-    end
+    liked = current_user.likes.find_by(operatable_id: params[:id], operatable_type: "Post")
+    liked.destroy if liked
     respond_to do |format|
       format.turbo_stream { render :like }
       format.html { redirect_to posts_url, notice: "unlike post!" }
@@ -107,24 +99,20 @@ class PostsController < ApplicationController
   end
 
   def subscribe
-    @post_id = params[:id]
-    subscribed = current_user.subscribes.find_by(post_id: @post_id)
-    unless subscribed
-      current_user.subscribes.create(post_id: @post_id)
-    end
-
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to posts_url, notice: "subscribe post!" }
-      format.json { head :no_content }
+    if current_user.subscribes.create(operatable_id: params[:id], operatable_type: "Post")
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to posts_url, notice: "subscribe post!" }
+        format.json { head :no_content }
+      end
+    else
+      render json: current_user.errors, status: :unprocessable_entity
     end
   end
 
   def unsubscribe
-    subscribed = current_user.subscribes.find_by(post_id: params[:id])
-    if subscribed
-      subscribed.destroy
-    end
+    subscribed = current_user.subscribes.find_by(operatable_id: params[:id], operatable_type: "Post")
+    subscribed.destroy if subscribed
     respond_to do |format|
       format.turbo_stream { render :subscribe }
       format.html { redirect_to posts_url, notice: "unsubscribe post!" }

@@ -1,5 +1,5 @@
-  <% if current_user&.favorite_post?(post_id) %>
-  <%= button_to unfavorite_post_path(post_id), form_class: "inline-flex" do %>
+<% if current_user&.favorite_post?(post_id) %>
+  <%= button_to unfavorite_post_path(post_id), method: :delete, form_class: "inline-flex" do %>
     <%= render "components/icon", symbol: "icon-favorites-fill" %>
   <% end %>
 <% else %>

@@ -24,11 +24,11 @@ Rails.application.routes.draw do
     post "comments", as: :comments, to: "comments#create_of_post"
     member do
       post "favorite"
-      post "unfavorite"
+      delete "unfavorite"
       post "like"
-      post "unlike"
+      delete "unlike"
       post "subscribe"
-      post "unsubscribe"
+      delete "unsubscribe"
     end
   end
   resources :questions do
