@@ -10,6 +10,8 @@ class Post < ApplicationRecord
   has_many :likes, class_name: "Like"
   has_many :subscribes, class_name: "Subscribe"
 
+  visitable :ahoy_visit
+
   def repliers
     User.joins(:comments).where("comments.commentable_type = ? AND comments.commentable_id = ?", "Post", id).distinct
   end

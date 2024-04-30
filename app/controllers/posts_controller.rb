@@ -9,6 +9,8 @@ class PostsController < ApplicationController
 
   # GET /posts/1 or /posts/1.json
   def show
+    ahoy.track "ViewedPost", { id: @post.id, title: @post.title }
+    @viewed_count = Ahoy::Event.post_viewed_count(@post.id)
   end
 
   # GET /posts/new

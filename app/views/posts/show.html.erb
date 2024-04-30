@@ -4,7 +4,7 @@
       <h2 class="text-4xl font-extrabold leading-none tracking-tight text-gray-900  dark:text-white"> <%= @post.title %> </h2>
       <div class="flex flex-col gap-1 text-sm text-slate-500">
         <div class="flex gap-2 ">
-          <span class="flex items-center gap-2"><%= render "components/icon", symbol: "rails-icon-views" %>10 </span>
+          <span class="flex items-center gap-2"><%= render "components/icon", symbol: "rails-icon-views" %> <%= @viewed_count %> </span>
           <% if @post.author == current_user %>
             <span class="dot">&#183;</span>
             <%= link_to  "edit", edit_post_path(@post), class: "hover:underline" %>
