@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_30_020212) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_30_065856) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -85,6 +85,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_30_020212) do
     t.index ["visitor_token", "started_at"], name: "index_ahoy_visits_on_visitor_token_and_started_at"
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.text "desc"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "comments", force: :cascade do |t|
     t.text "content"
     t.bigint "post_id"
@@ -128,7 +135,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_30_020212) do
   end
 
   create_table "post_actions", force: :cascade do |t|
-    t.bigint "post_id"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -136,7 +142,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_30_020212) do
     t.string "operatable_type"
     t.bigint "operatable_id"
     t.index ["operatable_type", "operatable_id"], name: "index_post_actions_on_operatable"
-    t.index ["post_id"], name: "index_post_actions_on_post_id"
     t.index ["user_id"], name: "index_post_actions_on_user_id"
   end
 
@@ -147,8 +152,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_30_020212) do
     t.datetime "updated_at", null: false
     t.bigint "author_id"
     t.bigint "ahoy_visit_id"
+    t.bigint "category_id"
     t.index ["ahoy_visit_id"], name: "index_posts_on_ahoy_visit_id"
     t.index ["author_id"], name: "index_posts_on_author_id"
+    t.index ["category_id"], name: "index_posts_on_category_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -190,9 +197,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_30_020212) do
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "follows", "users", column: "follower_id"
   add_foreign_key "follows", "users", column: "following_id"
-  add_foreign_key "post_actions", "posts"
   add_foreign_key "post_actions", "users"
   add_foreign_key "posts", "ahoy_visits"
+  add_foreign_key "posts", "categories"
   add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "questions", "ahoy_visits"
   add_foreign_key "questions", "users", column: "author_id"

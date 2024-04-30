@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, only: [:create, :update, :destroy, :favorite, :unfavorite]
+  before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy, :favorite, :unfavorite]
   before_action :set_post, only: %i[ show edit update destroy like unlike favorite unfavorite subscribe unsubscribe ]
   before_action :check_author, only: [:edit, :update, :destroy]
 
@@ -13,6 +13,7 @@ class PostsController < ApplicationController
   end
 
   def new
+    @categories = Category.all
     @post = Post.new
   end
 
@@ -129,7 +130,7 @@ class PostsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def post_params
-    params.require(:post).permit(:title, :context)
+    params.require(:post).permit(:title, :context, :category_id)
   end
 
   def check_author

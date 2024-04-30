@@ -1,5 +1,6 @@
 class Post < ApplicationRecord
   belongs_to :author, class_name: :User
+  belongs_to :category
   has_many :comments, as: :commentable, dependent: :destroy
   # has_many :comments, -> { no_reply_comments }, as: :commentable, dependent: :destroy
 

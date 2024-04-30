@@ -1,11 +1,18 @@
 <section id="<%= dom_id post %>" class="flex gap-4 px-2 py-4 border-b border-solid border-slate-200 cursor-pointer hover:bg-stone-100">
   <%= render "components/avatar", { user: post.author, size: 12 } %>
   <main class="flex-1 flex flex-col justify-between h-12">
-    <p class="text-xl font-extrabold leading-none tracking-tight text-gray-900"> <%= link_to post.title, post, data: { turbo_frame: "_top" }, class: 'hover:text-blue-600 hover:undeline' %> </p>
-    <div class="flex gap-2 text-slate-500 text-sm">
-      <span><%= post.created_at.strftime("%d %b") %> </span>
-      <span>by</span>
+    <header class="flex items-center gap-2">
+      <p class="text-md leading-none tracking-tight text-gray-500">
+        <% if post.category.present? %>
+          <span><%= post.category.name %></span>
+        <% end %>
+      </p>
+      <p class="text-xl font-semibold leading-none tracking-tight text-gray-900"> <%= link_to post.title, post, data: { turbo_frame: "_top" }, class: 'hover:text-blue-600 hover:undeline' %> </p>
+    </header>
+    <div class="flex gap-1 text-slate-500 text-sm">
       <span><%= post.author&.name %> </span>
+      <span class="dot">&#183;</span>
+      <span><%= post.created_at.strftime("%d %b") %> </span>
     </div>
   </main>
   <footer class="flex items-center gap-2">
