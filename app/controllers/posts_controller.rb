@@ -1,28 +1,24 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!, only: [:create, :update, :destroy, :favorite, :unfavorite]
   before_action :set_post, only: %i[ show edit update destroy like unlike favorite unfavorite subscribe unsubscribe ]
+  before_action :check_author, only: [:edit, :update, :destroy]
 
-  # GET /posts or /posts.json
   def index
     @posts = Post.all
   end
 
-  # GET /posts/1 or /posts/1.json
   def show
-    ahoy.track "ViewedPost", { id: @post.id, title: @post.title }
     @viewed_count = Ahoy::Event.post_viewed_count(@post.id)
+    ahoy.track "ViewedPost", { id: @post.id, title: @post.title }
   end
 
-  # GET /posts/new
   def new
     @post = Post.new
   end
 
-  # GET /posts/1/edit
   def edit
   end
 
-  # POST /posts or /posts.json
   def create
     @post = current_user.posts.new(post_params)
 
@@ -37,7 +33,6 @@ class PostsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /posts/1 or /posts/1.json
   def update
     respond_to do |format|
       if @post.update(post_params)
@@ -50,7 +45,6 @@ class PostsController < ApplicationController
     end
   end
 
-  # DELETE /posts/1 or /posts/1.json
   def destroy
     @post.destroy!
 
@@ -148,5 +142,11 @@ class PostsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def post_params
     params.require(:post).permit(:title, :context)
+  end
+
+  def check_author
+    unless current_user? @post.author
+      redirect_to root_path
+    end
   end
 end

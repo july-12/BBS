@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:setting, :edit_password, :update_password, :setting, :follow, :unfollow]
+  before_action :authenticate_user!, except: [:index, :show, :slug]
   before_action :set_follow_target, only: [:follow, :unfollow]
   before_action :set_user, only: [:show, :dashboard, :favorites, :comments, :followers, :followings, :update_password]
 
@@ -87,7 +87,7 @@ class UsersController < ApplicationController
   end
 
   def follow
-    relation = current_user.following_relations.create!(following_id: params[:user_id])
+    current_user.following_relations.create!(following_id: params[:user_id])
     respond_to do |format|
       format.turbo_stream
       format.html { redirect_to users_url }
