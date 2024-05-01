@@ -1,7 +1,5 @@
 <li class="flex space-x-4 rtl:space-x-reverse py-4 ">
-  <div class="w-12 h-12">
-    <%= render 'components/avatar', user: comment.commenter, size: 12 %>
-  </div>
+  <%= render 'components/avatar', user: comment.commenter %>
   <div class="flex-1 min-w-0">
     <div class="flex items-center justify-between mb-4">
       <div class="comment-info flex gap-2 items-center ">
@@ -13,7 +11,7 @@
         </span>
       </div>
       <div class="flex gap-2 items-center">
-        <%= render "comments/like_status", comment: comment %>
+        <%# render "comments/like_status", comment: comment %>
         <button class="text-sm " data-reply-id="<%= local_assigns[:root_comment_id] || comment.id %>" data-sub-comment-id="<%= comment.id if local_assigns[:root_comment_id] %>" data-action="click->comment-new#reply">
           <%= render "components/icon", symbol: "rails-icon-reply1", class: "pointer-events-none" %>
         </button>

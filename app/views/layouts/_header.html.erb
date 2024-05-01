@@ -21,7 +21,9 @@
       <% if user_signed_in? %>
         <div class="dropdown dropdown-end inline-flex">
           <div tabindex="0" role="button" class="avatar placeholder">
-            <%= render 'components/avatar', user: current_user %>
+            <div class="w-8 h-8">
+              <%= render 'components/avatar', user: current_user, size: 8 %>
+            </div>
           </div>
           <ul tabindex="0" class="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-[42px]">
             <li><%= link_to 'Profile', user_profile_path(current_user) %></li>
