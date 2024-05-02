@@ -1,6 +1,7 @@
 import React from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { setFloatingElemPositionForLinkEditor } from "../utils/setFloatingElemPositionForLinkEditor";
 import {
   CAN_REDO_COMMAND,
   CAN_UNDO_COMMAND,
@@ -11,13 +12,21 @@ import {
   FORMAT_ELEMENT_COMMAND,
   INDENT_CONTENT_COMMAND,
   OUTDENT_CONTENT_COMMAND,
+  COMMAND_PRIORITY_LOW,
+  COMMAND_PRIORITY_HIGH,
+  KEY_ESCAPE_COMMAND,
   $getSelection,
   $isElementNode,
   $isRangeSelection,
   $createParagraphNode,
   $getNodeByKey,
 } from "lexical";
-import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
+import {
+  $createLinkNode,
+  $isAutoLinkNode,
+  $isLinkNode,
+  TOGGLE_LINK_COMMAND,
+} from "@lexical/link";
 import {
   $getSelectionStyleValueForProperty,
   $isParentElementRTL,
@@ -101,25 +110,37 @@ function positionEditorElement(editor, rect) {
   }
 }
 
-function FloatingLinkEditor({ editor }) {
+function FloatingLinkEditor({
+  editor,
+  isLink,
+  setIsLink,
+  anchorElem,
+  isLinkEditMode,
+  setIsLinkEditMode,
+}) {
   const editorRef = useRef(null);
   const inputRef = useRef(null);
-  const mouseDownRef = useRef(false);
-  const [linkUrl, setLinkUrl] = useState("");
-  const [isEditMode, setEditMode] = useState(false);
-  const [lastSelection, setLastSelection] = useState(null);
+  const [linkUrl, setLinkUrl] = useState('');
+  const [editedLinkUrl, setEditedLinkUrl] = useState('https://');
+  const [lastSelection, setLastSelection] = useState(
+    null,
+  );
 
   const updateLinkEditor = useCallback(() => {
     const selection = $getSelection();
     if ($isRangeSelection(selection)) {
       const node = getSelectedNode(selection);
-      const parent = node.getParent();
-      if ($isLinkNode(parent)) {
-        setLinkUrl(parent.getURL());
+      const linkParent = $findMatchingParent(node, $isLinkNode);
+
+      if (linkParent) {
+        setLinkUrl(linkParent.getURL());
       } else if ($isLinkNode(node)) {
         setLinkUrl(node.getURL());
       } else {
-        setLinkUrl("");
+        setLinkUrl('');
+      }
+      if (isLinkEditMode) {
+        setEditedLinkUrl(linkUrl);
       }
     }
     const editorElem = editorRef.current;
@@ -131,41 +152,60 @@ function FloatingLinkEditor({ editor }) {
     }
 
     const rootElement = editor.getRootElement();
+
     if (
       selection !== null &&
-      !nativeSelection.isCollapsed &&
+      nativeSelection !== null &&
       rootElement !== null &&
-      rootElement.contains(nativeSelection.anchorNode)
+      rootElement.contains(nativeSelection.anchorNode) &&
+      editor.isEditable()
     ) {
-      const domRange = nativeSelection.getRangeAt(0);
-      let rect;
-      if (nativeSelection.anchorNode === rootElement) {
-        let inner = rootElement;
-        while (inner.firstElementChild != null) {
-          inner = inner.firstElementChild;
-        }
-        rect = inner.getBoundingClientRect();
-      } else {
-        rect = domRange.getBoundingClientRect();
-      }
-
-      if (!mouseDownRef.current) {
-        positionEditorElement(editorElem, rect);
+      const domRect =
+        nativeSelection.focusNode?.parentElement?.getBoundingClientRect();
+      if (domRect) {
+        domRect.y += 40;
+        setFloatingElemPositionForLinkEditor(domRect, editorElem, anchorElem);
       }
       setLastSelection(selection);
-    } else if (!activeElement || activeElement.className !== "link-input") {
-      positionEditorElement(editorElem, null);
+    } else if (!activeElement || activeElement.className !== 'link-input') {
+      if (rootElement !== null) {
+        setFloatingElemPositionForLinkEditor(null, editorElem, anchorElem);
+      }
       setLastSelection(null);
-      setEditMode(false);
-      setLinkUrl("");
+      setIsLinkEditMode(false);
+      setLinkUrl('');
     }
 
     return true;
-  }, [editor]);
+  }, [anchorElem, editor, setIsLinkEditMode, isLinkEditMode, linkUrl]);
+
+  useEffect(() => {
+    const scrollerElem = anchorElem.parentElement;
+
+    const update = () => {
+      editor.getEditorState().read(() => {
+        updateLinkEditor();
+      });
+    };
+
+    window.addEventListener('resize', update);
+
+    if (scrollerElem) {
+      scrollerElem.addEventListener('scroll', update);
+    }
+
+    return () => {
+      window.removeEventListener('resize', update);
+
+      if (scrollerElem) {
+        scrollerElem.removeEventListener('scroll', update);
+      }
+    };
+  }, [anchorElem.parentElement, editor, updateLinkEditor]);
 
   useEffect(() => {
     return mergeRegister(
-      editor.registerUpdateListener(({ editorState }) => {
+      editor.registerUpdateListener(({editorState}) => {
         editorState.read(() => {
           updateLinkEditor();
         });
@@ -177,10 +217,21 @@ function FloatingLinkEditor({ editor }) {
           updateLinkEditor();
           return true;
         },
-        LowPriority
-      )
+        COMMAND_PRIORITY_LOW,
+      ),
+      editor.registerCommand(
+        KEY_ESCAPE_COMMAND,
+        () => {
+          if (isLink) {
+            setIsLink(false);
+            return true;
+          }
+          return false;
+        },
+        COMMAND_PRIORITY_HIGH,
+      ),
     );
-  }, [editor, updateLinkEditor]);
+  }, [editor, updateLinkEditor, setIsLink, isLink]);
 
   useEffect(() => {
     editor.getEditorState().read(() => {
@@ -189,39 +240,57 @@ function FloatingLinkEditor({ editor }) {
   }, [editor, updateLinkEditor]);
 
   useEffect(() => {
-    if (isEditMode && inputRef.current) {
+    if (isLinkEditMode && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [isEditMode]);
+  }, [isLinkEditMode, isLink]);
+
+  const monitorInputInteraction = (
+    event
+  ) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleLinkSubmission();
+    } else if (event.key === 'Escape') {
+      event.preventDefault();
+      setIsLinkEditMode(false);
+    }
+  };
 
   const handleLinkSubmission = () => {
     if (lastSelection !== null) {
-      if (linkUrl !== "") {
-        editor.dispatchCommand(TOGGLE_LINK_COMMAND, linkUrl);
+      if (linkUrl !== '') {
+        editor.dispatchCommand(TOGGLE_LINK_COMMAND, sanitizeUrl(editedLinkUrl));
+        editor.update(() => {
+          const selection = $getSelection();
+          if ($isRangeSelection(selection)) {
+            const parent = getSelectedNode(selection).getParent();
+            if ($isAutoLinkNode(parent)) {
+              const linkNode = $createLinkNode(parent.getURL(), {
+                rel: parent.__rel,
+                target: parent.__target,
+                title: parent.__title,
+              });
+              parent.replace(linkNode, true);
+            }
+          }
+        });
       }
-      setEditMode(false);
-    }
-  };
-  const monitorInputInteraction = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleLinkSubmission();
-    } else if (event.key === "Escape") {
-      event.preventDefault();
-      setEditMode(false);
+      setEditedLinkUrl('https://');
+      setIsLinkEditMode(false);
     }
   };
 
   return (
     <div ref={editorRef} className="link-editor">
-      {isEditMode ? (
+      {!isLink ? null : isLinkEditMode ? (
         <>
           <input
             ref={inputRef}
             className="link-input"
-            value={linkUrl}
+            value={editedLinkUrl}
             onChange={(event) => {
-              setLinkUrl(event.target.value);
+              setEditedLinkUrl(event.target.value);
             }}
             onKeyDown={(event) => {
               monitorInputInteraction(event);
@@ -234,7 +303,7 @@ function FloatingLinkEditor({ editor }) {
               tabIndex={0}
               onMouseDown={(event) => event.preventDefault()}
               onClick={() => {
-                setEditMode(false);
+                setIsLinkEditMode(false);
               }}
             />
 
@@ -252,13 +321,7 @@ function FloatingLinkEditor({ editor }) {
           <a
             href={sanitizeUrl(linkUrl)}
             target="_blank"
-            rel="noopener noreferrer"
-            onMouseDown={(e) => {
-              console.log("a click");
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-          >
+            rel="noopener noreferrer">
             {linkUrl}
           </a>
           <div
@@ -267,8 +330,8 @@ function FloatingLinkEditor({ editor }) {
             tabIndex={0}
             onMouseDown={(event) => event.preventDefault()}
             onClick={() => {
-              setLinkUrl(linkUrl);
-              setEditMode(true);
+              setEditedLinkUrl(linkUrl);
+              setIsLinkEditMode(true);
             }}
           />
           <div
@@ -283,19 +346,6 @@ function FloatingLinkEditor({ editor }) {
         </div>
       )}
     </div>
-  );
-}
-
-function Select({ onChange, className, options, value }) {
-  return (
-    <select className={className} onChange={onChange} value={value}>
-      <option hidden={true} value="" />
-      {options.map((option) => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
   );
 }
 
