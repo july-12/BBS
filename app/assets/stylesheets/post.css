@@ -1,7 +1,27 @@
 .post-form .editor-input {
-    min-height: 420px;
+  min-height: 420px;
 }
 
 #comments .editor-input {
-    min-height: unset;
+  min-height: unset;
+}
+
+.twinkle {
+  animation: blink 1s;
+  animation-delay: 0.25s;
+  animation-iteration-count: 2;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+@keyframes blink {
+  0% {
+    border: 1px solid #f0f0f0;
+  }
+  50% {
+    border: 1px rgb(110 231 183) solid;
+  }
+  100% {
+    border: 1px solid #f0f0f0;
+  }
 }

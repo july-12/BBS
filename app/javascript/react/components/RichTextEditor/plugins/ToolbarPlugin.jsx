@@ -15,6 +15,7 @@ import {
   COMMAND_PRIORITY_LOW,
   COMMAND_PRIORITY_HIGH,
   KEY_ESCAPE_COMMAND,
+  CLEAR_EDITOR_COMMAND,
   $getSelection,
   $isElementNode,
   $isRangeSelection,
@@ -690,6 +691,7 @@ export default function ToolbarPlugin() {
   const toolbarRef = useRef(null);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
+  const [isEditorEmpty, setIsEditorEmpty] = useState(false);
   const [blockType, setBlockType] = useState("paragraph");
   const [selectedElementKey, setSelectedElementKey] = useState(null);
   const [codeLanguage, setCodeLanguage] = useState("");
@@ -1007,14 +1009,14 @@ export default function ToolbarPlugin() {
           <button
             onClick={() => {
               const loadImage = (files) => {
-                const file = files[0]
+                const file = files[0];
                 const reader = new FileReader();
                 reader.onload = function () {
                   if (typeof reader.result === "string") {
-                      editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
-                        file: file,
-                        src: reader.result,
-                      });
+                    editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
+                      file: file,
+                      src: reader.result,
+                    });
                     // const image = new Image();
                     // image.src = reader.result;
                     // image.onload = function () {
@@ -1050,6 +1052,18 @@ export default function ToolbarPlugin() {
           />
         </>
       )}
+      <Divider />
+      <button
+        onClick={() => {
+          editor.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
+          editor.focus();
+        }}
+        title="Clear"
+        className="toolbar-item"
+        aria-label="Clear editor contents"
+      >
+        <i className="format clear" />
+      </button>
       <Divider />
       <button
         disabled={!canUndo}

@@ -829,3 +829,7 @@ i.font-color {
 i.bg-color {
   background-image: url(images/icons/bg-color.svg);
 }
+
+i.clear {
+  background-image: url(images/icons/trash.svg);
+}

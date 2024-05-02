@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus";
 import { createRoot } from "react-dom/client";
 import RichTextEditor from "../react/components/RichTextEditor";
 import { editorEventKey } from "./utils/event";
+import { CLEAR_EDITOR_COMMAND } from 'lexical'
 
 // Connects to data-controller="rich-editor"
 export default class extends Controller {
@@ -29,21 +30,7 @@ export default class extends Controller {
   listenEditor(e) {
     const editor = this.editorRef.current;
     setTimeout(() => {
-      editor.focus(
-        () => {
-          const activeElement = document.activeElement;
-          const rootElement = editor.getRootElement();
-          if (
-            rootElement !== null &&
-            (activeElement === null || !rootElement.contains(activeElement))
-          ) {
-            // Note: preventScroll won't work in Webkit.
-            // rootElement.focus({ preventScroll: true });
-            rootElement.focus();
-          }
-        },
-        { defaultSelection: "rootEnd" }
-      );
+      editor.focus()
     }, 1000);
   }
   onChange(editorState) {
@@ -95,6 +82,7 @@ export default class extends Controller {
         );
       }
     }
+    this.editorRef.current.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
     this.submitBtnTarget.click();
   }
 }

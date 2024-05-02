@@ -18,3 +18,6 @@ application.register("rich-editor", RichEditorController)
 
 import RichTextPreviewController from "./rich_text_preview_controller"
 application.register("rich-text-preview", RichTextPreviewController)
+
+import TwinkleNewCommentController from "./twinkle_new_comment_controller"
+application.register("twinkle-new-comment", TwinkleNewCommentController)

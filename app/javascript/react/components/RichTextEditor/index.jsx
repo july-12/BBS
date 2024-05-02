@@ -6,6 +6,7 @@ import { EditorRefPlugin } from "@lexical/react/LexicalEditorRefPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
+import {ClearEditorPlugin} from '@lexical/react/LexicalClearEditorPlugin';
 // import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 // import TreeViewPlugin from "./plugins/TreeViewPlugin";
@@ -92,6 +93,7 @@ const RichTextEditor = forwardRef((props, ref) => {
             <HistoryPlugin />
             {/* <AutoFocusPlugin /> */}
             {/* <TreeViewPlugin /> */}
+            <ClearEditorPlugin />
             <CodeHighlightPlugin />
             <ListPlugin />
             <CheckListPlugin />

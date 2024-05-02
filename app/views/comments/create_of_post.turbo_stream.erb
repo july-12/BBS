@@ -1,6 +1,17 @@
 <% if @comment.reply_id.nil? %>
-  <%= turbo_stream.append "comments", @comment %>
+  <%= turbo_stream.append "comments" do %>
+    <%= turbo_frame_tag "", data: { controller: "twinkle-new-comment" } do %>
+      <%= render "comments/comment", comment: @comment %>
+    <% end %>
+  <% end %>
 <% else %>
-  <%= turbo_stream.append "comments-#{@comment.reply_id}", @comment  %>
+  <%= turbo_stream.append "comments-#{@comment.reply_id}" do  %>
+    <%= turbo_frame_tag "", data: { controller: "twinkle-new-comment" } do %>
+      <%= render "comments/comment", comment: @comment %>
+    <% end %>
+  <% end %>
 <% end %>
 <%= turbo_stream.update "comments-count", @post.comments.count %>
+<%= turbo_stream.update "notice" do %>
+  <%= render "layouts/notice", msg: "评论成功!" %>
+<% end %>
