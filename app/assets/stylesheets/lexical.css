@@ -18,11 +18,6 @@
   text-align: left;
 }
 
-.editor-container-editbox {
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-}
-
 .editor-inner {
   background: #fff;
   position: relative;
@@ -372,10 +367,11 @@ pre::-webkit-scrollbar-thumb {
   background-color: #eee;
 }
 
-.toolbar .divider {
+.toolbar .editor-divider {
   width: 1px;
   background-color: #eee;
   margin: 0 4px;
+  transform: scaleY(0.8);
 }
 
 .toolbar select.toolbar-item {

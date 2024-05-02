@@ -93,7 +93,7 @@ const blockTypeToBlockName = {
 };
 
 function Divider() {
-  return <div className="divider" />;
+  return <div className="editor-divider" />;
 }
 
 function positionEditorElement(editor, rect) {
@@ -868,27 +868,6 @@ export default function ToolbarPlugin() {
 
   return (
     <div className="toolbar" ref={toolbarRef}>
-      <button
-        disabled={!canUndo}
-        onClick={() => {
-          editor.dispatchCommand(UNDO_COMMAND);
-        }}
-        className="toolbar-item spaced"
-        aria-label="Undo"
-      >
-        <i className="format undo" />
-      </button>
-      <button
-        disabled={!canRedo}
-        onClick={() => {
-          editor.dispatchCommand(REDO_COMMAND);
-        }}
-        className="toolbar-item"
-        aria-label="Redo"
-      >
-        <i className="format redo" />
-      </button>
-      <Divider />
       {blockType in blockTypeToBlockName && (
         <>
           <BlockFormatDropDown
@@ -1071,6 +1050,27 @@ export default function ToolbarPlugin() {
           />
         </>
       )}
+      <Divider />
+      <button
+        disabled={!canUndo}
+        onClick={() => {
+          editor.dispatchCommand(UNDO_COMMAND);
+        }}
+        className="toolbar-item spaced"
+        aria-label="Undo"
+      >
+        <i className="format undo" />
+      </button>
+      <button
+        disabled={!canRedo}
+        onClick={() => {
+          editor.dispatchCommand(REDO_COMMAND);
+        }}
+        className="toolbar-item"
+        aria-label="Redo"
+      >
+        <i className="format redo" />
+      </button>
     </div>
   );
 }

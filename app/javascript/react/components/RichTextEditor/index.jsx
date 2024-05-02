@@ -70,15 +70,15 @@ const RichTextEditor = forwardRef((props, ref) => {
     <div onClick={handleClick}>
       <LexicalComposer initialConfig={editorConfig.current}>
         {ref && <EditorRefPlugin editorRef={ref} />}
-        <div className="editor-container">
+        <div
+          className={`editor-container ${
+            props.readOnly
+              ? "editor-inner-preview"
+              : "editor-container-editbox  rounded-lg border border-slate-500 overflow-hidden "
+          }`}
+        >
           {!props.readOnly && <ToolbarPlugin />}
-          <div
-            className={`editor-inner  ${
-              props.readOnly
-                ? "editor-inner-preview"
-                : "editor-container-editbox"
-            }`}
-          >
+          <div className="editor-inner">
             <RichTextPlugin
               contentEditable={<ContentEditable className="editor-input" />}
               placeholder={<Placeholder />}
