@@ -33,13 +33,20 @@
       <% end %>
     </section>
     <div class="flex flex-col gap-4" data-controller="comment-new">
-      <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3 shadow-sm">
-        <div class="mb-4 text-lg font-semibold"> comments( <span id="comments-count" ><%= @post.comments.size %></span>)</div>
-        <ul id="comments" class=" divide-y divide-gray-200 dark:divide-gray-700">
-          <%= render @post.comments.no_reply_comments %>
-        </ul>
-      </section>
-      <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3 shadow-sm">
+      <% if @post.comments.empty? %>
+        <div class="flex flex-col gap-2 items-center text-slate-500">
+          <%= render "components/icon", symbol: "rails-icon-empty", class: "text-2xl" %>
+          <span>暂无评论，去抢沙发!</span>
+        </div>
+      <% else %>
+        <div class="text-lg font-semibold"> comments( <span id="comments-count" ><%= @post.comments.size %></span>)</div>
+        <section class="bg-white dark:bg-gray-900 rounded-lg px-6 p-3 shadow-sm">
+          <ul id="comments" class=" divide-y divide-gray-200 dark:divide-gray-700">
+            <%= render @post.comments.no_reply_comments %>
+          </ul>
+        </section>
+      <% end %>
+      <section class="bg-white dark:bg-gray-900 rounded-lg px-6 py-2 shadow-sm">
         <%= render partial: "comments/new", locals: { model: [@post, @post.comments.build]} %>
       </section>
     </div>
