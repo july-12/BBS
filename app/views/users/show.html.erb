@@ -16,14 +16,14 @@
     </div>
     <div class="divider"></div>
     <div class="flex items-center justify-evenly">
-      <%= link_to user_followers_path(@user), data: { turbo_stream: true } do %>
+      <%= link_to slug_followers_path(@user), data: { turbo_stream: true } do %>
         <span class="inline-flex flex-col gap-1 items-center">
           <%= render "components/icon", symbol: "icon-follower1" %>
           <span>关注我</span>
           <%= render "follow_count", count: @user.followers.count  %>
         </span>
       <% end %>
-      <%= link_to user_followings_path(@user), data: { turbo_stream: true } do %>
+      <%= link_to slug_followings_path(@user), data: { turbo_stream: true } do %>
         <span class="inline-flex flex-col gap-1 items-center">
           <%= render "components/icon", symbol: "icon-follower" %>
           <span>已关注</span>

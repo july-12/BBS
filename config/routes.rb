@@ -9,12 +9,6 @@ Rails.application.routes.draw do
   post "upload", to: "photo#create"
   resources :users, except: [:create] do
     get "profile", action: "show"
-    get "dashboard"
-    get "comments"
-    get "favorites"
-    get "followers"
-    get "followings"
-
     patch "update_password"
     post "follow"
     post "unfollow"
@@ -42,6 +36,11 @@ Rails.application.routes.draw do
     end
   end
 
-  get ":slug", to: "users#slug"
+  get ":slug", to: "users#slug", as: :slug
+  get ":slug/comments", to: "users#comments", as: :slug_comments
+  get ":slug/favorites", to: "users#favorites", as: :slug_favorites
+  get ":slug/followers", to: "users#followers", as: :slug_followers
+  get ":slug/followings", to: "users#followings", as: :slug_followings
+
   get "up" => "rails/health#show", as: :rails_health_check
 end
