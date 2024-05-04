@@ -2,7 +2,7 @@
   <div class="w-3/4 glow flex flex-col gap-4">
     <section id="<%= dom_id @post %>" class="flex flex-col gap-3 bg-white dark:bg-gray-900 rounded-lg p-5 shadow-sm">
       <header class="flex items-center gap-2 font-normal text-gray-500">
-        <span class="text-xl"><%= @post.category.name %></span>
+        <span class="text-xl"><%= link_to @post.category.name, category_slug_path(@post.category.slug) %></span>
         <span class="dot">&#183;</span>
         <p class="text-3xl font-extrabold leading-none tracking-tight text-gray-700  dark:text-white"> <%= @post.title %> </p>
       </header>

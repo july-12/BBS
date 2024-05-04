@@ -36,6 +36,10 @@ Rails.application.routes.draw do
     end
   end
 
+  scope "/topic" do
+    get ":slug", to: "categories#slug", as: :category_slug
+  end
+
   get ":slug", to: "users#slug", as: :slug
   get ":slug/comments", to: "users#comments", as: :slug_comments
   get ":slug/favorites", to: "users#favorites", as: :slug_favorites

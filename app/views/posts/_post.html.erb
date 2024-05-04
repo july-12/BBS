@@ -4,7 +4,7 @@
     <header class="flex items-center gap-2">
       <p class="text-md leading-none tracking-tight text-gray-500">
         <% if post.category.present? %>
-          <span><%= post.category.name %></span>
+          <span><%= link_to post.category.name, category_slug_path(post.category.slug)  %></span>
         <% end %>
       </p>
       <p class="text-xl font-semibold leading-none tracking-tight text-gray-900"> <%= link_to post.title, post, data: { turbo_frame: "_top" }, class: 'hover:text-blue-600 hover:undeline' %> </p>
