@@ -8,6 +8,7 @@
     <%= f.hidden_field :reply_id, data: { "comment-new-target": "reply" } %>
     <%= f.hidden_field :sub_reply_id, data: { "comment-new-target": "subReply" } %>
     <%= f.hidden_field :content, data: { "rich-editor-target": "content" } %>
+    <%= f.hidden_field :rawhtml, data: { "rich-editor-target": "html" } %>
     <div data-rich-editor-target="editor"></div>
     <div class="text-right">
       <%= f.submit "submit", class: "hidden", data: { "rich-editor-target": "submitBtn"} %>

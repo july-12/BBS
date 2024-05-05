@@ -2,12 +2,13 @@ import React from "react";
 import { Controller } from "@hotwired/stimulus";
 import { createRoot } from "react-dom/client";
 import RichTextEditor from "../react/components/RichTextEditor";
-import { editorEventKey } from "./utils/event";
-import { CLEAR_EDITOR_COMMAND } from 'lexical'
+import { editorFocusEventKey } from "./utils/event";
+import { CLEAR_EDITOR_COMMAND } from "lexical";
+import { $generateHtmlFromNodes } from "@lexical/html";
 
 // Connects to data-controller="rich-editor"
 export default class extends Controller {
-  static targets = ["editor", "content", "submitBtn"];
+  static targets = ["editor", "content", "html", "submitBtn"];
   static editorState = null;
   initialize() {
     this.editorRef = { current: null };
@@ -22,7 +23,7 @@ export default class extends Controller {
       />
     );
     this.element.addEventListener(
-      editorEventKey,
+      editorFocusEventKey,
       this.listenEditor.bind(this),
       false
     );
@@ -30,12 +31,11 @@ export default class extends Controller {
   listenEditor(e) {
     const editor = this.editorRef.current;
     setTimeout(() => {
-      editor.focus()
+      editor.focus();
     }, 1000);
   }
   onChange(editorState) {
     this.editorState = editorState;
-    this.contentTarget.value = JSON.stringify(editorState);
   }
   async uploadImage(imageNode) {
     const formData = new FormData();
@@ -82,7 +82,12 @@ export default class extends Controller {
         );
       }
     }
-    this.editorRef.current.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
-    this.submitBtnTarget.click();
+    this.editorRef.current.update(() => {
+      const htmlString = $generateHtmlFromNodes(this.editorRef.current, null);
+      this.htmlTarget.value = htmlString;
+      this.contentTarget.value = JSON.stringify(this.editorState);
+      this.editorRef.current.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
+      this.submitBtnTarget.click();
+    });
   }
 }

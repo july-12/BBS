@@ -9,6 +9,7 @@
     </div>
     <div class="sm:col-span-2" >
       <%= form.label :context, style: "display: block", class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
+      <%= form.hidden_field :rawhtml, data: { "rich-editor-target": "html" } %>
       <%= form.hidden_field :context, data: { "rich-editor-target": "content" } %>
       <div data-rich-editor-target="editor"></div>
     </div>

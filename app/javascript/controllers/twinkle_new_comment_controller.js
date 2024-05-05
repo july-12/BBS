@@ -10,8 +10,8 @@ export default class extends Controller {
       inline: "nearest",
     });
     liTag.classList.add("twinkle");
-    // setTimeout(() => {
-    //   liTag.classList.remove("twinkle");
-    // }, 2000);
+    setTimeout(() => {
+      liTag.classList.remove("twinkle");
+    }, 2000);
   }
 }

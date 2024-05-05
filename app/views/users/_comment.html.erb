@@ -8,5 +8,5 @@
     <span> at </span>
     <span> <%= comment.updated_at.strftime("%d %b") %> </span>
   </div>
-  <div class="text-gray-400"> <%= render "components/rich_text_preview", content: comment.content %> </div>
+  <div class="text-gray-400" data-controller="richtext-summary" data-richtext-summary-content-value="<%= comment.rawhtml %>"></div>
 </div>

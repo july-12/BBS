@@ -1,17 +1,23 @@
-<% if @comment.reply_id.nil? %>
-  <%= turbo_stream.append "comments" do %>
-    <%= turbo_frame_tag "", data: { controller: "twinkle-new-comment" } do %>
-      <%= render "comments/comment", comment: @comment %>
-    <% end %>
+<% if @post.comments.count < 2 %>
+  <%= turbo_stream.replace "comment-list" do %>
+    <%= render "posts/comment_list", post: @post %>
   <% end %>
 <% else %>
-  <%= turbo_stream.append "comments-#{@comment.reply_id}" do  %>
-    <%= turbo_frame_tag "", data: { controller: "twinkle-new-comment" } do %>
-      <%= render "comments/comment", comment: @comment %>
+  <% if @comment.reply_id.nil? %>
+    <%= turbo_stream.append "comments" do %>
+      <%= turbo_frame_tag "", data: { controller: "twinkle-new-comment" } do %>
+        <%= render "comments/comment", comment: @comment %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <%= turbo_stream.append "comments-#{@comment.reply_id}" do  %>
+      <%= turbo_frame_tag "", data: { controller: "twinkle-new-comment" } do %>
+        <%= render "comments/comment", comment: @comment %>
+      <% end %>
     <% end %>
   <% end %>
+  <%= turbo_stream.update "comments-count", @post.comments.count %>
 <% end %>
-<%= turbo_stream.update "comments-count", @post.comments.count %>
 <%= turbo_stream.update "notice" do %>
   <%= render "layouts/notice", msg: "评论成功!" %>
 <% end %>

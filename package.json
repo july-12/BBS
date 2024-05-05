@@ -4,6 +4,7 @@
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.4",
+    "@lexical/html": "^0.14.5",
     "@lexical/react": "^0.14.5",
     "autoprefixer": "^10.4.19",
     "esbuild": "^0.20.2",

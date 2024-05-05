@@ -1,7 +1,7 @@
 <div class="flex gap-4" >
   <div class="w-1/4 h-fit min-w-[300px] bg-white rounded-lg shadow-sm p-4">
     <div class="flex gap-3" >
-      <%= render "components/avatar", { user: @user, size: 16 } %>
+      <%= render "components/avatar", { user: @user } %>
       <div class="flex-1 flex flex-col gap-1">
         <span class="text-lg font-semibold"><%= @user.name %></span>
         <span class="text-gray-400"> <%= @user.created_at.strftime("%Y-%m-%d") %></span>

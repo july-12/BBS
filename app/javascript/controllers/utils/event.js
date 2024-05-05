@@ -1,2 +1,2 @@
-export const editorEventKey = "richEditor"
-export const editorEvent = new Event(editorEventKey);
+export const editorFocusEventKey = "richEditorFocus"
+export const editorEvent = new Event(editorFocusEventKey);
