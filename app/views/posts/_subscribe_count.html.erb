@@ -1,4 +1,2 @@
 <%= render 'subscribe', post_id: post.id %>
-<% unless post.subscribes.empty? %>
-  <span><%= post.subscribes.count %></span>
-<% end %>
+<span><%= post.subscribes.count %></span>

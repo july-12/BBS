@@ -12,9 +12,11 @@
       </div>
       <div class="flex gap-2 items-center">
         <%# render "comments/like_status", comment: comment %>
-        <button class="text-sm " data-reply-id="<%= local_assigns[:root_comment_id] || comment.id %>" data-sub-comment-id="<%= comment.id if local_assigns[:root_comment_id] %>" data-action="click->comment-new#reply">
-          <%= render "components/icon", symbol: "rails-icon-reply1", class: "pointer-events-none" %>
-        </button>
+        <div class="tooltip" data-tip="Reply">
+          <button class="text-sm " data-reply-id="<%= local_assigns[:root_comment_id] || comment.id %>" data-sub-comment-id="<%= comment.id if local_assigns[:root_comment_id] %>" data-action="click->comment-new#reply">
+            <%= render "components/icon", symbol: "rails-icon-reply1", class: "pointer-events-none" %>
+          </button>
+        </div>
       </div>
     </div>
     <div>

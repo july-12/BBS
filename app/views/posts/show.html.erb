@@ -22,15 +22,6 @@
         <% end %>
       </div>
       <main class="min-h-[200px] text-lg font-normal text-gray-500 dark:text-gray-400"> <%= render "components/rich_text_preview", content: @post.context %> </main>
-      <% if @post.author != current_user %>
-        <footer>
-          <ul class="flex gap-2 items-center">
-            <li id="like"> <%= render 'like', post: @post %> </li>
-            <li id="subscribe"> <%= render 'subscribe', post_id: @post.id %> </li>
-            <li id="favorite"> <%= render 'favorite', post_id: @post.id %> </li>
-          </ul>
-        </footer>
-      <% end %>
     </section>
     <div class="flex flex-col gap-4" data-controller="comment-new">
       <div id="comment-list" class="flex flex-col gap-2">
@@ -54,23 +45,25 @@
           </div>
         </div>
       <% end %>
-      <div class="card bg-white shadow-sm rounded-lg">
-        <div class="card-body">
-          <div class="flex flex-col gap-4 items-center justify-center">
-            <div id="like-count" class="flex flex-col items-center">
+      <section>
+        <div class="inline-flex flex-col gap-4">
+          <div class="tooltip tooltip-right inline-flex items-center" data-tip="Like">
+            <div id="like-count" class="inline-flex items-center gap-2">
               <%= render "like_count", post: @post %>
             </div>
-            <div class="flex gap-4">
-              <div id="subscribe-count" class="flex items-center gap-1">
-                <%= render "subscribe_count", post: @post %>
-              </div>
-              <div id="favorite-count" class="flex items-center gap-1">
-                <%= render "favorite_count", post: @post %>
-              </div>
+          </div>
+          <div class="tooltip tooltip-right inline-flex items-center" data-tip="Favorite">
+            <div id="favorite-count" class="flex items-center gap-2">
+              <%= render "favorite_count", post: @post %>
+            </div>
+          </div>
+          <div class="tooltip tooltip-right inline-flex items-center" data-tip="Subscribe">
+            <div id="subscribe-count" class="flex items-center gap-2">
+              <%= render "subscribe_count", post: @post %>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   </div>
 </div>

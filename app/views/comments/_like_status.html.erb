@@ -8,7 +8,7 @@
     <% end %>
   <% else %>
     <%= button_to like_comment_path(comment), class: "flex gap-1 items-center" do %>
-      <%= render "components/icon", symbol: "rails-icon-favorite2" %>
+      <%= render "components/icon", symbol: "rails-icon-favoriteoutline" %>
       <% unless comment.likes.empty? %>
         <span class="text-slate-500 text-sm"><%= comment.likes.count %></span>
       <% end %>
