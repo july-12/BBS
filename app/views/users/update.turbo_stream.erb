@@ -1,5 +1,7 @@
 <%= turbo_stream.update "setting" do %>
-  <%= render "form", model: current_user %>
+  <%= render "layout", key: 'basic' do %>
+    <%= render 'form', model: current_user %>
+  <% end %>
 <% end %>
 <%= turbo_stream.update "notice" do %>
   <%= render "layouts/notice", msg: "update profile successfully." %>

@@ -10,6 +10,9 @@ application.register("comment-new", CommentNewController)
 import EditPasswordController from "./edit_password_controller"
 application.register("edit-password", EditPasswordController)
 
+import FadeoutController from "./fadeout_controller"
+application.register("fadeout", FadeoutController)
+
 import ResetFormController from "./reset_form_controller"
 application.register("reset-form", ResetFormController)
 

@@ -18,3 +18,12 @@
 .select:focus {
    outline-style: none;
 }
+
+.fadein-hidden {
+   visibility: hidden;
+   height: 0;
+   padding: 0;
+   margin: 0;
+   opacity: 0;
+   transition: visibility 0s 1s, all .4s linear;
+ }
