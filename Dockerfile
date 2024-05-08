@@ -17,7 +17,6 @@ ENV RAILS_ENV="production" \
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
-COPY sources.list /etc/apt
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential curl git libpq-dev libvips node-gyp pkg-config python-is-python3
@@ -56,8 +55,6 @@ RUN npm run build && \
 # Final stage for app image
 FROM base
 
-# fix 502 when apt-get software
-COPY sources.list /etc/apt
 # Install packages needed for deployment
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libvips postgresql-client && \
