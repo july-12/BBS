@@ -1,0 +1,65 @@
+<div class="flex flex-col p-6 gap-2 bg-white rounded-lg tracking-wide">
+    <h4 class="text-2xl mb-6 pb-2 font-bold dark:text-white shadow-sm">社区Wiki</h4>
+    <section class="pb-2 shadow-sm mb-6">
+        <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">简介</h2>
+        <p class="text-md font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+            本论坛网站是通过<a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://guides.rubyonrails.org/">Ruby on Rails</a> 构建。
+        </p>
+    </section>
+    <section class="pb-2 shadow-sm mb-6">
+        <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">功能</h2>
+        <ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400">
+            <li> 登录/注册 (<a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://github.com/heartcombo/devise">Devise</a>) </li>
+            <li>
+                用户 
+                <ol class="ps-5 mt-2 space-y-1 list-decimal list-inside">
+                    <li>Profile</li>
+                    <li>设置</li>
+                    <li>关注</li>
+                    <li>上传头像</li>
+                </ol>
+            </li>
+            <li> 
+                发帖
+                <ol class="ps-5 mt-2 space-y-1 list-decimal list-inside">
+                    <li>回贴</li>
+                    <li>分类</li>
+                    <li>点赞/收藏/订阅</li>
+                </ol>
+            </li>
+            <li> 全文检索</li>
+        </ul>
+    </section>
+    <section class="pb-2 shadow-sm mb-6">
+        <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">技术栈</h2>
+        <ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400">
+            <li> Rails 7.1 </li>
+            <li> <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://hotwired.dev/">Turbo Stream</a> </li>
+            <li> <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://stimulus.hotwired.dev/">Stimules</a> </li>
+            <li> Postgresql </li>
+            <li> Redis </li>
+            <li> <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://solr.apache.org/">Solr</a>(全文检索) </li>
+            <li> <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://tailwindcss.com/">Tailwind CSS</a> </li>
+            <li> React 18 </li>
+            <li> <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://lexical.dev/">Lexical</a>(富文本) </li>
+        </ul>
+    </section>
+
+    <section class="pb-2 shadow-sm mb-6">
+        <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white"> 部署</h2>
+        <p class="text-md font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+            docker compose
+        </p>
+    </section>
+    <section class="pb-2 shadow-sm mb-6">
+        <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white"> TODO:</h2>
+        <ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400">
+            <li ><div class="inline-flex gap-2 items-center" > <input type="checkbox" class="checkbox checkbox-sm" disabled checked />全文检索 </div></li>
+            <li ><div class="inline-flex gap-2 items-center" > <input type="checkbox" class="checkbox checkbox-sm" disabled/>三方登录 </div></li>
+            <li ><div class="inline-flex gap-2 items-center" > <input type="checkbox" class="checkbox checkbox-sm" disabled/>风控</div></li>
+            <li ><div class="inline-flex gap-2 items-center" > <input type="checkbox" class="checkbox checkbox-sm" disabled/>删 帖/评论</div></li>
+            <li ><div class="inline-flex gap-2 items-center" > <input type="checkbox" class="checkbox checkbox-sm" disabled/>发邮件</div></li>
+            <li ><div class="inline-flex gap-2 items-center" > <input type="checkbox" class="checkbox checkbox-sm" disabled/>查询优化</div></li>
+        <ul>
+    </section>
+</div>

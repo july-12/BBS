@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   root "home#index"
+  get "wiki", to: "home#wiki"
+  get "sites", to: "home#sites"
   devise_for :users
 
   get "setting", to: "users#setting"
