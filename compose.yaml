@@ -12,16 +12,24 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - 5432:5432
+
+  redis:
+    build: ./redis
+    container_name: bbs_redis
+    ports:
+      - 6397:6379
+
   app:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ${APP_DOCKERFILE}
     env_file:
       - .env
     volumes:
       - app_storage:/rails/storage
     depends_on:
       - db
+      - redis
     ports:
       - 3000:3000
 
