@@ -36,8 +36,8 @@ RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
-RUN bundle config 'mirror.https://rubygems.org' 'https://ruby.taobao.org'
-RUN bundle install && \
+RUN bundle config 'mirror.https://rubygems.org' 'https://gems.ruby-china.com/' && \
+    bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
 
