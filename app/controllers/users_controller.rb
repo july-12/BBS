@@ -1,15 +1,10 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :slug]
-  before_action :set_follow_target, only: [:follow, :unfollow]
-  before_action :set_user, only: [:show, :update_password]
+  before_action :set_user, only: [:follow, :unfollow, :update_password]
   before_action :set_slug_user, only: [:dashboard, :favorites, :comments, :followers, :followings]
 
   def index
     @users = User.all.order(created_at: "ASC")
-  end
-
-  def show
-    @posts = @user.posts.order(updated_at: :desc)
   end
 
   def slug
@@ -106,10 +101,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-  def set_follow_target
-    @user = User.find(params[:user_id])
-  end
 
   def set_user
     @user = User.find(params[:user_id])

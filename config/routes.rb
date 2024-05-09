@@ -10,7 +10,6 @@ Rails.application.routes.draw do
 
   post "upload", to: "photo#create"
   resources :users, except: [:create] do
-    get "profile", action: "show"
     patch "update_password"
     post "follow"
     post "unfollow"
