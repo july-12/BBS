@@ -1,6 +1,9 @@
 <div class="w-[400px] mx-auto">
   <h2 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900  dark:text-white"> Login </h2>
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "max-w-sm mx-auto") do |f| %>
+    <%- flash.each do |name, msg| -%>
+      <%= content_tag :div, msg, class: "mb-2 text-red-500" if msg.is_a?(String) %>
+    <%- end -%>
     <div class="mb-5">
       <%= f.label :login, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
       <%= f.text_field :login, autofocus: true, autocomplete: "login", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
