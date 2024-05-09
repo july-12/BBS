@@ -36,8 +36,11 @@ services:
     build:
       context: .
       dockerfile: ./nginx/Dockerfile
+      args:
+        - SERVER_NAME=${SERVER_NAME}
     ports:
       - 80:80
+      - 443:443
     depends_on:
       - app
 
