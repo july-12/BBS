@@ -41,3 +41,6 @@
 
 # Ignore deloy sources.list
 sources.list
+
+# certs
+/certs

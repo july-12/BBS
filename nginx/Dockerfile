@@ -4,6 +4,9 @@ ENV RAILS_ROOT /var/www/rails
 
 WORKDIR $RAILS_ROOT
 
+# must need to create log directory
+RUN mkdir log
+
 COPY public public/
 
 COPY ./nginx/nginx.conf /tmp/docker.nginx
