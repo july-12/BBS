@@ -32,6 +32,14 @@ services:
       - redis
     ports:
       - 3000:3000
+  web:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - app
 
 volumes:
   postgres_data_bbs: {}
