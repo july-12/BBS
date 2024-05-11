@@ -5,7 +5,7 @@
         <%= image_tag "logo.svg", width: 62, class: "rounded" %>
       <% end %>
       <ul class="flex gap-8 items-center text-gray-900">
-        <li class='me-4 hover:underline md:me-6'>
+        <li class='me-4 hover:underline md:me-6 <%= active_link(root_path) %>'>
           <%= link_to "社区", root_path %>
         </li>
         <!--
@@ -13,8 +13,8 @@
           <%= link_to "问答", questions_path %>
         </li>
         -->
-        <li class='me-4 hover:underline md:me-6'> <%= link_to "Wiki", wiki_path %> </li>
-        <li class='me-4 hover:underline md:me-6'> <%= link_to "酷站", sites_path %> </li>
+        <li class='me-4 hover:underline md:me-6 <%= active_link(wiki_path) %>'> <%= link_to "Wiki", wiki_path %> </li>
+        <li class='me-4 hover:underline md:me-6 <%= active_link(sites_path) %>'> <%= link_to "酷站", sites_path %> </li>
       </ul>
     </div>
     <div class="flex gap-2 items-center">

@@ -7,7 +7,7 @@
           <span><%= link_to post.category.name, category_slug_path(post.category.slug)  %></span>
         <% end %>
       </p>
-      <p class="text-xl font-semibold leading-none tracking-tight"> <%= link_to post.title, post, data: { turbo_frame: "_top" }, class: ' text-gray-600 hover:text-gray-800 hover:underline' %> </p>
+      <p class="text-xl font-semibold leading-none tracking-tight"> <%= link_to post.title, post, data: { turbo_frame: "_top" }, class: ' text-gray-600 hover:text-gray-700' %> </p>
     </header>
     <div class="flex gap-1 text-slate-500 text-sm">
       <span class="hover:underline" ><%= link_to post.author&.name, url_profile(post.author) if post.author&.name %> </span>
