@@ -14,7 +14,7 @@ services:
       - 5432:5432
 
   redis:
-    build: ./redis
+    build: ./docker/redis
     container_name: bbs_redis
     ports:
       - 6397:6379
@@ -22,7 +22,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: ${APP_DOCKERFILE}
+      dockerfile: ./docker/rails/${APP_DOCKERFILE}
     env_file:
       - .env
     volumes:
@@ -35,7 +35,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: ./nginx/Dockerfile
+      dockerfile: ./docker/nginx/Dockerfile
       args:
         - SERVER_NAME=${SERVER_NAME}
     ports:
