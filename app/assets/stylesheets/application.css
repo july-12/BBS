@@ -27,3 +27,8 @@
    opacity: 0;
    transition: visibility 0s 1s, all .4s linear;
  }
+
+ mark {
+   color: rgb(239 68 68); 
+   background-color: transparent;
+ }

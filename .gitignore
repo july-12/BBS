@@ -45,3 +45,6 @@ sources.list
 # certs
 /certs
 /config/credentials/production.key
+
+#solr
+/solr_data

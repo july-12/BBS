@@ -8,4 +8,14 @@ class HomeController < ApplicationController
 
   def sites
   end
+
+  def search
+    @q = params[:q]
+    if @q.present?
+      search = Post.search { fulltext params[:q] }
+      @result = search.results
+    else
+      @result = []
+    end
+  end
 end
