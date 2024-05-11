@@ -28,7 +28,7 @@ services:
     command:
       - docker-entrypoint.sh
       - solr-precreate
-      - ${SOLR}
+      - ${RAILS_ENV}
   app:
     build:
       context: .

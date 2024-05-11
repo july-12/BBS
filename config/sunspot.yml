@@ -1,6 +1,6 @@
 production:
   solr:
-    hostname: localhost
+    hostname: search # from docker compose service
     port: 8983
     log_level: WARNING
     path: /solr/production
