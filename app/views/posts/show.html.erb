@@ -6,20 +6,15 @@
         <span class="dot">&#183;</span>
         <p class="text-3xl font-extrabold leading-none tracking-tight text-gray-700  dark:text-white"> <%= @post.title %> </p>
       </header>
-      <div class="flex flex-col gap-1 text-sm text-slate-500 mt-[-10px]">
-        <div class="flex gap-2 ">
+      <div class="flex flex-col gap-2 text-sm text-slate-500 mt-[-10px] mb-2">
+        <span> <%= @post.created_at.strftime("%d %b %Y") %> 创建 </span>
+        <div class="flex gap-2">
           <span class="flex items-center gap-2"><%= render "components/icon", symbol: "rails-icon-views" %> <%= @viewed_count %> </span>
           <% if @post.author == current_user %>
             <span class="dot">&#183;</span>
             <%= link_to  "edit", edit_post_path(@post), class: "hover:underline" %>
           <% end %>
         </div>
-        <% if @post.author&.present? %>
-          <span class="flex items-center gap-2 ">
-            <%= link_to @post.author.name, url_profile(@post.author), class: "hover:underline" %>
-            <span> <%= @post.created_at.strftime("%d %b %Y") %> 创建 </span>
-          </span>
-        <% end %>
       </div>
       <main class="min-h-[200px] text-lg font-normal text-gray-500 dark:text-gray-400"> <%= render "components/rich_text_preview", content: @post.context %> </main>
     </section>
@@ -37,10 +32,10 @@
       <% if @post.author.present? %>
         <div class="card bg-white shadow-sm rounded-lg">
           <div class="card-body">
-            <div class="flex items-center justify-center gap-2" >
+            <%= link_to url_profile(@post.author), class: "flex items-center justify-center gap-2" do %>
               <%= render "components/avatar", user: @post.author, size: 8 %>
               <span class="text-lg font-semibold"> <%= @post.author.name %> </span>
-            </div>
+            <% end %>
             <%= render "users/follow_status", user_id: @post.author.id %>
           </div>
         </div>

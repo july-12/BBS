@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  search:
+    image: solr
+    ports:
+      - 8982:8983
+    volumes:
+      - ./solr_data:/var/solr
+    command:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - ${RAILS_ENV}
+
+volumes:
+  solr_data: {}
+    
+    

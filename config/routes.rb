@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   get "sites", to: "home#sites"
   devise_for :users
 
+  get "search", to: "home#search"
+
   get "setting", to: "users#setting"
   get "edit_password", to: "users#edit_password"
   get "advance", to: "users#advance"

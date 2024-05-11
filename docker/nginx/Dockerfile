@@ -13,7 +13,7 @@ COPY public public/
 # Copy ssl_certificate for https
 COPY certs certs/
 
-COPY ./nginx/nginx.conf /tmp/docker.nginx
+COPY ./docker/nginx/nginx.conf /tmp/docker.nginx
 
 # substitute variable references in the Nginx config template for real values from the environment
 # put the final config in its place

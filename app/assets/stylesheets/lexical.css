@@ -499,6 +499,8 @@ i.chevron-down {
   min-width: 100px;
   min-height: 40px;
   background-color: #fff;
+  max-height: 300px;
+  overflow: auto;
 }
 
 .editor-dropdown .item {

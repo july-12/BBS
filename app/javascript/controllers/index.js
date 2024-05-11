@@ -25,5 +25,8 @@ application.register("rich-text-preview", RichTextPreviewController)
 import RichtextSummaryController from "./richtext_summary_controller"
 application.register("richtext-summary", RichtextSummaryController)
 
+import SearchController from "./search_controller"
+application.register("search", SearchController)
+
 import TwinkleNewCommentController from "./twinkle_new_comment_controller"
 application.register("twinkle-new-comment", TwinkleNewCommentController)

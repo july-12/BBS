@@ -79,3 +79,5 @@ gem "friendly_id", "~> 5.5"
 gem "ahoy_matey", "~> 5.1"
 
 gem "redis", "~> 5.2"
+
+gem "sunspot_rails", "~> 2.6"

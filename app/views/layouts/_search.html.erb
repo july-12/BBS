@@ -1,0 +1,4 @@
+<div class="flex" data-controller="search">
+  <%= link_to "", search_path, data: {"search-target": "link"}, class: "hidden" %>
+  <input type="text" class="grow" placeholder="Search" data-search-target="input" data-action="keydown.enter->search#inputEnter" />
+</div>
