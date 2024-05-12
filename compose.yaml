@@ -19,6 +19,17 @@ services:
     ports:
       - 6397:6379
 
+  search:
+    image: solr
+    ports:
+      - 8983:8983
+    volumes:
+      - ./solr_data:/var/solr
+    command:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - ${RAILS_ENV}
+
   app:
     build:
       context: .
@@ -30,21 +41,9 @@ services:
     depends_on:
       - db
       - redis
+      - search
     ports:
       - 3000:3000
-
-  search:
-    image: solr
-    ports:
-      - 8983:8983
-    volumes:
-      - ./solr_data:/var/solr
-    command:
-      - docker-entrypoint.sh
-      - solr-precreate
-      - ${RAILS_ENV}
-    depends_on:
-      - app
 
   web:
     build:
