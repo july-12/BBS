@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="https://github.com/july-12/BBS/blob/main/app/assets/images/logo.svg" width="400">
+  <img src="https://github.com/july-12/BBS/blob/main/app/assets/images/logo.svg" width="300">
   <p align="center">Open source BBS website. inspiration from <a href="https://ruby-china.org">Ruby China</a></p>
 </p>
 
 ## Intro
 
-    这是一个开源社区网站，基于 rails 7.1 版本构建，采用 docker 部署，业务风格借鉴ruby-china。
+这是一个开源社区网站，基于 rails 7.1 版本构建，采用 docker 部署，页面风格借鉴ruby-china。
 
 ## Feature
 
@@ -76,7 +76,12 @@
         config.active_storage.service = :local # :tencent
         ```
 
-2. 设置环境变量 ```.env```
+2. 准备ssl证书
+
+    - 把证书拷贝至服务器 ```/path/to/project/certs``` 目录下
+    - 并把证书对应的crt和key文件分别重命名成**cert.crt**, **cert.key**
+
+3. 设置环境变量 ```.env```
     ```conf
     RAILS_ENV=production
     POSTGRES_DB=your_database
@@ -86,7 +91,13 @@
     RAILS_MASTER_KEY=key # 把config/credentials/production.key值设置给该变量
     SERVER_NAME=server_name # 服务器访问地址
     ```
-3. 启动 docker compose up -d --build
+4. 在服务器修改solr_data目录归属, 都在无法正常启动solr的docker服务
+
+    ```bash
+        chown 8983:8983 solr_data # 没有该目录，则先手动创建
+    ```
+
+5. 启动 docker compose up -d --build
 
 ## TODOs
 
