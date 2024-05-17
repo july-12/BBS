@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import AdvanceSearchController from "./advance_search_controller"
+application.register("advance-search", AdvanceSearchController)
+
 import CommentNewController from "./comment_new_controller"
 application.register("comment-new", CommentNewController)
 
@@ -27,6 +30,9 @@ application.register("richtext-summary", RichtextSummaryController)
 
 import SearchController from "./search_controller"
 application.register("search", SearchController)
+
+import SearchDialogController from "./search_dialog_controller"
+application.register("search-dialog", SearchDialogController)
 
 import TwinkleNewCommentController from "./twinkle_new_comment_controller"
 application.register("twinkle-new-comment", TwinkleNewCommentController)
