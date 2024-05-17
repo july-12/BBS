@@ -4,7 +4,6 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static values = { content: String };
   connect() {
-    console.log(this);
     const div = document.createElement("div");
     div.innerHTML = this.contentValue;
     this.element.innerText = div.textContent;

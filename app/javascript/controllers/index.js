@@ -4,9 +4,6 @@
 
 import { application } from "./application"
 
-import AdvanceSearchController from "./advance_search_controller"
-application.register("advance-search", AdvanceSearchController)
-
 import CommentNewController from "./comment_new_controller"
 application.register("comment-new", CommentNewController)
 
