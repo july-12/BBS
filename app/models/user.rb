@@ -33,6 +33,9 @@ class User < ApplicationRecord
   friendly_id :name, use: :slugged
 
   enum role: [:admin, :normal]
+  enum status: [:silence]
+
+  default_scope -> { where(status: nil) }
 
   def login
     @login || self.phone || self.name

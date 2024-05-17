@@ -43,13 +43,8 @@ Rails.application.routes.draw do
     get ":slug", to: "categories#slug", as: :category_slug
   end
 
-  get ":slug", to: "users#slug", as: :slug
-  get ":slug/comments", to: "users#comments", as: :slug_comments
-  get ":slug/favorites", to: "users#favorites", as: :slug_favorites
-  get ":slug/followers", to: "users#followers", as: :slug_followers
-  get ":slug/followings", to: "users#followings", as: :slug_followings
-
   namespace :admin do
+    root "dashboard#index"
     resources :posts do
       member do
         put "block"
@@ -57,8 +52,19 @@ Rails.application.routes.draw do
         # put "remove"
       end
     end
-    resources :users
+    resources :users, only: [:index] do
+      member do
+        put "silence"
+        put "unsilence"
+      end
+    end
   end
+
+  get ":slug", to: "users#slug", as: :slug
+  get ":slug/comments", to: "users#comments", as: :slug_comments
+  get ":slug/favorites", to: "users#favorites", as: :slug_favorites
+  get ":slug/followers", to: "users#followers", as: :slug_followers
+  get ":slug/followings", to: "users#followings", as: :slug_followings
 
   get "up" => "rails/health#show", as: :rails_health_check
 end
