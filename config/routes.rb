@@ -49,5 +49,16 @@ Rails.application.routes.draw do
   get ":slug/followers", to: "users#followers", as: :slug_followers
   get ":slug/followings", to: "users#followings", as: :slug_followings
 
+  namespace :admin do
+    resources :posts do
+      member do
+        put "block"
+        put "unblock"
+        # put "remove"
+      end
+    end
+    resources :users
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
 end

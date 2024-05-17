@@ -11,11 +11,15 @@ class Post < ApplicationRecord
   has_many :likes, class_name: "Like", as: :operatable, dependent: :destroy
   has_many :subscribes, class_name: "Subscribe", as: :operatable, dependent: :destroy
 
+  default_scope -> { where(status: nil) }
+
   searchable do
     text :title, :context
   end
 
   visitable :ahoy_visit
+
+  enum status: [:block]
 
   def repliers
     User.joins(:comments).where("comments.commentable_type = ? AND comments.commentable_id = ?", "Post", id).distinct

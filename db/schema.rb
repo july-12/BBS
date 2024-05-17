@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_04_093233) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_17_090343) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -105,6 +105,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_04_093233) do
     t.bigint "reply_id"
     t.bigint "sub_reply_id"
     t.string "rawhtml"
+    t.integer "status"
     t.index ["author_id"], name: "index_comments_on_author_id"
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
     t.index ["post_id"], name: "index_comments_on_post_id"
@@ -157,6 +158,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_04_093233) do
     t.bigint "ahoy_visit_id"
     t.bigint "category_id"
     t.string "rawhtml"
+    t.integer "status"
     t.index ["ahoy_visit_id"], name: "index_posts_on_ahoy_visit_id"
     t.index ["author_id"], name: "index_posts_on_author_id"
     t.index ["category_id"], name: "index_posts_on_category_id"
@@ -187,6 +189,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_04_093233) do
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.string "slug"
+    t.integer "role"
     t.index ["email"], name: "index_users_on_email"
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["phone"], name: "index_users_on_phone", unique: true

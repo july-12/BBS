@@ -1,0 +1,30 @@
+<tr id="<%= dom_id post %>" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+    <%= link_to post.title, post, data: { turbo_stream: "_top" } %>
+  </th>
+  <td class="px-6 py-4">
+    <%= post.author.name %>
+  </td>
+  <td class="px-6 py-4">
+    <% if post.block? %>
+      <span class="inline-block w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+    <% else %>
+      <span class="inline-block w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+    <% end %>
+  </td>
+  <td class="px-6 py-4">
+    <%= post.updated_at %>
+  </td>
+  <td class="px-6 py-4">
+    <%= post.created_at %>
+  </td>
+  <td class="px-6 py-4 text-right ">
+    <div class="flex gap-2">
+      <% if post.block? %>
+        <%= button_to  "Unblock", unblock_admin_post_path(post), method: :put, class: "font-medium text-gray-900  dark:text-blue-500 hover:underline" %>
+      <% else %>
+        <%= button_to  "Block", block_admin_post_path(post), method: :put, class: "font-medium text-gray-900  dark:text-blue-500 hover:underline" %>
+      <% end %>
+    </div>
+  </td>
+</tr>

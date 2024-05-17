@@ -32,6 +32,8 @@ class User < ApplicationRecord
 
   friendly_id :name, use: :slugged
 
+  enum role: [:admin, :normal]
+
   def login
     @login || self.phone || self.name
   end
@@ -74,5 +76,9 @@ class User < ApplicationRecord
 
   def email_changed?
     false
+  end
+
+  def is_admin?
+    return true
   end
 end

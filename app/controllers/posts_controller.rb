@@ -125,7 +125,8 @@ class PostsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_post
-    @post = Post.preload(:comments).find(params[:id])
+    model = current_user.admin? || current_user?(@post.author) ? Post.unscoped : Post
+    @post = model.preload(:comments).find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
@@ -134,7 +135,7 @@ class PostsController < ApplicationController
   end
 
   def check_author
-    unless current_user? @post.author
+    unless current_user.admin? || current_user?(@post.author)
       redirect_to root_path
     end
   end
