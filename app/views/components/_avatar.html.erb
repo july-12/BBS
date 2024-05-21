@@ -1,8 +1,8 @@
 <div class="<%= local_assigns[:size] ? "w-#{size}" : "w-10" %> <%= local_assigns[:size] ? "h-#{size}" : "h-10" %>">
   <div class="avatar w-full h-full">
     <div class="w-full h-full bg-neutral text-neutral-content rounded-full ">
-      <% if user.present? && user.avatar.attached? %>
-        <%= image_tag user.avatar, alt: "Avatar" %>
+      <% if user.present? && (user.image || user.avatar.attached?) %>
+        <%= image_tag user.image || user.avatar, alt: "Avatar" %>
       <% else %>
         <span class="w-full h-full flex items-center justify-center"><%= (user&.name || 'u').first.capitalize %></span>
       <% end %>

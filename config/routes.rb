@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root "home#index"
   get "wiki", to: "home#wiki"
   get "sites", to: "home#sites"
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
 
   get "search", to: "home#search"
 

@@ -26,3 +26,5 @@
     <%= render "devise/shared/links" %>
   </div>
 </div>
+<%= link_to "github", user_github_omniauth_authorize_path, method: :post %>
+<%= button_to "github btn", user_github_omniauth_authorize_path, data: { turbo: false } %>

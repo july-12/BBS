@@ -18,6 +18,9 @@ gem "ahoy_matey", "~> 5.1"
 gem "redis", "~> 5.2"
 gem "sunspot_rails", "~> 2.6"
 
+gem "omniauth-github", github: "omniauth/omniauth-github", branch: "master"
+gem "omniauth-rails_csrf_protection"
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
