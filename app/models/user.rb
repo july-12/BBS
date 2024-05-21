@@ -3,7 +3,7 @@ class User < ApplicationRecord
   attr_writer :login
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  validates :name, uniqueness: { case_sensitive: true }
+  validates :name, uniqueness: { case_sensitive: true }, presence: true
   # validates :phone, uniqueness: true, presence: true
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
