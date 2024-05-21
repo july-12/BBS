@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy, :favorite, :unfavorite]
+  before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy, :like, :unlike, :favorite, :unfavorite, :subscribe, :unsubscribe]
   before_action :set_post, only: %i[ show edit update destroy like unlike favorite unfavorite subscribe unsubscribe ]
   before_action :check_author, only: [:edit, :update, :destroy]
 
@@ -101,6 +101,7 @@ class PostsController < ApplicationController
 
   def subscribe
     if current_user.subscribes.create(operatable_id: params[:id], operatable_type: "Post")
+      PostMailer.with(user: @post.author).subscribe.deliver_now
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to posts_url, notice: "subscribe post!" }
