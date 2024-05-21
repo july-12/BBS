@@ -91,7 +91,7 @@
     RAILS_MASTER_KEY=key # 把config/credentials/production.key值设置给该变量
     SERVER_NAME=server_name # 服务器访问地址
     ```
-4. 在服务器修改solr_data目录归属, 都在无法正常启动solr的docker服务
+4. 在服务器修改solr_data目录归属, 否则无法正常启动solr的docker服务
 
     ```bash
         chown 8983:8983 solr_data # 没有该目录，则先手动创建
@@ -102,10 +102,10 @@
 ## TODOs
 
 - [x] ~~全文检索~~
-- [ ] 三方登录
+- [x] 三方登录
 - [ ] 风控
-- [ ] 管理员删除帖子或评论
-- [ ] 发邮件
+- [x] 管理员删除帖子或评论
+- [x] 发邮件
 - [ ] 查询优化
 
 
