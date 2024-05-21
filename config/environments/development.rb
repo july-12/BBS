@@ -43,6 +43,18 @@ Rails.application.configure do
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default_url_options = { :host => "localhost:3000" }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: ENV["MAIL_ADDRESS"],
+    port: ENV["MAIL_ADDRESS"],
+    # domain: "localhost:3000",
+    user_name: ENV["MAIL_USER_NAME"],
+    password: ENV["MAIL_PASSWORD"],
+    authentication: "plain",
+    enable_starttls: true,
+    open_timeout: 5,
+    read_timeout: 5,
+  }
 
   config.action_mailer.perform_caching = false
 
