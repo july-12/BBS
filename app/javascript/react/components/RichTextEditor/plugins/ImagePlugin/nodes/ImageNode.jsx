@@ -39,7 +39,6 @@ export class ImageNode extends DecoratorNode {
   }
 
   static clone(node) {
-    console.log("clone");
     return new ImageNode(
       node.__src,
       node.__file,
@@ -55,7 +54,6 @@ export class ImageNode extends DecoratorNode {
   }
 
   static importJSON(serializedNode) {
-    console.log("serializedNode", serializedNode);
     const {
       altText,
       height,

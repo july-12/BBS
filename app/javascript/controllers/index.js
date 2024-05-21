@@ -28,5 +28,8 @@ application.register("richtext-summary", RichtextSummaryController)
 import SearchController from "./search_controller"
 application.register("search", SearchController)
 
+import SearchDialogController from "./search_dialog_controller"
+application.register("search-dialog", SearchDialogController)
+
 import TwinkleNewCommentController from "./twinkle_new_comment_controller"
 application.register("twinkle-new-comment", TwinkleNewCommentController)

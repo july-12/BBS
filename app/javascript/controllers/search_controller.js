@@ -1,14 +1,12 @@
 import { Controller } from "@hotwired/stimulus";
+import { globalSearchDialogEvent } from './utils/event'
 
 // Connects to data-controller="search"
 export default class extends Controller {
-  static targets = ["input", "link"];
   connect() {
-    const search = new URLSearchParams(location.search);
-    this.inputTarget.value = search.get("q");
+    this.element.addEventListener('click', this.focus.bind(this), false)
   }
-  inputEnter(e) {
-    this.linkTarget.href = `/search?q=${this.inputTarget.value}`;
-    this.linkTarget.click();
+  focus() {
+    document.dispatchEvent(globalSearchDialogEvent)
   }
 }
