@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tanj</title>
+    <%= favicon_link_tag %>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+  <body class="h-screen flex flex-col">
+    <%= render partial: "layouts/admin/header" %>
+    <main class="flex-1 bg-base-200 flex" >
+      <%= render "layouts/admin/sidebar" %>
+      <main class="flex-1 xl:w-4/5 xl:mx-auto sm:px-16 px-4 py-6">
+        <div id="notice">
+          <%= render "layouts/notice", msg: notice %>
+        </div>
+        <%= yield %>
+      </main>
+    </main>
+    <script src="//at.alicdn.com/t/c/font_4516243_vme51bmqgk.js"></script>
+  </body>
+</html>

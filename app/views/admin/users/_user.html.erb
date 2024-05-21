@@ -1,0 +1,43 @@
+<tr id="<%= dom_id user %>" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+    <div class="w-8 h-8">
+      <%= render 'components/avatar', user: user, size: 8 %>
+    </div>
+  </th>
+  <td class="px-6 py-4">
+    <%= link_to user.name, user, data: { turbo_stream: "_top" } %>
+  </td>
+  <td class="px-6 py-4">
+    <%= user.posts.unscoped.count %>
+  </td>
+  <td class="px-6 py-4">
+    <%= user.comments.count %>
+  </td>
+  <td class="px-6 py-4">
+    <%= user.followers.count %>
+  </td>
+  <td class="px-6 py-4">
+    <%= user.followings.count %>
+  </td>
+  <td class="px-6 py-4">
+    <% if user.silence? %>
+      <span class="inline-block w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+    <% else %>
+      <span class="inline-block w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+    <% end %>
+  </td>
+  <td class="px-6 py-4">
+    <%= user.created_at %>
+  </td>
+  <td class="px-6 py-4 text-right">
+    <% unless user.admin? %>
+      <div class="flex gap-2">
+        <% if user.silence? %>
+          <%= button_to  "unsilence", unsilence_admin_user_path(user.id), method: :put, class: "font-medium text-gray-900  dark:text-blue-500 hover:underline" %>
+        <% else %>
+          <%= button_to  "silence", silence_admin_user_path(user.id), method: :put, class: "font-medium text-gray-900  dark:text-blue-500 hover:underline" %>
+        <% end %>
+      </div>
+    <% end %>
+  </td>
+</tr>

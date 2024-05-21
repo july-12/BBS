@@ -43,6 +43,23 @@ Rails.application.routes.draw do
     get ":slug", to: "categories#slug", as: :category_slug
   end
 
+  namespace :admin do
+    root "dashboard#index"
+    resources :posts do
+      member do
+        put "block"
+        put "unblock"
+        # put "remove"
+      end
+    end
+    resources :users, only: [:index] do
+      member do
+        put "silence"
+        put "unsilence"
+      end
+    end
+  end
+
   get ":slug", to: "users#slug", as: :slug
   get ":slug/comments", to: "users#comments", as: :slug_comments
   get ":slug/favorites", to: "users#favorites", as: :slug_favorites

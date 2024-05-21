@@ -6,4 +6,8 @@ module ApplicationHelper
   def active_link(pathname)
     current_page?(pathname) ? "text-blue-500" : nil
   end
+
+  def active_nav_link(pathname)
+    current_page?(pathname) ? "text-blue-500 bg-blue-200" : nil
+  end
 end

@@ -34,6 +34,11 @@ class User < ApplicationRecord
 
   friendly_id :name, use: :slugged
 
+  enum role: [:admin, :normal]
+  enum status: [:silence]
+
+  default_scope -> { where(status: nil) }
+
   def login
     @login || self.phone || self.name
   end
@@ -89,5 +94,9 @@ class User < ApplicationRecord
       # uncomment the line below to skip the confirmation emails.
       # user.skip_confirmation!
     end
+  end
+
+  def is_admin?
+    return true
   end
 end

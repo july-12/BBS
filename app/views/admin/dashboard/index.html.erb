@@ -1,0 +1,16 @@
+<div class="h-full flex justify-center" >
+  <dl class="w-full grid grid-cols-3 gap-8 p-4 mx-auto text-gray-900 dark:text-white sm:p-8">
+    <div class="flex flex-col items-center justify-center">
+      <dt class="mb-2 text-3xl font-extrabold"><%= @user_total %></dt>
+      <dd class="text-gray-500 dark:text-gray-400"><%= link_to "Users", admin_users_path, class: "hover:text-blue-300" %> </dd>
+    </div>
+    <div class="flex flex-col items-center justify-center">
+      <dt class="mb-2 text-3xl font-extrabold"><%= @post_total %></dt>
+      <dd class="text-gray-500 dark:text-gray-400"><%= link_to "Posts", admin_posts_path, class: "hover:text-blue-300" %> </dd>
+    </div>
+    <div class="flex flex-col items-center justify-center">
+      <dt class="mb-2 text-3xl font-extrabold"><%= @comment_total %> </dt>
+      <dd class="text-gray-500 dark:text-gray-400">Comments</dd>
+    </div>
+  </dl>
+</div>
