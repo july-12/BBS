@@ -32,3 +32,9 @@
    color: rgb(239 68 68); 
    background-color: transparent;
  }
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
