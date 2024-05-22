@@ -1,13 +1,13 @@
-<section id="<%= dom_id post %>" class="flex gap-4 px-2 py-4 border-b border-solid border-slate-200 cursor-pointer hover:bg-stone-100">
+<section id="<%= dom_id post %>" class="flex gap-4 px-2 py-2 rounded-lg sm:rounded-none sm:py-4 border-b border-solid border-slate-200 cursor-pointer hover:bg-stone-100  bg-white dark:bg-gray-900">
   <%= render "components/avatar", user: post.author %>
-  <main class="flex-1 flex flex-col justify-between h-12">
-    <header class="flex items-center gap-2">
-      <p class="text-md leading-none tracking-tight text-gray-500 hover:underline">
+  <main class="flex-1 overflow-hidden flex flex-col sm:gap-1 justify-between h-12">
+    <header class="flex-1 flex items-center gap-2">
+      <p class="sm:text-md leading-none tracking-tight text-gray-500 hover:underline">
         <% if post.category.present? %>
           <span><%= link_to post.category.name, category_slug_path(post.category.slug)  %></span>
         <% end %>
       </p>
-      <p class="text-xl font-semibold leading-none tracking-tight"> <%= link_to post.title, post, data: { turbo_frame: "_top" }, class: ' text-gray-600 hover:text-gray-700' %> </p>
+      <p class="flex-1 text-md font-bold sm:text-xl sm:font-semibold leading-none tracking-tight truncate"> <%= link_to post.title, post, data: { turbo_frame: "_top" }, class: ' text-gray-600 hover:text-gray-700' %> </p>
     </header>
     <div class="flex gap-1 text-slate-500 text-sm">
       <span class="hover:underline" ><%= link_to post.author&.name, url_profile(post.author) if post.author&.name %> </span>
@@ -16,7 +16,7 @@
     </div>
   </main>
   <footer class="flex items-center gap-2">
-    <div class="avatar-group -space-x-5 rtl:space-x-reverse">
+    <div class="hidden sm:block avatar-group -space-x-5 rtl:space-x-reverse">
       <% post.repliers.each do |replier| %>
         <div id="<%= dom_id replier %>" >
           <%= render "components/avatar", user: replier %>
