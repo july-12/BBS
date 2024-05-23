@@ -8,13 +8,15 @@
         <span class="text-sm text-gray-400"> <%= @user.created_at.strftime("%Y-%m-%d") %></span>
       </div>
     </div>
-    <div class="divider h-0 my-2"></div>
-    <div class="mt-4">
-      <span class="text-gray-400 flex gap-2 items-center">
-        <%= render "components/icon", symbol: "icon-email" %>
-        <%= @user.email %>
-      </span>
-    </div>
+    <% if @user.email.present? %>
+      <div class="divider h-0 my-2"></div>
+      <div class="mt-4">
+        <span class="text-gray-400 flex gap-2 items-center">
+          <%= render "components/icon", symbol: "icon-email" %>
+          <%= @user.email %>
+        </span>
+      </div>
+    <% end %>
     <div class="divider"></div>
     <div class="flex items-center justify-evenly">
       <%= link_to slug_followers_path(@user), data: { turbo_stream: true } do %>

@@ -5,7 +5,6 @@
         <%= link_to comment.commentable.title , comment.commentable, data: { turbo_frame: "_top" } %>
       <% end %>
     </span>
-    <span> at </span>
     <span> <%= comment.updated_at.strftime("%d %b") %> </span>
   </div>
   <div class="text-gray-400" data-controller="richtext-summary" data-richtext-summary-content-value="<%= strip_tags(comment.rawhtml) %>"></div>
