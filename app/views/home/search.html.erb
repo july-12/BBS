@@ -2,18 +2,18 @@
   <div class="flex flex-col p-6 gap-2 tracking-wide">
     <% if @result.present? && @q.present? %>
       <header class="flex items-center justify-between  mb-6 pb-2 dark:text-white shadow-sm">
-        <h3 class="text-2xl"> Search result of: <span class="ml-2 font-bold" ><%= @q %></span></h3>
+        <h3 class="text-2xl"> <span class="text-gray-400">Search result of: </span><span class="ml-2 font-bold" ><%= @q %></span></h3>
         <div>
-          total  <%= @result.size %> <%= "record".pluralize(@result.size) %>
+          total  <span class="font-semibold"><%= @result.size %></span> <%= "record".pluralize(@result.size) %>
         </div>
       </header>
     <% end %>
     <% if @result.empty? %>
       <div class="flex items-center justify-center">
         <% if @q.present? %>
-          <div class>No results for "<span class="font-semibold"><%= @q %><span>"</div>
+          <div>No results for "<span class="font-semibold"><%= @q %><span>"</div>
             <% else %>
-              <div >Typing Search!</div>
+              <div class="text-gray-400">Typing for Searching!</div>
             <% end %>
           </div>
         <% else %>
@@ -30,7 +30,7 @@
                   <span class="text-gray-400"><%= item.created_at.strftime("%D") %></span>
                 </div>
                 <div class="text-gray-500">
-                  <%= highlight(excerpt(item.rawhtml, @q, separator: ' ', radius: 10), @q) %>
+                  <%= highlight(excerpt(strip_tags(item.rawhtml), @q, separator: ' ', radius: 10), @q) %>
                 </div>
               </li>
             <% end %>

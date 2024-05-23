@@ -1,20 +1,24 @@
 <div class="w-full px-4 sm:px-0 sm:w-[400px] sm:mx-auto">
   <h2 class="mb-4 text-xl font-bold sm:text-4xl sm:font-extrabold leading-none tracking-tight text-gray-900  dark:text-white"> Sign up </h2>
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), class: 'max-w-sm mx-auto') do |f| %>
-    <%= render "devise/shared/error_messages", resource: resource %>
+    <div class="mb-2">
+      <%= render "devise/shared/error_messages", resource: resource %>
+    </div>
     <div class="mb-5">
       <%= f.label :name, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
       <%= f.text_field :name, autofocus: true, placeholder: "please input name", autocomplete: "name", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
     </div>
     <div class="mb-5">
       <%= f.label :phone, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-      <%= f.text_field :phone, autofocus: true, placeholder: "please input phone", autocomplete: "phone", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+      <%= f.phone_field :phone, autofocus: true, placeholder: "please input phone", autocomplete: "phone", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
     </div>
     <div class="mb-5">
-      <%= f.label :password, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-      <% if @minimum_password_length %>
-        <em>(<%= @minimum_password_length %> characters minimum)</em>
-      <% end %>
+      <div class="flex gap-2 items-center mb-2">
+        <%= f.label :password, class: "block text-sm font-medium text-gray-900 dark:text-white" %>
+        <% if @minimum_password_length %>
+          <em>(<%= @minimum_password_length %> characters minimum)</em>
+        <% end %>
+      </div>
       <%= f.password_field :password, placeholder: "please input password", autocomplete: "new-password", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
     </div>
     <div class="mb-5">

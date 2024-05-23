@@ -4,7 +4,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   validates :name, uniqueness: { case_sensitive: true }, presence: true
-  # validates :phone, uniqueness: true, presence: true
+  validates :phone, uniqueness: true, format: { with: /\A1[3|4|5|7|8][0-9]{9}\z/, message: "format is invalid" }
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: %i[github],
