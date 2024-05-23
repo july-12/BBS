@@ -1,8 +1,8 @@
 <%= turbo_frame_tag "search" do %>
-  <div class="flex flex-col p-6 gap-2 tracking-wide">
+  <div class="flex flex-col p-3 sm:p-6 gap-2 tracking-wide">
     <% if @result.present? && @q.present? %>
-      <header class="flex items-center justify-between  mb-6 pb-2 dark:text-white shadow-sm">
-        <h3 class="text-2xl"> <span class="text-gray-400">Search result of: </span><span class="ml-2 font-bold" ><%= @q %></span></h3>
+      <header class="flex sm:items-center justify-between flex-col sm:flex-row mb-6 pb-2 dark:text-white shadow-sm">
+        <h3 class="text-lg sm:text-2xl"> <span class="text-gray-400">Search result of: </span><span class="ml-2 font-bold" ><%= @q %></span></h3>
         <div>
           total  <span class="font-semibold"><%= @result.size %></span> <%= "record".pluralize(@result.size) %>
         </div>
@@ -20,16 +20,16 @@
           <ul class="flex flex-col gap-3">
             <% @result.each do |item| %>
               <li>
-                <h4 class="text-xl font-semibold text-gray-700 hover:text-gray-800">
+                <h4 class="text-lg font-medium sm:text-xl sm:font-semibold text-gray-700 hover:text-gray-800">
                   <%= link_to item, data: { turbo_frame: "_top"} do %>
                     <%= highlight(item.title, @q) %>
                   <% end %>
                 </h4>
                 <div class="flex gap-4">
-                  <span class="text-green-600 hover:underline"><%= link_to post_url(item), item, data: { turbo_frame: "_top" } %></span>
+                  <span class="text-green-600 hover:underline flex-1 truncate"><%= link_to post_url(item), item, data: { turbo_frame: "_top" } %></span>
                   <span class="text-gray-400"><%= item.created_at.strftime("%D") %></span>
                 </div>
-                <div class="text-gray-500">
+                <div class="text-gray-500 leading-none sm:leading-snug">
                   <%= highlight(excerpt(strip_tags(item.rawhtml), @q, separator: ' ', radius: 10), @q) %>
                 </div>
               </li>

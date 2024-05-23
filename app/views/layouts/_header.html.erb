@@ -4,7 +4,7 @@
       <%= link_to root_path do %>
         <%= image_tag "logo.svg", width: 62, class: "rounded" %>
       <% end %>
-      <ul class="flex gap-1 sm:gap-8 items-center text-gray-900">
+      <ul class="flex sm:gap-8 items-center text-gray-900">
         <li class='me-4 hover:underline md:me-6 <%= active_link(root_path) %>'>
           <%= link_to "社区", root_path %>
         </li>
@@ -18,6 +18,14 @@
       </ul>
     </div>
     <div class="flex gap-2 items-center">
+      <div class="sm:hidden flex gap-3">
+        <label data-controller="search">
+          <%= render "components/icon", symbol: "rails-icon-search1" %>
+        </label>
+        <%= link_to new_post_path do %>
+          <%= render "components/icon", symbol: "rails-icon-add" %>
+        <% end %>
+      </div>
       <div class="hidden sm:block">
         <%= render "layouts/header_search" %>
       </div>

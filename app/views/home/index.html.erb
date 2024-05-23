@@ -4,12 +4,12 @@
       <%= render  "posts/post", post: post %>
     <% end %>
   </section>
-  <div class="sm:w-1/4 sm:max-w-[400px] flex flex-col gap-4">
+  <div class="hidden sm:w-1/4 sm:max-w-[400px] sm:flex flex-col gap-4">
     <div class="card bg-white shadow-sm">
       <div class="card-body p-4">
         <div class="card-action">
           <button class="w-full text-grey-400 btn btn-primary btn-sm">
-            <%= link_to  "发布话题", user_signed_in? ? new_post_path : user_session_path %>
+            <%= link_to  "发布话题", new_post_path %>
           </button>
         </div>
       </div>
