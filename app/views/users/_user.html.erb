@@ -1,7 +1,6 @@
-<li id="<%= dom_id user %>" class="flex gap-2">
-  <div><%= user.name %></div>
-  <div><%= user.phone %></div>
-  <div><%= user.email %></div>
-  <div><%= user.created_at.to_fs(:short) %></div>
+<li id="<%= dom_id user %>" class="inline-flex gap-2 flex-col items-center ">
+  <%= render "components/avatar", user: user %>
+  <span class="text-lg font-medium"><%= user.name %></span>
+  <span class=" text-sm text-gray-400">第 <%= user.id %> 位会员 </span>
   <%= render 'follow_status', user_id: user.id %>
 </li>
