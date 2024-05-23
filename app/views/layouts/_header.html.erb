@@ -2,10 +2,10 @@
   <header class="xl:w-4/5 xl:mx-auto h-14 flex items-center justify-between px-4 border-b border-slate-100">
     <div class="flex gap-3 sm:gap-6 items-center">
       <%= link_to root_path do %>
-        <%= image_tag "logo.svg", width: 62, class: "rounded" %>
+        <%= image_tag "logo.svg", class: "rounded w-12 sm:w-16" %>
       <% end %>
-      <ul class="flex gap-1 sm:gap-8 items-center text-gray-900">
-        <li class='me-4 hover:underline md:me-6 <%= active_link(root_path) %>'>
+      <ul class="flex gap-3 sm:gap-8 items-center text-gray-900">
+        <li class='hover:underline <%= active_link(root_path) %>'>
           <%= link_to "社区", root_path %>
         </li>
         <!--
@@ -13,11 +13,20 @@
           <%= link_to "问答", questions_path %>
         </li>
         -->
-        <li class='me-4 hover:underline md:me-6 <%= active_link(wiki_path) %>'> <%= link_to "Wiki", wiki_path %> </li>
-        <li class='me-4 hover:underline md:me-6 <%= active_link(sites_path) %>'> <%= link_to "酷站", sites_path %> </li>
+        <li class='hover:underline <%= active_link(users_path) %>'> <%= link_to "成员", users_path %> </li>
+        <li class='hover:underline <%= active_link(wiki_path) %>'> <%= link_to "Wiki", wiki_path %> </li>
+        <li class='hover:underline <%= active_link(sites_path) %>'> <%= link_to "酷站", sites_path %> </li>
       </ul>
     </div>
     <div class="flex gap-2 items-center">
+      <div class="sm:hidden flex gap-3">
+        <label data-controller="search">
+          <%= render "components/icon", symbol: "rails-icon-search1" %>
+        </label>
+        <%= link_to new_post_path do %>
+          <%= render "components/icon", symbol: "rails-icon-add" %>
+        <% end %>
+      </div>
       <div class="hidden sm:block">
         <%= render "layouts/header_search" %>
       </div>

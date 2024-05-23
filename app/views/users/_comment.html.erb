@@ -1,12 +1,11 @@
 <div id="<%= dom_id comment %>" class="flex flex-col gap-1 border-b border-slate-200 py-2">
   <div class="text-sm flex gap-2 items-center">
-    <span class="text-lg font-semibold ">
+    <span class="flex-1 text-lg font-semibold truncate">
       <% if comment.commentable %>
         <%= link_to comment.commentable.title , comment.commentable, data: { turbo_frame: "_top" } %>
       <% end %>
     </span>
-    <span> at </span>
     <span> <%= comment.updated_at.strftime("%d %b") %> </span>
   </div>
-  <div class="text-gray-400" data-controller="richtext-summary" data-richtext-summary-content-value="<%= comment.rawhtml %>"></div>
+  <div class="text-gray-400" data-controller="richtext-summary" data-richtext-summary-content-value="<%= strip_tags(comment.rawhtml) %>"></div>
 </div>

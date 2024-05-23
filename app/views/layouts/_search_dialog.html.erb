@@ -1,18 +1,16 @@
   <!-- Search input and results will go there -->
 <!-- Modal content -->
-<div tabindex="-1" data-controller="search-dialog" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-  <dialog class="rounded-lg w-full max-w-4xl max-h-96 min-h-[300px] shadow" data-search-dialog-target="dialog" data-action="keydown.meta+k@window->search-dialog#open">
-    <div class="w-full py-4 max-w-4xl max-h-96 min-h-[300px] flex flex-col relative bg-white dark:bg-gray-700">
+<div tabindex="-1" data-controller="search-dialog" class="hidden">
+  <dialog class="rounded-lg mt-32 w-5/6 sm:mt-20 sm:w-full max-w-2xl max-h-96 overflow-auto shadow-xl sm:shadow" data-search-dialog-target="dialog" data-action="keydown.meta+k@window->search-dialog#open">
+    <div class="w-full py-2 sm:py-4 max-w-2xl max-h-96 flex flex-col relative bg-white dark:bg-gray-700">
       <!-- Modal header -->
-      <header class="flex px-4 pb-4 items-center justify-between gap-2 border-b" >
+      <header class="flex px-2 pb-2 sm:px-4 sm:pb-4 items-center justify-between gap-2 border-b" >
         <%= form_with url: search_path, method: :get, class: "flex-1", data: { "search-dialog-target": "queryForm", turbo_frame: :search } do |f| %>
           <label class="input flex items-center gap-2">
             <%= f.search_field :q, autofocus: true, placeholder: "Search by press Enter", class: "grow input-ghost", data: {
               # action: "advance-search#submit" # onChange
               # action: "keydown.enter->advance-search#submit" # default action trigger submit when press enter
             } %>
-            <kbd class="kbd kbd-sm">⌘</kbd>
-            <kbd class="kbd kbd-sm">K</kbd>
           </label>
         <% end %>
         <form method="dialog" data-action="submit->search-dialog#close">

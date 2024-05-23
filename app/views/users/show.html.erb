@@ -1,32 +1,35 @@
-<div class="flex gap-4" >
-  <div class="w-1/4 h-fit min-w-[300px] bg-white rounded-lg shadow-sm p-4">
+<div class="flex gap-4 flex-col sm:flex-row" >
+  <div class="w-full sm:w-1/4 h-fit sm:min-w-[300px] bg-white rounded-lg shadow-sm p-4">
     <div class="flex gap-3" >
       <%= render "components/avatar", { user: @user } %>
       <div class="flex-1 flex flex-col gap-1">
         <span class="text-lg font-semibold"><%= @user.name %></span>
-        <span class="text-gray-400"> <%= @user.created_at.strftime("%Y-%m-%d") %></span>
+        <span class=" text-sm text-gray-400"> 第 <span class="font-semibold"><%= @user.id %></span> 位会员</span>
+        <span class="text-sm text-gray-400"> <%= @user.created_at.strftime("%Y-%m-%d") %></span>
       </div>
     </div>
-    <div class="divider"></div>
-    <div class="mt-4">
-      <span class="text-gray-400 flex gap-2 items-center">
-        <%= render "components/icon", symbol: "icon-email" %>
-        <%= @user.email %>
-      </span>
-    </div>
+    <% if @user.email.present? %>
+      <div class="divider h-0 my-2"></div>
+      <div class="mt-4">
+        <span class="text-gray-400 flex gap-2 items-center">
+          <%= render "components/icon", symbol: "icon-email" %>
+          <%= @user.email %>
+        </span>
+      </div>
+    <% end %>
     <div class="divider"></div>
     <div class="flex items-center justify-evenly">
       <%= link_to slug_followers_path(@user), data: { turbo_stream: true } do %>
         <span class="inline-flex flex-col gap-1 items-center">
           <%= render "components/icon", symbol: "icon-follower1" %>
-          <span>关注我</span>
+          <span>关注<%= current_user == @user ? "我" : "他" %> </span>
           <%= render "follow_count", count: @user.followers.count  %>
         </span>
       <% end %>
       <%= link_to slug_followings_path(@user), data: { turbo_stream: true } do %>
         <span class="inline-flex flex-col gap-1 items-center">
           <%= render "components/icon", symbol: "icon-follower" %>
-          <span>已关注</span>
+          <span><%= current_user == @user ? "我" : "他" %>关注</span>
           <span id=<%= "followings-#{@user.id}" %>  >
             <%= render "follow_count", count: @user.followings.count %>
           </span>

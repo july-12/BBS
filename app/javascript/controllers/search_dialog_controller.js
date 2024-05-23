@@ -11,10 +11,12 @@ export default class extends Controller {
     document.addEventListener(globalSearchDialogEventKey, this.open.bind(this), false);
     this.dialogTarget.addEventListener('close', this.close.bind(this), false) // close by esc
   }
-  open() {
-    document.body.classList.add("overflow-hidden")
-    this.element.classList.remove('hidden')
-    this.dialogTarget.showModal()
+  open(e) {
+    if(e.key === 'k' || e.type === globalSearchDialogEventKey) {
+      document.body.classList.add("overflow-hidden")
+      this.element.classList.remove('hidden')
+      this.dialogTarget.showModal()
+    }
   }
 
   close() {

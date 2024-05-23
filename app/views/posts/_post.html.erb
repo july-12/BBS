@@ -16,7 +16,7 @@
     </div>
   </main>
   <footer class="flex items-center gap-2">
-    <div class="hidden sm:block avatar-group -space-x-5 rtl:space-x-reverse">
+    <div class="hidden sm:flex avatar-group -space-x-5 rtl:space-x-reverse">
       <% post.repliers.each do |replier| %>
         <div id="<%= dom_id replier %>" >
           <%= render "components/avatar", user: replier %>
