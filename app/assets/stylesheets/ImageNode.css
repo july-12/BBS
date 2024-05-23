@@ -54,6 +54,11 @@
   cursor: default;
 }
 
+.editor-container.editor-inner-preview .editor-image img {
+  max-width: 100% !important;
+  object-fit: contain;
+}
+
 .editor-container .editor-image img.focused {
   outline: 2px solid rgb(60, 132, 244);
   user-select: none;
