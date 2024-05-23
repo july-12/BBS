@@ -101,7 +101,7 @@ class PostsController < ApplicationController
 
   def subscribe
     if current_user.subscribes.create(operatable_id: params[:id], operatable_type: "Post")
-      PostMailer.with(user: @post.author).subscribe.deliver_now
+      # PostMailer.with(user: @post.author).subscribe.deliver_now
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to posts_url, notice: "subscribe post!" }
